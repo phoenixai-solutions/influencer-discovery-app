@@ -225,7 +225,8 @@
             const div = document.createElement("div");
             div.textContent = label;
             div.onclick = () => {
-              input.value = label;
+              const match = data.find(item => item.label === label);
+              input.value = match ? match.code : label;
               list.classList.add("hidden");
             };
             list.appendChild(div);
