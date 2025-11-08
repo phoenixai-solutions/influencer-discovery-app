@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Creator Discovery | Aruba Tourism</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <style>
     body { background-color: #f9fafb; font-family: 'Inter', sans-serif; }
@@ -22,6 +23,9 @@
     .group-title { font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600; margin-bottom:8px; }
     .group-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
     @media (max-width:1024px){ .filters-row { grid-template-columns:1fr 1fr; } .group-grid { grid-template-columns:1fr 1fr; } }
+    .platform-btn { padding: 8px 14px; border-radius: 9999px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; border: 1px solid #e5e7eb; background: #fff; color: #111827; }
+    .platform-btn.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+    .platform-btn i { font-size: 16px; }
   </style>
 </head>
 <body class="min-h-screen">
@@ -42,11 +46,11 @@
 
       <!-- Platform selector -->
       <div class="flex flex-wrap gap-2 mb-4">
-        <button class="px-4 py-2 rounded-full bg-gray-900 text-white text-sm" id="btnIG">Instagram</button>
-        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm" id="btnTT">TikTok</button>
-        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm" id="btnYT">YouTube</button>
-        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm" id="btnTW">Twitch</button>
-        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm" id="btnX">X</button>
+        <button class="platform-btn active" id="btnIG"><i class="fab fa-instagram"></i> Instagram</button>
+        <button class="platform-btn" id="btnTT"><i class="fab fa-tiktok"></i> TikTok</button>
+        <button class="platform-btn" id="btnYT"><i class="fab fa-youtube"></i> YouTube</button>
+        <button class="platform-btn" id="btnTW"><i class="fab fa-twitch"></i> Twitch</button>
+        <button class="platform-btn" id="btnX"><i class="fab fa-x-twitter"></i> X</button>
       </div>
 
       <!-- Core filters -->
@@ -146,8 +150,8 @@
     let platform = 'instagram';
     buttons.forEach(id => {
       document.getElementById(id).addEventListener('click', () => {
-        buttons.forEach(b => document.getElementById(b).classList.remove('bg-gray-900','text-white'));
-        document.getElementById(id).classList.add('bg-gray-900','text-white');
+        buttons.forEach(b => document.getElementById(b).classList.remove('active'));
+        document.getElementById(id).classList.add('active');
         platform = id === 'btnTT' ? 'tiktok' :
                    id === 'btnYT' ? 'youtube' :
                    id === 'btnTW' ? 'twitch' :
@@ -206,4 +210,3 @@
   </script>
 </body>
 </html>
-
