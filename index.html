@@ -124,105 +124,15 @@
       </select>
     </div>
   </div>
-  <!-- Row: Has email + Advanced toggle -->
-  <div class="filters-actions">
-    <label class="checkbox">
-      <input id="hasEmail" type="checkbox"> Has email
-    </label>
+        <div class="field" style="align-self:center">
+          <label class="checkbox" style="margin-top:8px">
+            <input id="hasEmail" type="checkbox" /> <span>Has email</span>
+          </label>
+        </div>
 
-    <button id="btnAdvanced" class="btn btn-outline">
-      <span class="chev">▾</span> Advanced filters
-    </button>
-  </div>
-
-  <!-- Advanced filters (collapsed by default) -->
-  <div id="advancedPanel" class="advanced hidden">
-    <!-- Group: Audience metrics -->
-    <div class="group">
-      <div class="group-title">Audience metrics</div>
-      <div class="group-grid">
         <div class="field">
-          <label class="field-label">Followers</label>
-          <div class="range">
-            <input id="followersMin" class="input" inputmode="numeric" placeholder="Min">
-            <input id="followersMax" class="input" inputmode="numeric" placeholder="Max">
-          </div>
+          <button id="searchBtn" class="btn" style="width:20%">Search</button>
         </div>
-        <div class="field">
-          <label class="field-label">Engagement %</label>
-          <div class="range">
-            <input id="erMin" class="input" inputmode="numeric" placeholder="Min">
-            <input id="erMax" class="input" inputmode="numeric" placeholder="Max">
-          </div>
-        </div>
-        <div class="field">
-          <label class="field-label">Avg Likes ≥</label>
-          <input id="avgLikesMin" class="input" inputmode="numeric" placeholder="e.g. 500">
-        </div>
-        <div class="field">
-          <label class="field-label">Avg Comments ≥</label>
-          <input id="avgCommentsMin" class="input" inputmode="numeric" placeholder="e.g. 20">
-        </div>
-      </div>
-    </div>
-
-    <!-- Group: Activity & recency -->
-    <div class="group">
-      <div class="group-title">Activity & recency</div>
-      <div class="group-grid">
-        <div class="field">
-          <label class="field-label">Last post</label>
-          <select id="lastPost" class="input">
-            <option value="7d">Last 7 days</option>
-            <option value="14d">Last 14 days</option>
-            <option value="30d" selected>Last 30 days</option>
-            <option value="60d">Last 60 days</option>
-            <option value="90d">Last 90 days</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="field-label">Posting frequency (posts/mo)</label>
-          <input id="postingFrequency" class="input" inputmode="numeric" placeholder="e.g. 4">
-        </div>
-        <div class="field">
-          <label class="field-label">Growth % (X months)</label>
-          <div class="range">
-            <input id="growthPct" class="input" inputmode="numeric" placeholder="%">
-            <input id="growthMonths" class="input" inputmode="numeric" placeholder="Months" value="3">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Group: Creator quality -->
-    <div class="group">
-      <div class="group-title">Creator quality</div>
-      <div class="group-grid">
-        <label class="checkbox"><input id="verified" type="checkbox"> Verified</label>
-        <label class="checkbox"><input id="excludePrivate" type="checkbox" checked> Exclude Private</label>
-      </div>
-    </div>
-
-    <!-- Group: Brand fit -->
-    <div class="group">
-      <div class="group-title">Brand fit</div>
-      <div class="group-grid">
-        <div class="field">
-          <label class="field-label">Keywords in bio</label>
-          <input id="bioKeywords" class="input" placeholder="e.g. Aruba, Caribbean, travel deals">
-        </div>
-        <label class="checkbox"><input id="brandDeals" type="checkbox"> Has done brand deals</label>
-        <label class="checkbox"><input id="affiliateLinks" type="checkbox"> Promotes affiliate links</label>
-        <label class="checkbox"><input id="linkInBio" type="checkbox"> Has link in bio</label>
-      </div>
-    </div>
-  </div>
-
-  <!-- Search CTA lives under the section -->
-  <div class="search-cta">
-    <button id="btnSearch" class="btn btn-primary">Search</button>
-  </div>
-</div>
       </div>
     </div>
   </section>
