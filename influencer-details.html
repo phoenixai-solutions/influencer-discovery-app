@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Influencer Details</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .back-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .back-btn:hover {
+      background: #0056b3;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .profile-header {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      display: flex;
+      gap: 30px;
+      align-items: start;
+    }
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #eee;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .profile-name {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .profile-username {
+      color: #666;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .profile-bio {
+      color: #333;
+      margin: 15px 0;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .profile-location {
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .stat-label {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #333;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 10px;
+    }
+    .hashtags-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hashtag {
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+    .hashtag-count {
+      background: #1976d2;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 5px;
+      font-size: 12px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .info-item {
+      padding: 10px 0;
+    }
+    .info-label {
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+    .info-value {
+      color: #333;
+      font-weight: 500;
+      font-size: 15px;
+    }
+    .link-item {
+      color: #1976d2;
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .link-item:hover {
+      text-decoration: underline;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+    .badge-blue {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    .badge-green {
+      background: #e8f5e9;
+      color: #4caf50;
+    }
+    .badge-orange {
+      background: #fff3e0;
+      color: #ff9800;
+    }
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .post-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .post-media {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .post-content {
+      padding: 15px;
+    }
+    .post-caption {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .post-stats {
+      display: flex;
+      gap: 15px;
+      color: #666;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .growth-chart {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .growth-item {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+    .growth-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .growth-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: #4caf50;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    .error {
+      background: #ffebee;
+      color: #c62828;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-top: 20px;
+    }
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 250px;
+      padding: 20px 0;
+      border-bottom: 2px solid #e0e0e0;
+      gap: 5px;
+    }
+    .chart-bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .chart-bar {
+      width: 100%;
+      max-width: 25px;
+      min-width: 15px;
+      border-radius: 4px 4px 0 0;
+      transition: opacity 0.2s;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .chart-bar:hover {
+      opacity: 0.8;
+    }
+    .chart-bar-likes {
+      background: #ec4899;
+    }
+    .chart-bar-comments {
+      background: #8b5cf6;
+    }
+    .chart-label {
+      font-size: 11px;
+      color: #666;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .chart-legend {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+    }
+    .top-stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 25px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .top-stat {
+      text-align: center;
+    }
+    .top-stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    .top-stat-label {
+      font-size: 13px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+<!-- ✅ Global Header Navigation -->
+<header style="background:#ffffff; border-bottom:1px solid #e5e7eb; padding:12px 24px; font-family: Inter, sans-serif;">
+  <nav style="display:flex; align-items:center; justify-content:space-between; max-width:1200px; margin:0 auto;">
+    
+    <!-- Logo / Brand -->
+    <div style="font-weight:600; font-size:18px; color:#2563EB;">
+      Creator Discovery
+    </div>
+
+    <!-- Menu -->
+    <ul style="display:flex; gap:24px; list-style:none; margin:0; padding:0; font-size:14px; font-weight:500;">
+      <li><a href="index.html" style="text-decoration:none; color:#111827;">Find Influencers</a></li>
+      <li><a href="#" style="text-decoration:none; color:#6B7280;">Manage Influencers</a></li>
+      <li><a href="#" style="text-decoration:none; color:#6B7280;">Campaigns</a></li>
+      <li><a href="#" style="text-decoration:none; color:#6B7280;">Share of Voice</a></li>
+    </ul>
+
+  </nav>
+</header>
+
+
+  <div class="container">
+    <div id="loading" class="loading">Loading profile...</div>
+    <div id="error" class="error" style="display:none;"></div>
+    <div id="content" style="display:none;"></div>
+  </div>
+
+  <script>
+    const MAKE_DETAILS_WEBHOOK = "https://hook.eu2.make.com/xuaaoh6ikispwj6lwirfw4zgi32hdsr1";
+
+    // ========== FORMAT NUMBERS ==========
+    function formatNumber(num) {
+      if (!num && num !== 0) return "N/A";
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+      if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+      return num.toString();
+    }
+
+    function formatPercent(num) {
+      if (!num && num !== 0) return "N/A";
+      return num.toFixed(2) + "%";
+    }
+
+    // ========== LOAD DETAILS ==========
+    async function loadDetails() {
+      const params = new URLSearchParams(location.search);
+      const platform = params.get("platform") || "instagram";
+      const handle = (params.get("handle") || "").replace(/^@/, "");
+
+      if (!handle) {
+        showError("No handle provided");
+        return;
+      }
+
+      try {
+        const resp = await fetch(MAKE_DETAILS_WEBHOOK, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ platform, handle })
+        });
+
+        if (!resp.ok) throw new Error("Failed to fetch data");
+
+        const data = await resp.json();
+        console.log("API Response:", data);
+
+        // Extract the result
+        const result = data?.result || data;
+        if (!result) throw new Error("No data returned");
+
+        renderProfile(result, platform, handle);
+      } catch (error) {
+        console.error("Error:", error);
+        showError("Failed to load profile: " + error.message);
+      }
+    }
+
+    // ========== RENDER PROFILE ==========
+    function renderProfile(result, platform, handle) {
+      const instagram = result.instagram || {};
+      const rootData = result;
+
+      // Build HTML
+      const html = `
+        <div class="profile-header">
+          <img 
+            src="${instagram.profile_picture || instagram.profile_picture_hd || ''}" 
+            alt="Profile" 
+            class="profile-avatar"
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'"
+          />
+          <div class="profile-info">
+            <div class="profile-name">
+              ${instagram.full_name || rootData.first_name || handle}
+              ${instagram.is_verified ? '<span style="color: #1976d2;">✓</span>' : ''}
+            </div>
+            <div class="profile-username">@${instagram.username || handle} • ${platform}</div>
+            
+            <div style="margin: 10px 0;">
+              ${instagram.is_business_account ? '<span class="badge badge-blue">Business</span>' : ''}
+              ${rootData.is_creator ? '<span class="badge badge-green">Creator</span>' : ''}
+              ${instagram.video_content_creator ? '<span class="badge badge-orange">Video Creator</span>' : ''}
+            </div>
+
+            ${instagram.biography ? `<div class="profile-bio">${instagram.biography}</div>` : ''}
+            
+            ${rootData.location ? `<div class="profile-location">📍 ${rootData.location}</div>` : ''}
+            ${rootData.email ? `<div class="profile-location">✉️ <a href="mailto:${rootData.email}">${rootData.email}</a></div>` : ''}
+            ${instagram.contact_phone_number ? `<div class="profile-location">📞 ${instagram.contact_phone_number}</div>` : ''}
+          </div>
+        </div>
+
+        <div class="top-stats-row">
+          <div class="top-stat">
+            <div class="top-stat-value">${formatNumber(instagram.follower_count)}</div>
+            <div class="top-stat-label">Followers</div>
+          </div>
+          <div class="top-stat">
+            <div class="top-stat-value">${Math.round(instagram.avg_likes || 0)}</div>
+            <div class="top-stat-label">Likes</div>
+          </div>
+          <div class="top-stat">
+            <div class="top-stat-value">${formatPercent(instagram.engagement_percent)}</div>
+            <div class="top-stat-label">Eng. Rate</div>
+          </div>
+          <div class="top-stat">
+            <div class="top-stat-value">${formatNumber(Math.round((instagram.follower_count || 0) * (instagram.engagement_percent || 0) / 100))}</div>
+            <div class="top-stat-label">Reach</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Account Metrics</div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Following</div>
+              <div class="info-value">${formatNumber(instagram.following_count)}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Total Posts</div>
+              <div class="info-value">${formatNumber(instagram.media_count)}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Avg Comments</div>
+              <div class="info-value">${formatNumber(instagram.avg_comments)}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Account Type</div>
+              <div class="info-value">${instagram.is_private ? 'Private' : 'Public'}</div>
+            </div>
+          </div>
+        </div>
+
+        ${renderGrowthSection(instagram.creator_follower_growth)}
+        ${renderEngagementSection(instagram)}
+        ${renderAnalyticsChart(instagram.post_data)}
+        ${renderContentSection(instagram)}
+        ${renderHashtagsSection(instagram.hashtags_count)}
+        ${renderLinksSection(instagram.links_in_bio)}
+        ${renderRecentPostsSection(instagram.post_data)}
+      `;
+
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("content").innerHTML = html;
+      document.getElementById("content").style.display = "block";
+    }
+
+    // ========== RENDER SECTIONS ==========
+    function renderGrowthSection(growth) {
+      if (!growth) return '';
+      
+      return `
+        <div class="section">
+          <div class="section-title">Follower Growth</div>
+          <div class="growth-chart">
+            <div class="growth-item">
+              <div class="growth-label">3 Months Ago</div>
+              <div class="growth-value">+${growth['3_months_ago']}%</div>
+            </div>
+            <div class="growth-item">
+              <div class="growth-label">6 Months Ago</div>
+              <div class="growth-value">+${growth['6_months_ago']}%</div>
+            </div>
+            <div class="growth-item">
+              <div class="growth-label">9 Months Ago</div>
+              <div class="growth-value">+${growth['9_months_ago']}%</div>
+            </div>
+            <div class="growth-item">
+              <div class="growth-label">12 Months Ago</div>
+              <div class="growth-value">+${growth['12_months_ago']}%</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAnalyticsChart(posts) {
+      if (!posts || !posts.length) return '';
+      
+      // Get last 12 posts (they're already newest first)
+      const recentPosts = posts.slice(0, 12);
+      
+      // Find max value for scaling
+      const maxLikes = Math.max(...recentPosts.map(p => p.engagement?.likes || 0), 1);
+      const maxComments = Math.max(...recentPosts.map(p => p.engagement?.comments || 0), 1);
+      const maxValue = Math.max(maxLikes, maxComments, 10); // At least 10 for scale
+      
+      // Create bars HTML (reverse to show oldest to newest left to right)
+      const barsHtml = recentPosts.reverse().map((post, index) => {
+        const likes = post.engagement?.likes || 0;
+        const comments = post.engagement?.comments || 0;
+        const date = new Date(post.created_at);
+        const dateLabel = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        
+        // Ensure minimum height for visibility
+        const likesHeight = Math.max((likes / maxValue * 100), 3);
+        const commentsHeight = Math.max((comments / maxValue * 100), 2);
+        
+        return `
+          <div class="chart-bar-group" style="min-height: 250px; justify-content: flex-end;">
+            <div 
+              class="chart-bar chart-bar-likes" 
+              style="height: ${likesHeight}%; min-height: 5px;"
+              title="Likes: ${likes}"
+            ></div>
+            <div 
+              class="chart-bar chart-bar-comments" 
+              style="height: ${commentsHeight}%; min-height: 3px;"
+              title="Comments: ${comments}"
+            ></div>
+            <div class="chart-label">${dateLabel}</div>
+          </div>
+        `;
+      }).join('');
+      
+      return `
+        <div class="section">
+          <div class="section-title">Recent Post Engagements (Last ${recentPosts.length} Posts)</div>
+          <div class="chart-container">
+            <div class="chart-bars">
+              ${barsHtml}
+            </div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-color" style="background: #ec4899;"></div>
+              <span>Likes</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: #8b5cf6;"></div>
+              <span>Comments</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderEngagementSection(instagram) {
+      return `
+        <div class="section">
+          <div class="section-title">Content Metrics</div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Posting Frequency</div>
+              <div class="info-value">${instagram.posting_frequency_recent_months || 0} posts/month</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Most Recent Post</div>
+              <div class="info-value">${instagram.most_recent_post_date || 'N/A'}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Reels Percentage</div>
+              <div class="info-value">${instagram.reels_percentage_last_12_posts || 0}%</div>
+            </div>
+            ${instagram.niche_class && instagram.niche_class.length > 0 ? `
+            <div class="info-item">
+              <div class="info-label">Niche</div>
+              <div class="info-value">${instagram.niche_class.join(', ')}</div>
+            </div>
+            ` : ''}
+            ${instagram.language_code && instagram.language_code.length > 0 ? `
+            <div class="info-item">
+              <div class="info-label">Language</div>
+              <div class="info-value">${instagram.language_code[0].toUpperCase()} (${instagram.language_confidence[0]}% confidence)</div>
+            </div>
+            ` : ''}
+            ${instagram.country ? `
+            <div class="info-item">
+              <div class="info-label">Country</div>
+              <div class="info-value">${instagram.country}</div>
+            </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderContentSection(instagram) {
+      if (!instagram.reels) return '';
+      
+      return `
+        <div class="section">
+          <div class="section-title">Reels Performance</div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Avg Views</div>
+              <div class="info-value">${formatNumber(instagram.reels.avg_view_count)}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Median Views</div>
+              <div class="info-value">${formatNumber(instagram.reels.median_view_count)}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Avg Likes</div>
+              <div class="info-value">${formatNumber(instagram.reels.avg_like_count)}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Median Likes</div>
+              <div class="info-value">${formatNumber(instagram.reels.median_like_count)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHashtagsSection(hashtags) {
+      if (!hashtags || !hashtags.length) return '';
+      
+      return `
+        <div class="section">
+          <div class="section-title">Frequently Used Hashtags</div>
+          <div class="hashtags-grid">
+            ${hashtags.map(h => `
+              <div class="hashtag">
+                #${h.name}
+                <span class="hashtag-count">${h.count}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLinksSection(links) {
+      if (!links || !links.length) return '';
+      
+      return `
+        <div class="section">
+          <div class="section-title">Links in Bio</div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            ${links.map(link => `
+              <a href="${link}" target="_blank" class="link-item">🔗 ${link}</a>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderRecentPostsSection(posts) {
+      if (!posts || !posts.length) return '';
+      
+      return `
+        <div class="section">
+          <div class="section-title">Recent Posts</div>
+          <div class="posts-grid">
+            ${posts.slice(0, 12).map(post => `
+              <div class="post-card">
+                ${post.media && post.media[0] ? `
+                  ${post.media[0].type === 'video' ? `
+                    <video class="post-media" controls>
+                      <source src="${post.media[0].url}" type="video/mp4">
+                    </video>
+                  ` : `
+                    <img src="${post.media[0].url}" alt="Post" class="post-media" />
+                  `}
+                ` : ''}
+                <div class="post-content">
+                  ${post.caption ? `<div class="post-caption">${post.caption}</div>` : ''}
+                  <div class="post-stats">
+                    <span>❤️ ${formatNumber(post.engagement?.likes || 0)}</span>
+                    <span>💬 ${formatNumber(post.engagement?.comments || 0)}</span>
+                    ${post.engagement?.view_count ? `<span>👁️ ${formatNumber(post.engagement.view_count)}</span>` : ''}
+                  </div>
+                  ${post.post_url ? `
+                    <a href="${post.post_url}" target="_blank" style="display: inline-block; margin-top: 10px; color: #1976d2; text-decoration: none; font-size: 13px;">View on Instagram →</a>
+                  ` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ========== ERROR HANDLING ==========
+    function showError(message) {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("error").textContent = message;
+      document.getElementById("error").style.display = "block";
+    }
+
+    // ========== INIT ==========
+    loadDetails();
+  </script>
+</body>
+</html>
