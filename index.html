@@ -1,442 +1,210 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Creator Discovery (UAT)</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{ --bg:#f7f8fa; --card:#fff; --ink:#0f172a; --muted:#64748b; --ring:#e2e8f0; --primary:#0f172a; }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Inter",system-ui,Segoe UI,Roboto,Arial}
-  a{color:inherit;text-decoration:none}
-  .container{max-width:1180px;margin:0 auto;padding:20px}
-  header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--ring);z-index:20}
-  header .container{padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-  nav a{padding:8px 10px;border-radius:8px;color:#334155}
-  nav a.active{color:#0f172a;font-weight:600;background:#f1f5f9}
-  .sub{color:var(--muted);font-size:12px}
-
-  .card{background:var(--card);border:1px solid var(--ring);border-radius:16px;padding:16px}
-
-  /* === Fields & inputs === */
-  .label{font-size:12px;color:var(--muted);margin-bottom:6px}
-  .field{display:flex;flex-direction:column}
-  .input{width:100%;border:1px solid var(--ring);border-radius:14px;padding:12px 12px;font:inherit;background:#fff}
-  .input:focus{outline:none;border-color:#0f172a}
-  .checkbox{display:flex;align-items:center;gap:8px;color:#334155;white-space:nowrap}
-
-  /* === Horizontal filter row on desktop, stacked on mobile === */
-  .filters{display:grid;grid-template-columns:1fr;gap:12px}
-  .filters-row{display:grid;grid-template-columns:1fr;gap:12px;align-items:end}
-  @media (min-width:1024px){
-    .filters-row{
-      grid-template-columns:2fr 1.4fr 1.4fr auto auto; /* kw | location | language | hasEmail | Search */
-    }
-  }
-
-  /* Pills (platforms) */
-  .pillbar{display:flex;flex-wrap:wrap;gap:8px}
-  .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--ring);border-radius:999px;background:#fff;color:#0f172a;cursor:pointer}
-  .pill .icon{width:16px;height:16px;display:inline-grid;place-items:center}
-  .pill.active{background:#0f172a;color:#fff;border-color:#0f172a}
-
-  .btn{border:0;background:#0f172a;color:#fff;padding:12px 16px;border-radius:12px;cursor:pointer}
-  .btn:disabled{opacity:.6;cursor:not-allowed}
-  .ghost{border:1px solid var(--ring);background:#fff;color:#0f172a}
-
-  .hint{font-size:12px;color:var(--muted)}
-
-  /* Autocomplete */
-  .auto-wrap{position:relative}
-  .auto-list{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--ring);border-radius:12px;box-shadow:0 8px 24px rgba(2,8,23,.08);max-height:280px;overflow:auto;z-index:30}
-  .auto-item{padding:10px 12px;cursor:pointer}
-  .auto-item:hover{background:#f8fafc}
-
-  /* Table */
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:12px;border-top:1px solid var(--ring);vertical-align:top}
-  thead th{background:#f8fafc;color:#475569;font-size:12px;text-transform:uppercase;letter-spacing:.02em;font-weight:600}
-  .avatar{width:40px;height:40px;border-radius:999px;object-fit:cover;border:1px solid var(--ring)}
-  .center{text-align:center}
-  .right{text-align:right}
-  .badges{display:flex;gap:6px;flex-wrap:wrap}
-  .plat{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid var(--ring);border-radius:999px}
-  .muted{color:#64748b}
-  .k{font-variant-numeric:tabular-nums}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creator Discovery | Aruba Tourism</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <style>
+    body { background-color: #f9fafb; font-family: 'Inter', sans-serif; }
+    .input { border: 1px solid #e5e7eb; border-radius: 12px; padding: 10px 12px; font-size: 14px; width: 100%; }
+    .label { font-size: 12px; color: #6b7280; margin-bottom: 6px; display:block; }
+    .field { display:flex; flex-direction:column; }
+    .filters-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .filters-actions { display:flex; justify-content: space-between; align-items:center; margin-top:10px; }
+    .btn { border-radius: 12px; padding: 8px 16px; font-size: 14px; font-weight:500; }
+    .btn-primary { background:#0f172a; color:#fff; }
+    .btn-outline { border:1px solid #e5e7eb; background:#fff; color:#111827; }
+    .btn-outline:hover { background:#f9fafb; }
+    .advanced.hidden { display:none; }
+    .advanced { margin-top: 16px; border-top:1px solid #e5e7eb; padding-top:16px; display:grid; gap:14px; }
+    .group { background:#f8fafc; border:1px solid #e5e7eb; border-radius:12px; padding:12px; }
+    .group-title { font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600; margin-bottom:8px; }
+    .group-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    @media (max-width:1024px){ .filters-row { grid-template-columns:1fr 1fr; } .group-grid { grid-template-columns:1fr 1fr; } }
+  </style>
 </head>
-<body>
-<header>
-  <div class="container">
-    <div>
-      <div style="font-weight:600">Creator Discovery</div>
-      <div class="sub">Find the perfect influencers for your campaign</div>
-    </div>
-    <nav>
-      <a class="active" href="#">Find Influencers</a>
-      <a href="#">Manage Influencers</a>
-      <a href="#">Campaigns</a>
-    </nav>
-  </div>
-</header>
+<body class="min-h-screen">
 
-<main class="container">
-  <section class="card" aria-label="filters">
-    <div class="field">
-      <div class="label">Platform (single select)</div>
-      <div class="pillbar" id="platformBar"></div>
+  <header class="bg-white shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-lg font-semibold text-gray-800">Creator Discovery</h1>
+      <nav class="space-x-4 text-sm text-gray-600">
+        <a class="font-semibold text-gray-900" href="#">Find Influencers</a>
+        <a href="#">Manage Influencers</a>
+        <a href="#">Campaigns</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- Horizontal on desktop, stacked on mobile -->
-    <div class="filters" style="margin-top:10px">
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+
+      <!-- Platform selector -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        <button class="px-4 py-2 rounded-full bg-gray-900 text-white text-sm" id="btnIG">Instagram</button>
+        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm" id="btnTT">TikTok</button>
+        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm" id="btnYT">YouTube</button>
+        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm" id="btnTW">Twitch</button>
+        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm" id="btnX">X</button>
+      </div>
+
+      <!-- Core filters -->
       <div class="filters-row">
         <div class="field">
-          <div class="label">Topic / Keywords</div>
-          <input id="kw" class="input" placeholder="e.g. gastronomíe, #foodie, chef" />
+          <label class="label">Topic / Keywords</label>
+          <input id="kw" class="input" placeholder="e.g. gastronomía, #foodie, chef">
         </div>
-
         <div class="field">
-          <div class="label">Location</div>
-          <div class="auto-wrap" id="locBox">
-            <input id="loc" class="input" placeholder="e.g. Argentina, United States" autocomplete="off" />
-            <div id="locList" class="auto-list" hidden></div>
-          </div>
+          <label class="label">Location</label>
+          <input id="location" class="input" placeholder="e.g. Argentina, United States">
         </div>
-
         <div class="field">
-          <div class="label">Audience language</div>
-          <div class="auto-wrap" id="langBox">
-            <input id="lang" class="input" placeholder="e.g. English, Spanish" autocomplete="off" />
-            <div id="langList" class="auto-list" hidden></div>
-          </div>
-          <input type="hidden" id="langCode" />
+          <label class="label">Audience language</label>
+          <input id="language" class="input" placeholder="e.g. English, Spanish">
         </div>
-
-    <div class="field">
-      <label class="label">Gender</label>
-      <select id="gender" class="input">
-        <option value="">Any</option>
-        <option value="female">Female</option>
-        <option value="male">Male</option>
-      </select>
-    </div>
-  </div>
-        <div class="field" style="align-self:center">
-          <label class="checkbox" style="margin-top:8px">
-            <input id="hasEmail" type="checkbox" /> <span>Has email</span>
-          </label>
-        </div>
-
         <div class="field">
-          <button id="searchBtn" class="btn" style="width:20%">Search</button>
+          <label class="label">Gender</label>
+          <select id="gender" class="input">
+            <option value="">Any</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section class="card" style="margin-top:16px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div class="hint" id="resultHint">Run a search to see creators.</div>
-      <div><button class="ghost btn" style="padding:8px 12px;font-size:13px" id="exportBtn">Export Selected</button></div>
-    </div>
+      <!-- Email + Advanced toggle -->
+      <div class="filters-actions">
+        <label class="flex items-center gap-2 text-sm text-gray-700 mt-3">
+          <input id="hasEmail" type="checkbox"> Has email
+        </label>
+        <button id="btnAdvanced" class="btn btn-outline mt-3">Advanced filters ▾</button>
+      </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th style="width:34px"></th>
-            <th>Creator</th>
-            <th style="width:180px">Platforms</th>
-            <th class="center" style="width:120px">Followers</th>
-            <th class="center" style="width:110px">ER%</th>
-            <th class="right" style="width:120px">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="results-body">
-          <tr><td colspan="6" class="muted" style="padding:16px">Run a search to see creators.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-</main>
-
-<!-- icons -->
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="ig" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5m5 5a5 5 0 1 0 0 10a5 5 0 0 0 0-10m0 2.5A2.5 2.5 0 1 1 9.5 12A2.5 2.5 0 0 1 12 9.5M18 5.5a1 1 0 1 0 0 2a1 1 0 0 0 0-2"/></symbol>
-  <symbol id="tt" viewBox="0 0 256 256"><path fill="currentColor" d="M168.9 32c8.4 12.9 20.7 23.3 36.5 28.9c4.3 1.5 8.9 2.6 13.6 3.1v38.1c-16.7-.6-32.7-5.4-46.4-13.5v63.6c0 45.7-37.2 82.9-82.9 82.9S6.8 198 6.8 152.3c0-41.4 30.7-76 70.6-82.1v40.4c-16 5.3-27.5 20.3-27.5 38.1c0 22 17.8 39.7 39.7 39.7s39.7-17.8 39.7-39.7V32h39.9z"/></symbol>
-  <symbol id="yt" viewBox="0 0 24 24"><path fill="currentColor" d="M23 7s-.2-1.6-.8-2.3c-.8-.8-1.7-.8-2.1-.9C17.7 3.5 12 3.5 12 3.5h0s-5.7 0-8.1.3c-.4 0-1.3.1-2.1.9C1.2 5.4 1 7 1 7S.8 8.8.8 10.6v1.8C.8 14.2 1 16 1 16s.2 1.6.8 2.3c.8.8 1.9.8 2.4.9c1.7.2 7.8.3 7.8.3s5.7 0 8.1-.3c.4 0 1.3-.1 2.1-.9c.6-.7.8-2.3.8-2.3s.2-1.8.2-3.6v-1.8C23.2 8.8 23 7 23 7zM9.8 14.3V8.7l6 2.8z"/></symbol>
-  <symbol id="tw" viewBox="0 0 24 24"><path fill="currentColor" d="M20.7 7.2c.9-.6 1.6-1.4 2.2-2.3c-.8.4-1.7.7-2.6.8C19.6 5 18.5 4.5 17.3 4.5c-2.3 0-4.2 1.9-4.2 4.2c0 .3 0 .6.1.8c-3.5-.2-6.7-1.9-8.8-4.6c-.4.7-.6 1.5-.6 2.3c0 1.5.8 2.9 2.1 3.6c-.7 0-1.3-.2-1.9-.5v.1c0 2.1 1.5 3.9 3.5 4.3c-.4.1-.8.2-1.2.2c-.3 0-.6 0-.8-.1c.6 1.8 2.3 3.2 4.4 3.2c-1.6 1.3-3.6 2.1-5.8 2.1c-.4 0-.8 0-1.2-.1c2.1 1.3 4.6 2.1 7.3 2.1c8.7 0 13.4-7.2 13.4-13.4v-.6c.9-.6 1.6-1.3 2.2-2.2c-.8.4-1.6.6-2.5.7z"/></symbol>
-  <symbol id="twch" viewBox="0 0 24 24"><path fill="currentColor" d="M4 3L2 6v13h5v2h2l2-2h3l4-4V3H4m15 10l-3 3h-4l-2 2v-2H5V5h14v8M9 6H7v6h2V6m8 0h-2v4h2V6z"/></symbol>
-</svg>
-
-<script>
-  const WEBHOOK_URL = "https://hook.eu2.make.com/sjswwb2atmu5ja8cvxmj0r38uw9bod5v";
-
-  const PLATFORM_OPTIONS = [
-    { key: "instagram", label: "Instagram", icon: "#ig" },
-    { key: "tiktok",    label: "TikTok",    icon: "#tt" },
-    { key: "youtube",   label: "YouTube",   icon: "#yt" },
-    { key: "twitch",    label: "Twitch",    icon: "#twch" },
-    { key: "twitter",   label: "X",         icon: "#tw" }
-  ];
-
-  const LOC_URL   = "./data/locations.json";
-  const LANG_URL  = "./data/languages.json";
-  const CACHE_LOC = "locations_v1";
-  const CACHE_LANG= "languages_v2";
-
-  let selectedPlatform = "instagram";
-  let ALL_LOCATIONS = [];
-  let ALL_LANGS = [];
-
-  const $  = (s, r=document) => r.querySelector(s);
-  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
-  const kFmt = n => Intl.NumberFormat("en", {notation:"compact", maximumFractionDigits:1}).format(n||0);
-
-  function normaliseArrayish(json){
-    if (!Array.isArray(json)) return [];
-    if (json.length && typeof json[0] === "string") {
-      return json.map(s => ({ label: s, value: s }));
-    }
-    return json.map(x => ({ label: x.label ?? x.value ?? "", value: x.value ?? x.label ?? "" }))
-               .filter(x => x.label && x.value);
-  }
-
-  async function loadCached(url, key, normaliseFn){
-    try{
-      const cached = localStorage.getItem(key);
-      if (cached) return JSON.parse(cached);
-      const res = await fetch(url, {cache:"no-store"});
-      if (!res.ok) throw new Error("Fetch failed");
-      const json = await res.json();
-      const data = normaliseFn ? normaliseFn(json) : json;
-      localStorage.setItem(key, JSON.stringify(data));
-      return data;
-    }catch(e){
-      console.warn("Failed to load", url, e);
-      return [];
-    }
-  }
-
-  async function initLocationDropdown(){
-    ALL_LOCATIONS = await loadCached(LOC_URL, CACHE_LOC, normaliseArrayish);
-    const input = $("#loc"), wrap  = $("#locBox"), list  = $("#locList");
-
-    const open = () => {
-      list.innerHTML = "";
-      const q = (input.value || "").toLowerCase();
-      ALL_LOCATIONS.filter(o => !q || o.label.toLowerCase().includes(q)).slice(0, 100).forEach(o => {
-        const div = document.createElement("div");
-        div.className = "auto-item"; div.textContent = o.label;
-        div.addEventListener("mousedown", e => { e.preventDefault(); input.value = o.label; list.hidden = true; });
-        list.appendChild(div);
-      });
-      list.hidden = false;
-    };
-    const close = () => { list.hidden = true; };
-
-    input.addEventListener("input", open);
-    input.addEventListener("focus", open);
-    input.addEventListener("keydown", (e)=>{ if(e.key==="Escape") close(); });
-    document.addEventListener("click", (e)=>{ if(!wrap.contains(e.target)) close(); });
-  }
-
-  function normaliseLanguages(arr){
-    if (!Array.isArray(arr)) return [];
-    const out = arr.map(x=>{
-      if (typeof x === "string") {
-        const code = x.trim();
-        return { code, label: code.toUpperCase() };
-      }
-      const code =
-        x.code || x.value || x.key || x.iso || x.iso_639_1 || x.iso639_1 || x.lang || "";
-      const label =
-        x.label || x.name || x.englishName || x.english || x.nativeName || x.title || x.value || code;
-      return code ? { code: String(code).trim(), label: String(label).trim() } : null;
-    }).filter(Boolean);
-
-    const seen = new Set();
-    const uniq = out.filter(({code}) => (code && !seen.has(code) && seen.add(code)));
-    uniq.sort((a,b)=> a.label.localeCompare(b.label));
-    return uniq;
-  }
-
-  async function initLanguageDropdown(){
-    ALL_LANGS = await loadCached(LANG_URL, CACHE_LANG, normaliseLanguages);
-    const input = document.getElementById("lang");
-    const code  = document.getElementById("langCode");
-    const wrap  = document.getElementById("langBox");
-    const list  = document.getElementById("langList");
-
-    const render = (q = "") => {
-      const query = q.trim().toLowerCase();
-      list.innerHTML = "";
-      ALL_LANGS
-        .filter(({label, code}) =>
-          !query || label.toLowerCase().includes(query) || (code && code.toLowerCase().includes(query))
-        )
-        .slice(0, 150)
-        .forEach(({code: c, label}) => {
-          const div = document.createElement("div");
-          div.className = "auto-item";
-          div.textContent = `${label}${c ? ` (${c.toUpperCase()})` : ""}`;
-          div.addEventListener("mousedown", (e) => {
-            e.preventDefault();
-            input.value = label;
-            code.value = c || "";
-            list.hidden = true;
-          });
-          list.appendChild(div);
-        });
-
-      list.hidden = false;
-    };
-
-    const close = () => { list.hidden = true; };
-
-    input.addEventListener("input", () => render(input.value));
-    input.addEventListener("focus", () => render(input.value));
-    input.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
-    document.addEventListener("click", (e) => { if (!wrap.contains(e.target)) close(); });
-  }
-
-  function renderPlatforms(){
-    const bar = $("#platformBar"); bar.innerHTML = "";
-    PLATFORM_OPTIONS.forEach(p => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "pill" + (p.key === selectedPlatform ? " active" : "");
-      b.setAttribute("data-key", p.key);
-      b.innerHTML = `<span class="icon"><svg width="16" height="16"><use href="${p.icon}"/></svg></span>${p.label}`;
-      b.addEventListener("click", () => {
-        selectedPlatform = p.key;
-        $$(".pill", bar).forEach(el => el.classList.remove("active"));
-        b.classList.add("active");
-      });
-      bar.appendChild(b);
-    });
-  }
-
-  function mapRow(row){
-    const user_id = row?.user_id || row?.id;
-    const prof = row?.profile || row;
-    const username = prof?.username || row?.username || row?.handle || "";
-    const handle = username ? "@"+username.replace(/^@/, "") : "";
-    const name = prof?.full_name || row?.full_name || row?.name || username || "Unknown";
-    const avatar = prof?.picture || prof?.profile_pic_url || row?.avatar || "";
-    const followers = Number(prof?.followers ?? prof?.followers_count ?? row?.followers ?? 0);
-    let er = Number(prof?.engagement_percent ?? prof?.engagement_rate ?? row?.engagement_percent ?? 0);
-    if (er > 0 && er <= 1) er *= 100;
-    const engagementPercentText = er.toFixed(2) + "%";
-    const platforms = prof?.platforms || row?.platforms || (row?.platform ? [row.platform] : []);
-    const topics = prof?.hashtags || [];
-    return { id:user_id||username||Math.random().toString(36).slice(2), name, handle, avatar, followers, engagementPercentText, platforms, topics, username };
-  }
-
-  function platBadge(which){
-    const map = { instagram:"#ig", tiktok:"#tt", youtube:"#yt", twitch:"#twch", twitter:"#tw", x:"#tw" };
-    const href = map[which] || "#ig";
-    const s = document.createElementNS("http://www.w3.org/2000/svg","svg");
-    s.setAttribute("width","14"); s.setAttribute("height","14");
-    const u = document.createElementNS("http://www.w3.org/2000/svg","use");
-    u.setAttributeNS("http://www.w3.org/1999/xlink","href", href);
-    s.appendChild(u);
-    const span = document.createElement("span");
-    span.className = "plat"; span.appendChild(s); span.title = which;
-    return span;
-  }
-
-  function renderRows(rows, {replace=false} = {}){
-    const tbody = $("#results-body");
-    if (replace) tbody.innerHTML = "";
-
-    if (!rows.length && replace) {
-      tbody.innerHTML = `<tr><td colspan="6" class="muted" style="padding:16px">No creators found.</td></tr>`;
-      return;
-    }
-
-    rows.forEach(vm => {
-      const tr = document.createElement("tr");
-      const platforms = vm.platforms || [];
-      tr.innerHTML = `
-        <td><input type="checkbox"/></td>
-        <td>
-          <div style="display:flex;align-items:start;gap:10px">
-            ${vm.avatar ? `<img class="avatar" src="${vm.avatar}" alt="">` : ""}
-            <div>
-              <div style="font-weight:600">${vm.name}</div>
-              <div class="muted">@${vm.username || vm.handle.replace(/^@/,'')}</div>
-            </div>
+      <!-- Advanced filters -->
+      <div id="advancedPanel" class="advanced hidden">
+        <!-- Audience metrics -->
+        <div class="group">
+          <div class="group-title">Audience metrics</div>
+          <div class="group-grid">
+            <div class="field"><label class="label">Followers (min)</label><input id="followersMin" class="input" placeholder="Min"></div>
+            <div class="field"><label class="label">Followers (max)</label><input id="followersMax" class="input" placeholder="Max"></div>
+            <div class="field"><label class="label">Engagement % (min)</label><input id="erMin" class="input" placeholder="Min"></div>
+            <div class="field"><label class="label">Engagement % (max)</label><input id="erMax" class="input" placeholder="Max"></div>
           </div>
-        </td>
-        <td class="center"><div class="badges"></div></td>
-        <td class="center k">${kFmt(vm.followers)}</td>
-        <td class="center k">${vm.engagementPercentText}</td>
-        <td class="right"><button class="ghost btn" style="padding:8px 10px;font-size:12px">View Details</button></td>
-      `;
-      $("#results-body").appendChild(tr);
-      const host = $(".badges", tr);
-      const seen = new Set();
-      if (platforms.includes(selectedPlatform)) { host.appendChild(platBadge(selectedPlatform)); seen.add(selectedPlatform); }
-      platforms.forEach(p => { if (!seen.has(p)) host.appendChild(platBadge(p)); });
+        </div>
+
+        <!-- Activity & recency -->
+        <div class="group">
+          <div class="group-title">Activity & recency</div>
+          <div class="group-grid">
+            <div class="field"><label class="label">Last Post</label>
+              <select id="lastPost" class="input">
+                <option value="7d">Last 7 days</option>
+                <option value="14d">Last 14 days</option>
+                <option value="30d" selected>Last 30 days</option>
+                <option value="60d">Last 60 days</option>
+                <option value="90d">Last 90 days</option>
+              </select>
+            </div>
+            <div class="field"><label class="label">Posting Frequency (posts/mo)</label><input id="postingFrequency" class="input" placeholder="e.g. 4"></div>
+            <div class="field"><label class="label">Growth %</label><input id="growthPct" class="input" placeholder="%"></div>
+            <div class="field"><label class="label">Months</label><input id="growthMonths" class="input" placeholder="3"></div>
+          </div>
+        </div>
+
+        <!-- Creator quality -->
+        <div class="group">
+          <div class="group-title">Creator quality</div>
+          <div class="flex flex-wrap gap-4">
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="verified" type="checkbox"> Verified</label>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="excludePrivate" type="checkbox" checked> Exclude Private</label>
+          </div>
+        </div>
+
+        <!-- Brand fit -->
+        <div class="group">
+          <div class="group-title">Brand fit</div>
+          <div class="group-grid">
+            <div class="field"><label class="label">Keywords in Bio</label><input id="bioKeywords" class="input" placeholder="e.g. Aruba, Caribbean, travel deals"></div>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="brandDeals" type="checkbox"> Has done brand deals</label>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="affiliateLinks" type="checkbox"> Promotes affiliate links</label>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="linkInBio" type="checkbox"> Has link in bio</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search button -->
+      <div class="flex justify-end mt-5">
+        <button id="btnSearch" class="btn btn-primary">Search</button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Platform select (simple visual toggle)
+    const buttons = ['btnIG','btnTT','btnYT','btnTW','btnX'];
+    let platform = 'instagram';
+    buttons.forEach(id => {
+      document.getElementById(id).addEventListener('click', () => {
+        buttons.forEach(b => document.getElementById(b).classList.remove('bg-gray-900','text-white'));
+        document.getElementById(id).classList.add('bg-gray-900','text-white');
+        platform = id === 'btnTT' ? 'tiktok' :
+                   id === 'btnYT' ? 'youtube' :
+                   id === 'btnTW' ? 'twitch' :
+                   id === 'btnX' ? 'twitter' : 'instagram';
+      });
     });
-  }
 
-  function currentFilters(){
-    return {
-      kw: $("#kw").value.trim(),
-      loc: $("#loc").value.trim(),
-      langCode: $("#langCode").value.trim(),
-      emailOnly: $("#hasEmail").checked
-    };
-  }
+    // Toggle Advanced Filters
+    document.getElementById('btnAdvanced').addEventListener('click', () => {
+      const panel = document.getElementById('advancedPanel');
+      panel.classList.toggle('hidden');
+      document.getElementById('btnAdvanced').textContent =
+        panel.classList.contains('hidden') ? 'Advanced filters ▾' : 'Advanced filters ▴';
+    });
 
-  function buildPayload(page){
-    const { kw, loc, langCode, emailOnly } = currentFilters();
-    const payload = {
-      platform: selectedPlatform,
-      paging: { limit: 50, page: page || 1 },
-      sort: { sort_by: "relevancy", sort_order: "desc" },
-      filters: {
-        ai_search: kw || undefined,
-        location: loc ? [loc] : undefined,
-        languages: langCode ? [langCode] : undefined
-      },
-      only_with_emails: emailOnly || undefined
-    };
-    Object.keys(payload.filters).forEach(k => payload.filters[k] === undefined && delete payload.filters[k]);
-    if (!Object.keys(payload.filters).length) delete payload.filters;
-    return payload;
-  }
-
-  async function doSearch(){
-    const btn = $("#searchBtn"); btn.disabled = true; btn.textContent = "Searching…";
-    $("#resultHint").textContent = "Searching…";
-
-    try{
-      const payload = buildPayload(1);
-      const res = await fetch(WEBHOOK_URL, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
-      const data = await res.json().catch(()=> ({}));
-      const rows = Array.isArray(data.accounts) ? data.accounts : [];
-      renderRows(rows.map(mapRow), {replace:true});
-      $("#resultHint").textContent = `${rows.length} creators loaded`;
-    }catch(e){
-      console.error(e);
-      $("#results-body").innerHTML = `<tr><td colspan="6" class="muted" style="padding:16px">Request failed. Check webhook URL & payload mapping.</td></tr>`;
-      $("#resultHint").textContent = "Search failed";
-    }finally{
-      btn.disabled = false; btn.textContent = "Search";
+    function n(v){ const num = Number(v); return Number.isFinite(num) ? num : null; }
+    function any(v){ return v !== undefined && v !== null && String(v).trim() !== ''; }
+    function pack(obj){
+      const out={};
+      Object.entries(obj).forEach(([k,v])=>{
+        if(v==null) return;
+        if(Array.isArray(v)&&!v.length) return;
+        if(typeof v==='object'&&!Array.isArray(v)){
+          const keep=Object.fromEntries(Object.entries(v).filter(([,vv])=> vv!==null&&vv!==undefined&&vv!==''));
+          if(Object.keys(keep).length) out[k]=keep;
+        } else if(v!=='') out[k]=v;
+      });
+      return out;
     }
-  }
 
-  (async function init(){
-    renderPlatforms();
-    await Promise.all([initLocationDropdown(), initLanguageDropdown()]);
-    $("#searchBtn").addEventListener("click", doSearch);
-  })();
-</script>
+    document.getElementById('btnSearch').addEventListener('click', () => {
+      const filters = pack({
+        ai_search: document.getElementById('kw').value,
+        location: any(document.getElementById('location').value)?[document.getElementById('location').value]:undefined,
+        profile_language: any(document.getElementById('language').value)?[document.getElementById('language').value]:undefined,
+        gender: document.getElementById('gender').value||undefined,
+        number_of_followers:{min:n(document.getElementById('followersMin')?.value),max:n(document.getElementById('followersMax')?.value)},
+        engagement_percent:{min:n(document.getElementById('erMin')?.value),max:n(document.getElementById('erMax')?.value)},
+        posting_frequency:n(document.getElementById('postingFrequency')?.value),
+        follower_growth:{growth_percentage:n(document.getElementById('growthPct')?.value),time_range_months:n(document.getElementById('growthMonths')?.value)},
+        is_verified:document.getElementById('verified')?.checked||undefined,
+        exclude_private_profile:document.getElementById('excludePrivate')?.checked||undefined,
+        has_done_brand_deals:document.getElementById('brandDeals')?.checked||undefined,
+        promotes_affiliate_links:document.getElementById('affiliateLinks')?.checked||undefined,
+        has_link_in_bio:document.getElementById('linkInBio')?.checked||undefined
+      });
+
+      const onlyWithEmails=document.getElementById('hasEmail').checked;
+      const body={platform,paging:{limit:50,page:1},sort:{sort_by:'relevancy',sort_order:'desc'},filters,
+        last_post:document.getElementById('lastPost')?.value,only_with_emails:onlyWithEmails};
+      console.log('Payload:',body);
+
+      // 👉 Replace this console.log with your Make webhook call:
+      // window.runDiscovery(body);
+    });
+  </script>
 </body>
 </html>
