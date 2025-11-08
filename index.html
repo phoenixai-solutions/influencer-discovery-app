@@ -11,7 +11,7 @@
     .label { font-size: 12px; color: #6b7280; margin-bottom: 6px; display:block; }
     .field { display:flex; flex-direction:column; }
     .filters-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .filters-actions { display:flex; justify-content: space-between; align-items:center; margin-top:10px; }
+    .filters-actions { display:flex; justify-content: flex-start; align-items:center; margin-top:10px; }
     .btn { border-radius: 12px; padding: 8px 16px; font-size: 14px; font-weight:500; }
     .btn-primary { background:#0f172a; color:#fff; }
     .btn-outline { border:1px solid #e5e7eb; background:#fff; color:#111827; }
@@ -73,11 +73,8 @@
         </div>
       </div>
 
-      <!-- Email + Advanced toggle -->
+      <!-- Advanced Filters toggle (left aligned) -->
       <div class="filters-actions">
-        <label class="flex items-center gap-2 text-sm text-gray-700 mt-3">
-          <input id="hasEmail" type="checkbox"> Has email
-        </label>
         <button id="btnAdvanced" class="btn btn-outline mt-3">Advanced filters ▾</button>
       </div>
 
@@ -119,6 +116,7 @@
           <div class="flex flex-wrap gap-4">
             <label class="flex items-center gap-2 text-sm text-gray-700"><input id="verified" type="checkbox"> Verified</label>
             <label class="flex items-center gap-2 text-sm text-gray-700"><input id="excludePrivate" type="checkbox" checked> Exclude Private</label>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="hasEmail" type="checkbox"> Has email</label>
           </div>
         </div>
 
@@ -143,7 +141,7 @@
   </main>
 
   <script>
-    // Platform select (simple visual toggle)
+    // Platform select
     const buttons = ['btnIG','btnTT','btnYT','btnTW','btnX'];
     let platform = 'instagram';
     buttons.forEach(id => {
@@ -208,3 +206,4 @@
   </script>
 </body>
 </html>
+
