@@ -76,7 +76,7 @@
         <div class="field">
           <label class="label">Audience language</label>
           <div class="auto-wrap" id="langBox">
-            <input id="language" class="input" placeholder="e.g. English, Spanish" autocomplete="off" />
+            <input id="lang" class="input" placeholder="e.g. English, Spanish" autocomplete="off" />
             <div id="langList" class="auto-list hidden"></div>
           </div>
         </div>
@@ -200,7 +200,7 @@
       });
     }
     loadList("location","/data/locations.json");
-    loadList("language","/data/languages.json");
+    loadList("lang","/data/languages.json");
 
     // Search payload
     function n(v){const num=Number(v);return Number.isFinite(num)?num:null;}
