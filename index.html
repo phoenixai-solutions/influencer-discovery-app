@@ -180,33 +180,49 @@
     // Autocomplete (Location + Language)
 async function loadList(id, url) {
   const input = document.getElementById(id);
-  const list = document.getElementById(id === "location" ? "locList" : id + "List");
-  const data = await fetch(url).then(r => r.json());
+  const list = document.getElementById(id + "List");
 
-  input.addEventListener("input", () => {
-    const v = input.value.toLowerCase();
-    list.innerHTML = "";
-    if (!v) { list.classList.add("hidden"); return; }
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Network response was not ok");
+    const data = await response.json();
 
-    // Adjust to handle objects or strings
-    const filtered = data
-      .map(item => typeof item === "string" ? item : item.label)
-      .filter(label => label.toLowerCase().includes(v))
-      .slice(0, 20);
+    console.log(`Loaded ${id} data:`, data); // Debug check
 
-    filtered.forEach(label => {
-      const div = document.createElement("div");
-      div.textContent = label;
-      div.onclick = () => { input.value = label; list.classList.add("hidden"); };
-      list.appendChild(div);
+    input.addEventListener("input", () => {
+      const v = input.value.toLowerCase();
+      list.innerHTML = "";
+      if (!v) { list.classList.add("hidden"); return; }
+
+      // Handle both strings and objects
+      const filtered = data
+        .map(item => typeof item === "string" ? item : item.label)
+        .filter(label => label.toLowerCase().includes(v))
+        .slice(0, 20);
+
+      if (!filtered.length) { list.classList.add("hidden"); return; }
+
+      filtered.forEach(label => {
+        const div = document.createElement("div");
+        div.textContent = label;
+        div.onclick = () => {
+          input.value = label;
+          list.classList.add("hidden");
+        };
+        list.appendChild(div);
+      });
+
+      list.classList.remove("hidden");
     });
 
-    list.classList.remove("hidden");
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!list.contains(e.target) && e.target !== input) { list.classList.add("hidden"); }
-  });
+    document.addEventListener("click", (e) => {
+      if (!list.contains(e.target) && e.target !== input) {
+        list.classList.add("hidden");
+      }
+    });
+  } catch (error) {
+    console.error(`Error loading ${url}:`, error);
+  }
 }
 
     loadList("location","/data/locations.json");
