@@ -7,22 +7,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#f7f8fa; --card:#fff; --ink:#0f172a; --muted:#64748b; --ring:#e2e8f0; --primary:#0f172a;
-  }
+  :root{ --bg:#f7f8fa; --card:#fff; --ink:#0f172a; --muted:#64748b; --ring:#e2e8f0; --primary:#0f172a; }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Inter",system-ui,Segoe UI,Roboto,Arial}
   a{color:inherit;text-decoration:none}
   .container{max-width:1180px;margin:0 auto;padding:20px}
-  header{position:sticky;top:0;background:#fffddf00;background:#fff;backdrop-filter:saturate(140%) blur(4px);border-bottom:1px solid var(--ring);z-index:20}
+  header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--ring);z-index:20}
   header .container{padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
   nav a{padding:8px 10px;border-radius:8px;color:#334155}
   nav a.active{color:#0f172a;font-weight:600;background:#f1f5f9}
-  h1{margin:0 0 2px;font-size:18px}
   .sub{color:var(--muted);font-size:12px}
 
-  /* search card */
   .card{background:var(--card);border:1px solid var(--ring);border-radius:16px;padding:16px}
   .filters{display:grid;grid-template-columns:1fr;gap:12px}
   .row{display:grid;grid-template-columns:1fr;gap:12px}
@@ -40,15 +36,11 @@
   .btn:disabled{opacity:.6;cursor:not-allowed}
   .ghost{border:1px solid var(--ring);background:#fff;color:#0f172a}
   .hint{font-size:12px;color:var(--muted)}
-
-  /* autocomplete dropdowns */
   .auto-wrap{position:relative}
   .auto-list{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--ring);border-radius:12px;box-shadow:0 8px 24px rgba(2,8,23,.08);max-height:280px;overflow:auto;z-index:30}
   .auto-item{padding:10px 12px;cursor:pointer}
   .auto-item:hover{background:#f8fafc}
-  .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;background:#f1f5f9;color:#0f172a;font-size:12px}
 
-  /* table */
   table{width:100%;border-collapse:collapse}
   th,td{padding:12px;border-top:1px solid var(--ring);vertical-align:top}
   thead th{background:#f8fafc;color:#475569;font-size:12px;text-transform:uppercase;letter-spacing:.02em;font-weight:600}
@@ -59,8 +51,6 @@
   .plat{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid var(--ring);border-radius:999px}
   .muted{color:#64748b}
   .k{font-variant-numeric:tabular-nums}
-
-  /* responsive */
   @media (min-width:820px){
     .filters{grid-template-columns:1fr}
     .row{grid-template-columns:1fr}
@@ -84,13 +74,10 @@
 </header>
 
 <main class="container">
-  <!-- Search card -->
   <section class="card" aria-label="filters">
     <div class="field">
       <div class="label">Platform (single select)</div>
-      <div class="pillbar" id="platformBar">
-        <!-- Pills are rendered by JS to enforce single-select -->
-      </div>
+      <div class="pillbar" id="platformBar"></div>
     </div>
 
     <div class="filters" style="margin-top:10px">
@@ -127,14 +114,12 @@
     </div>
   </section>
 
-  <!-- Results -->
   <section class="card" style="margin-top:16px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
       <div class="hint" id="resultHint">Run a search to see creators.</div>
-      <div>
-        <button class="ghost btn" style="padding:8px 12px;font-size:13px" id="exportBtn">Export Selected</button>
-      </div>
+      <div><button class="ghost btn" style="padding:8px 12px;font-size:13px" id="exportBtn">Export Selected</button></div>
     </div>
+
     <div class="table-wrap">
       <table>
         <thead>
@@ -155,7 +140,7 @@
   </section>
 </main>
 
-<!-- Icons (minimal inline) -->
+<!-- icons -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="ig" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5m5 5a5 5 0 1 0 0 10a5 5 0 0 0 0-10m0 2.5A2.5 2.5 0 1 1 9.5 12A2.5 2.5 0 0 1 12 9.5M18 5.5a1 1 0 1 0 0 2a1 1 0 0 0 0-2"/></symbol>
   <symbol id="tt" viewBox="0 0 256 256"><path fill="currentColor" d="M168.9 32c8.4 12.9 20.7 23.3 36.5 28.9c4.3 1.5 8.9 2.6 13.6 3.1v38.1c-16.7-.6-32.7-5.4-46.4-13.5v63.6c0 45.7-37.2 82.9-82.9 82.9S6.8 198 6.8 152.3c0-41.4 30.7-76 70.6-82.1v40.4c-16 5.3-27.5 20.3-27.5 38.1c0 22 17.8 39.7 39.7 39.7s39.7-17.8 39.7-39.7V32h39.9z"/></symbol>
@@ -165,12 +150,8 @@
 </svg>
 
 <script>
-  /***********************
-   * CONFIG
-   ***********************/
-  const WEBHOOK_URL = "https://hook.eu2.make.com/sjswwb2atmu5ja8cvxmj0r38uw9bod5v"; // << update
+  const WEBHOOK_URL = "https://hook.eu2.make.com/sjswwb2atmu5ja8cvxmj0r38uw9bod5v";
 
-  // platform options (single select)
   const PLATFORM_OPTIONS = [
     { key: "instagram", label: "Instagram", icon: "#ig" },
     { key: "tiktok",    label: "TikTok",    icon: "#tt" },
@@ -179,25 +160,20 @@
     { key: "twitter",   label: "X",         icon: "#tw" }
   ];
 
-  // cache keys for dropdown data
-  const LOC_URL = "./data/locations.json";
-  const LANG_URL = "./data/languages.json";
+  const LOC_URL   = "./data/locations.json";
+  const LANG_URL  = "./data/languages.json";
   const CACHE_LOC = "locations_v1";
-  const CACHE_LANG = "languages_v1";
+  const CACHE_LANG= "languages_v2"; // bumped to force refresh
 
-  let selectedPlatform = "instagram";   // default
+  let selectedPlatform = "instagram";
   let ALL_LOCATIONS = [];
   let ALL_LANGS = [];
 
-  /***********************
-   * UTIL
-   ***********************/
   const $  = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
   const kFmt = n => Intl.NumberFormat("en", {notation:"compact", maximumFractionDigits:1}).format(n||0);
 
   function normaliseArrayish(json){
-    // Accept ["Argentina", ...] or [{label:"Argentina", value:"Argentina"}]
     if (!Array.isArray(json)) return [];
     if (json.length && typeof json[0] === "string") {
       return json.map(s => ({ label: s, value: s }));
@@ -222,33 +198,22 @@
     }
   }
 
-  /***********************
-   * DROPDOWNS (Location & Language)
-   ***********************/
   async function initLocationDropdown(){
     ALL_LOCATIONS = await loadCached(LOC_URL, CACHE_LOC, normaliseArrayish);
-
-    const input = $("#loc");
-    const wrap  = $("#locBox");
-    const list  = $("#locList");
+    const input = $("#loc"), wrap  = $("#locBox"), list  = $("#locList");
 
     const open = () => {
       list.innerHTML = "";
       const q = (input.value || "").toLowerCase();
-      ALL_LOCATIONS
-        .filter(o => !q || o.label.toLowerCase().includes(q))
-        .slice(0, 100)
-        .forEach(o => {
-          const div = document.createElement("div");
-          div.className = "auto-item";
-          div.textContent = o.label;
-          div.addEventListener("mousedown", e => { e.preventDefault(); choose(o.value, o.label); });
-          list.appendChild(div);
-        });
+      ALL_LOCATIONS.filter(o => !q || o.label.toLowerCase().includes(q)).slice(0, 100).forEach(o => {
+        const div = document.createElement("div");
+        div.className = "auto-item"; div.textContent = o.label;
+        div.addEventListener("mousedown", e => { e.preventDefault(); input.value = o.label; list.hidden = true; });
+        list.appendChild(div);
+      });
       list.hidden = false;
     };
     const close = () => { list.hidden = true; };
-    const choose = (value, label) => { input.value = label; close(); };
 
     input.addEventListener("input", open);
     input.addEventListener("focus", open);
@@ -256,30 +221,48 @@
     document.addEventListener("click", (e)=>{ if(!wrap.contains(e.target)) close(); });
   }
 
-  async function initLanguageDropdown(){
-    ALL_LANGS = await loadCached(LANG_URL, CACHE_LANG, arr => {
-      if (!Array.isArray(arr)) return [];
-      return arr.map(x => ({ code:x.code, label:x.label }));
-    });
+  // --- Language: robust normaliser ---
+  function normaliseLanguages(arr){
+    if (!Array.isArray(arr)) return [];
+    const out = arr.map(x=>{
+      if (typeof x === "string") {
+        const code = x.trim();
+        return { code, label: code.toUpperCase() };
+      }
+      const code =
+        x.code || x.value || x.key || x.iso || x.iso_639_1 || x.iso639_1 || x.lang || "";
+      const label =
+        x.label || x.name || x.englishName || x.english || x.nativeName || x.title || x.value || code;
+      return code ? { code: String(code).trim(), label: String(label).trim() } : null;
+    }).filter(Boolean);
 
-    const input = $("#lang");
-    const code  = $("#langCode");
-    const wrap  = $("#langBox");
-    const list  = $("#langList");
+    // dedupe + sort
+    const seen = new Set();
+    const uniq = out.filter(({code}) => (code && !seen.has(code) && seen.add(code)));
+    uniq.sort((a,b)=> a.label.localeCompare(b.label));
+    return uniq;
+  }
+
+  async function initLanguageDropdown(){
+    ALL_LANGS = await loadCached(LANG_URL, CACHE_LANG, normaliseLanguages);
+
+    if (!ALL_LANGS.length) {
+      console.warn("languages.json loaded but empty or unrecognised format");
+    }
+
+    const input = $("#lang"), code  = $("#langCode"), wrap  = $("#langBox"), list  = $("#langList");
 
     const open = () => {
       list.innerHTML = "";
       ALL_LANGS.forEach(({code:c,label})=>{
         const div = document.createElement("div");
-        div.className = "auto-item";
-        div.textContent = label;
-        div.addEventListener("mousedown", e => { e.preventDefault(); choose(c,label); });
+        div.className = "auto-item"; div.textContent = label;
+        div.addEventListener("mousedown", e => { e.preventDefault(); input.value = label; code.value = c; list.hidden = true; });
         list.appendChild(div);
       });
       list.hidden = false;
     };
     const close = () => { list.hidden = true; };
-    const choose = (c,label) => { input.value = label; code.value = c; close(); };
 
     input.addEventListener("focus", open);
     input.addEventListener("click", ()=> list.hidden ? open() : close());
@@ -287,12 +270,8 @@
     document.addEventListener("click", (e)=>{ if(!wrap.contains(e.target)) close(); });
   }
 
-  /***********************
-   * PLATFORM PILLS (single select)
-   ***********************/
   function renderPlatforms(){
-    const bar = $("#platformBar");
-    bar.innerHTML = "";
+    const bar = $("#platformBar"); bar.innerHTML = "";
     PLATFORM_OPTIONS.forEach(p => {
       const b = document.createElement("button");
       b.type = "button";
@@ -301,7 +280,6 @@
       b.innerHTML = `<span class="icon"><svg width="16" height="16"><use href="${p.icon}"/></svg></span>${p.label}`;
       b.addEventListener("click", () => {
         selectedPlatform = p.key;
-        // update UI
         $$(".pill", bar).forEach(el => el.classList.remove("active"));
         b.classList.add("active");
       });
@@ -309,9 +287,6 @@
     });
   }
 
-  /***********************
-   * RESULTS
-   ***********************/
   function mapRow(row){
     const user_id = row?.user_id || row?.id;
     const prof = row?.profile || row;
@@ -337,9 +312,7 @@
     u.setAttributeNS("http://www.w3.org/1999/xlink","href", href);
     s.appendChild(u);
     const span = document.createElement("span");
-    span.className = "plat";
-    span.appendChild(s);
-    span.title = which;
+    span.className = "plat"; span.appendChild(s); span.title = which;
     return span;
   }
 
@@ -369,22 +342,16 @@
         <td class="center"><div class="badges"></div></td>
         <td class="center k">${kFmt(vm.followers)}</td>
         <td class="center k">${vm.engagementPercentText}</td>
-        <td class="right">
-          <button class="ghost btn" style="padding:8px 10px;font-size:12px">View Details</button>
-        </td>
+        <td class="right"><button class="ghost btn" style="padding:8px 10px;font-size:12px">View Details</button></td>
       `;
-      tbody.appendChild(tr);
+      $("#results-body").appendChild(tr);
       const host = $(".badges", tr);
-      // main selected platform first (if present), then others
       const seen = new Set();
       if (platforms.includes(selectedPlatform)) { host.appendChild(platBadge(selectedPlatform)); seen.add(selectedPlatform); }
       platforms.forEach(p => { if (!seen.has(p)) host.appendChild(platBadge(p)); });
     });
   }
 
-  /***********************
-   * SEARCH
-   ***********************/
   function currentFilters(){
     return {
       kw: $("#kw").value.trim(),
@@ -397,7 +364,7 @@
   function buildPayload(page){
     const { kw, loc, langCode, emailOnly } = currentFilters();
     const payload = {
-      platform: selectedPlatform,                          // single platform
+      platform: selectedPlatform,
       paging: { limit: 50, page: page || 1 },
       sort: { sort_by: "relevancy", sort_order: "desc" },
       filters: {
@@ -407,42 +374,31 @@
       },
       only_with_emails: emailOnly || undefined
     };
-    // prune empties
     Object.keys(payload.filters).forEach(k => payload.filters[k] === undefined && delete payload.filters[k]);
     if (!Object.keys(payload.filters).length) delete payload.filters;
     return payload;
   }
 
   async function doSearch(){
-    const btn = $("#searchBtn");
-    btn.disabled = true; btn.textContent = "Searching…";
+    const btn = $("#searchBtn"); btn.disabled = true; btn.textContent = "Searching…";
     $("#resultHint").textContent = "Searching…";
 
     try{
       const payload = buildPayload(1);
-      const res = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify(payload)
-      });
-      // If your Make scenario returns {accounts:[], total: N}
+      const res = await fetch(WEBHOOK_URL, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
       const data = await res.json().catch(()=> ({}));
       const rows = Array.isArray(data.accounts) ? data.accounts : [];
-      const viewModels = rows.map(mapRow);
-      renderRows(viewModels, {replace:true});
+      renderRows(rows.map(mapRow), {replace:true});
       $("#resultHint").textContent = `${rows.length} creators loaded`;
     }catch(e){
       console.error(e);
-      $("#results-body").innerHTML = `<tr><td colspan="6" class="muted" style="padding:16px">Request failed. Check the webhook URL and payload mapping.</td></tr>`;
+      $("#results-body").innerHTML = `<tr><td colspan="6" class="muted" style="padding:16px">Request failed. Check webhook URL & payload mapping.</td></tr>`;
       $("#resultHint").textContent = "Search failed";
     }finally{
       btn.disabled = false; btn.textContent = "Search";
     }
   }
 
-  /***********************
-   * INIT
-   ***********************/
   (async function init(){
     renderPlatforms();
     await Promise.all([initLocationDropdown(), initLanguageDropdown()]);
@@ -451,3 +407,4 @@
 </script>
 </body>
 </html>
+
