@@ -90,8 +90,9 @@
       <div class="pillbar" id="platformBar"></div>
     </div>
 
+    <!-- Horizontal on desktop, stacked on mobile -->
     <div class="filters" style="margin-top:10px">
-      <div class="row">
+      <div class="filters-row">
         <div class="field">
           <div class="label">Topic / Keywords</div>
           <input id="kw" class="input" placeholder="e.g. gastronomíe, #foodie, chef" />
@@ -114,11 +115,14 @@
           <input type="hidden" id="langCode" />
         </div>
 
+        <div class="field" style="align-self:center">
+          <label class="checkbox" style="margin-top:8px">
+            <input id="hasEmail" type="checkbox" /> <span>Has email</span>
+          </label>
+        </div>
+
         <div class="field">
-          <div class="checkbox" style="margin-bottom:8px">
-            <input id="hasEmail" type="checkbox" /> <label for="hasEmail">Has email</label>
-          </div>
-          <button id="searchBtn" class="btn">Search</button>
+          <button id="searchBtn" class="btn" style="width:100%">Search</button>
         </div>
       </div>
     </div>
@@ -173,7 +177,7 @@
   const LOC_URL   = "./data/locations.json";
   const LANG_URL  = "./data/languages.json";
   const CACHE_LOC = "locations_v1";
-  const CACHE_LANG= "languages_v2"; // bumped to force refresh
+  const CACHE_LANG= "languages_v2";
 
   let selectedPlatform = "instagram";
   let ALL_LOCATIONS = [];
@@ -231,7 +235,6 @@
     document.addEventListener("click", (e)=>{ if(!wrap.contains(e.target)) close(); });
   }
 
-  // --- Language: robust normaliser ---
   function normaliseLanguages(arr){
     if (!Array.isArray(arr)) return [];
     const out = arr.map(x=>{
@@ -246,61 +249,50 @@
       return code ? { code: String(code).trim(), label: String(label).trim() } : null;
     }).filter(Boolean);
 
-    // dedupe + sort
     const seen = new Set();
     const uniq = out.filter(({code}) => (code && !seen.has(code) && seen.add(code)));
     uniq.sort((a,b)=> a.label.localeCompare(b.label));
     return uniq;
   }
 
-async function initLanguageDropdown(){
-  ALL_LANGS = await loadCached(LANG_URL, CACHE_LANG, normaliseLanguages);
+  async function initLanguageDropdown(){
+    ALL_LANGS = await loadCached(LANG_URL, CACHE_LANG, normaliseLanguages);
+    const input = document.getElementById("lang");
+    const code  = document.getElementById("langCode");
+    const wrap  = document.getElementById("langBox");
+    const list  = document.getElementById("langList");
 
-  if (!ALL_LANGS.length) {
-    console.warn("languages.json loaded but empty or unrecognised format");
-  }
-
-  const input = document.getElementById("lang");
-  const code  = document.getElementById("langCode");
-  const wrap  = document.getElementById("langBox");
-  const list  = document.getElementById("langList");
-
-  const render = (q = "") => {
-    const query = q.trim().toLowerCase();
-    list.innerHTML = "";
-    ALL_LANGS
-      .filter(({label, code}) =>
-        !query ||
-        label.toLowerCase().includes(query) ||
-        (code && code.toLowerCase().includes(query))
-      )
-      .slice(0, 150)
-      .forEach(({code: c, label}) => {
-        const div = document.createElement("div");
-        div.className = "auto-item";
-        div.textContent = `${label}${c ? ` (${c.toUpperCase()})` : ""}`;
-        div.addEventListener("mousedown", (e) => {
-          e.preventDefault();
-          input.value = label;
-          code.value = c || "";
-          list.hidden = true;
+    const render = (q = "") => {
+      const query = q.trim().toLowerCase();
+      list.innerHTML = "";
+      ALL_LANGS
+        .filter(({label, code}) =>
+          !query || label.toLowerCase().includes(query) || (code && code.toLowerCase().includes(query))
+        )
+        .slice(0, 150)
+        .forEach(({code: c, label}) => {
+          const div = document.createElement("div");
+          div.className = "auto-item";
+          div.textContent = `${label}${c ? ` (${c.toUpperCase()})` : ""}`;
+          div.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            input.value = label;
+            code.value = c || "";
+            list.hidden = true;
+          });
+          list.appendChild(div);
         });
-        list.appendChild(div);
-      });
 
-    list.hidden = false;
-  };
+      list.hidden = false;
+    };
 
-  const close = () => { list.hidden = true; };
+    const close = () => { list.hidden = true; };
 
-  input.addEventListener("input", () => render(input.value));
-  input.addEventListener("focus", () => render(input.value));
-  input.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
-
-  document.addEventListener("click", (e) => {
-    if (!wrap.contains(e.target)) close();
-  });
-}
+    input.addEventListener("input", () => render(input.value));
+    input.addEventListener("focus", () => render(input.value));
+    input.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+    document.addEventListener("click", (e) => { if (!wrap.contains(e.target)) close(); });
+  }
 
   function renderPlatforms(){
     const bar = $("#platformBar"); bar.innerHTML = "";
@@ -439,4 +431,3 @@ async function initLanguageDropdown(){
 </script>
 </body>
 </html>
-
