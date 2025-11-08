@@ -178,27 +178,37 @@
     });
 
     // Autocomplete (Location + Language)
-    async function loadList(id,url){
-      const input=document.getElementById(id);
-      const list=document.getElementById(id==="location"?"locList":"langList");
-      const data=await fetch(url).then(r=>r.json());
-      input.addEventListener("input",()=>{
-        const v=input.value.toLowerCase();
-        list.innerHTML="";
-        if(!v){list.classList.add("hidden");return;}
-        const filtered=data.filter(i=>i.toLowerCase().includes(v)).slice(0,20);
-        filtered.forEach(item=>{
-          const div=document.createElement("div");
-          div.textContent=item;
-          div.onclick=()=>{input.value=item;list.classList.add("hidden");};
-          list.appendChild(div);
-        });
-        list.classList.remove("hidden");
-      });
-      document.addEventListener("click",(e)=>{
-        if(!list.contains(e.target)&&e.target!==input){list.classList.add("hidden");}
-      });
-    }
+async function loadList(id, url) {
+  const input = document.getElementById(id);
+  const list = document.getElementById(id === "location" ? "locList" : id + "List");
+  const data = await fetch(url).then(r => r.json());
+
+  input.addEventListener("input", () => {
+    const v = input.value.toLowerCase();
+    list.innerHTML = "";
+    if (!v) { list.classList.add("hidden"); return; }
+
+    // Adjust to handle objects or strings
+    const filtered = data
+      .map(item => typeof item === "string" ? item : item.label)
+      .filter(label => label.toLowerCase().includes(v))
+      .slice(0, 20);
+
+    filtered.forEach(label => {
+      const div = document.createElement("div");
+      div.textContent = label;
+      div.onclick = () => { input.value = label; list.classList.add("hidden"); };
+      list.appendChild(div);
+    });
+
+    list.classList.remove("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!list.contains(e.target) && e.target !== input) { list.classList.add("hidden"); }
+  });
+}
+
     loadList("location","/data/locations.json");
     loadList("lang","/data/languages.json");
 
