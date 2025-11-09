@@ -411,6 +411,13 @@
               debugContent.textContent += "After unwrap:\n" + JSON.stringify(payload, null, 2) + "\n\n";
             }
 
+            // n8n sometimes wraps in {"=": {...}}
+            if (payload && typeof payload["="] === 'object') {
+              console.log("🔧 Found n8n '=' wrapper, unwrapping...");
+              payload = payload["="];
+              debugContent.textContent += "After unwrapping '=':\n" + JSON.stringify(payload, null, 2) + "\n\n";
+            }
+
             // Some setups return { data: {...} }
             if (payload && typeof payload.data === 'object') {
               console.log("📂 Found nested .data property");
