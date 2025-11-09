@@ -326,7 +326,7 @@
       // Build payload with ALL fields included (even if empty)
       const payload = {
         platform,
-        paging: { limit: 50, page: 1 },
+        paging: { limit: 5, page: 1 },
         sort: { sort_by: "relevancy", sort_order: "desc" },
         filters: {
           location: [ document.getElementById("location").value || "" ],
