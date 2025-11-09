@@ -36,6 +36,20 @@
     .results th, .results td { padding:10px 14px; font-size:14px; border-bottom:1px solid #e5e7eb; text-align:left; }
     .results th { background:#f9fafb; text-transform:uppercase; font-size:12px; color:#6b7280; }
     .avatar { width:36px; height:36px; border-radius:50%; object-fit:cover; margin-right:8px; }
+    
+    /* Debug panel */
+    .debug-panel { 
+      margin-top:20px; 
+      background:#1f2937; 
+      color:#fff; 
+      padding:15px; 
+      border-radius:8px; 
+      font-family:monospace; 
+      font-size:12px;
+      max-height:300px;
+      overflow:auto;
+    }
+    .debug-panel pre { white-space:pre-wrap; word-wrap:break-word; }
   </style>
 </head>
 <body>
@@ -153,131 +167,136 @@
       </div>
 
       <!-- Search button -->
-      <div class="flex justify-end mt-5">
-        <button id="btnSearch" class="btn btn-primary">Search</button>
+      <div class="flex justify-center mt-4">
+        <button id="btnSearch" class="btn btn-primary">Search Creators</button>
       </div>
     </div>
 
-    <!-- RESULTS -->
+    <!-- Results table -->
     <div id="resultsContainer" class="results hidden">
-      <div id="loading" class="text-center py-4 text-gray-500 hidden">Loading...</div>
-      <table id="resultsTable">
+      <div id="loading" class="p-8 text-center text-gray-500">Searching...</div>
+      <div id="noResults" class="p-8 text-center text-gray-500 hidden">No creators found. Try adjusting your filters.</div>
+      <table id="resultsTable" class="hidden">
         <thead>
-          <tr><th>Creator</th><th>Platform</th><th>Followers</th><th>ER %</th><th>Country</th><th>Email</th><th></th></tr>
+          <tr>
+            <th>Creator</th>
+            <th>Platform</th>
+            <th>Followers</th>
+            <th>Engagement</th>
+            <th>Location</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
         </thead>
-        <tbody></tbody>
+        <tbody id="tbody"></tbody>
       </table>
-      <div id="noResults" class="text-center py-4 text-gray-500 hidden">No results found.</div>
+    </div>
+
+    <!-- DEBUG PANEL -->
+    <div id="debugPanel" class="debug-panel hidden">
+      <strong>🐛 Debug Info:</strong>
+      <pre id="debugContent"></pre>
+    </div>
+    <div class="flex justify-center mt-3">
+      <button id="btnToggleDebug" class="btn btn-outline text-xs">Toggle Debug Panel</button>
     </div>
   </main>
 
   <script>
-    /* --- Platform pillbar (icons preserved) --- */
-    const PLATFORM_OPTIONS = [
-      { key:"instagram",label:"Instagram",icon:"#ig" },
-      { key:"tiktok",label:"TikTok",icon:"#tt" },
-      { key:"youtube",label:"YouTube",icon:"#yt" },
-      { key:"twitch",label:"Twitch",icon:"#twch" },
-      { key:"twitter",label:"X",icon:"#tw" }
-    ];
-    let platform="instagram";
-    const bar=document.getElementById("platformBar");
-    PLATFORM_OPTIONS.forEach(p=>{
-      const b=document.createElement("button");
-      b.className="platform-btn"+(p.key==="instagram"?" active":"");
-      b.innerHTML=`<svg><use href="${p.icon}"/></svg>${p.label}`;
-      b.onclick=()=>{document.querySelectorAll(".platform-btn").forEach(btn=>btn.classList.remove("active"));
-      b.classList.add("active");platform=p.key;};
-      bar.appendChild(b);
+    const resultsContainer = document.getElementById("resultsContainer");
+    const loading = document.getElementById("loading");
+    const noResults = document.getElementById("noResults");
+    const resultsTable = document.getElementById("resultsTable");
+    const tbody = document.getElementById("tbody");
+    const debugPanel = document.getElementById("debugPanel");
+    const debugContent = document.getElementById("debugContent");
+
+    // Toggle debug panel
+    document.getElementById("btnToggleDebug").addEventListener("click", () => {
+      debugPanel.classList.toggle("hidden");
     });
-
-    /* --- Advanced toggle --- */
-    document.getElementById("btnAdvanced").addEventListener("click",()=>{
-      const p=document.getElementById("advancedPanel");
-      p.classList.toggle("hidden");
-      document.getElementById("btnAdvanced").textContent=p.classList.contains("hidden")?"Advanced filters ▾":"Advanced filters ▴";
-    });
-
-    /* --- Autocomplete (Location + Language) --- */
-    async function loadList(id, url) {
-      const input = document.getElementById(id);
-      const list = document.getElementById(id + "List");
-
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
-
-        input.addEventListener("input", () => {
-          const v = input.value.toLowerCase();
-          list.innerHTML = "";
-          if (!v) { list.classList.add("hidden"); return; }
-
-          // Handle both strings and objects ({label:"English"})
-          const filtered = data
-            .map(item => typeof item === "string" ? item : item.label)
-            .filter(label => label.toLowerCase().includes(v))
-            .slice(0, 20);
-
-          if (!filtered.length) { list.classList.add("hidden"); return; }
-
-          filtered.forEach(label => {
-            const div = document.createElement("div");
-            div.textContent = label;
-            div.onclick = () => {
-              const match = data.find(item => item.label === label);
-              input.value = match ? match.code : label;
-              list.classList.add("hidden");
-            };
-            list.appendChild(div);
-          });
-
-          list.classList.remove("hidden");
-        });
-
-        document.addEventListener("click", (e) => {
-          if (!list.contains(e.target) && e.target !== input) {
-            list.classList.add("hidden");
-          }
-        });
-      } catch (error) {
-        console.error(`Error loading ${url}:`, error);
-      }
-    }
-    loadList("location","/data/locations.json");
-    loadList("lang","/data/languages.json");
-
-    /* --- Helpers --- */
-    function n(v){const num=Number(v);return Number.isFinite(num)?num:null;}
-    function splitCsv(v){return String(v||"").split(",").map(s=>s.trim()).filter(s=>s.length>0);}
-
-    /* --- Results rendering --- */
-    const resultsContainer=document.getElementById("resultsContainer");
-    const tbody=document.querySelector("#resultsTable tbody");
-    const loading=document.getElementById("loading");
-    const noResults=document.getElementById("noResults");
 
     function show(el){ el.classList.remove("hidden"); }
     function hide(el){ el.classList.add("hidden"); }
+    function n(v){ return v===""||v==null ? 0 : Number(v); }
+    function splitCsv(s){ return s.split(",").map(x=>x.trim()).filter(x=>x); }
 
+    /* --- Platform selection --- */
+    let platform = "instagram";
+    const pData = [
+      {id:"instagram", label:"Instagram", icon:"ig"},
+      {id:"tiktok",    label:"TikTok",    icon:"tt"},
+      {id:"youtube",   label:"YouTube",   icon:"yt"},
+      {id:"twitter",   label:"Twitter",   icon:"tw"},
+      {id:"twitch",    label:"Twitch",    icon:"twch"}
+    ];
+    const platformBar = document.getElementById("platformBar");
+    pData.forEach(p=>{
+      const btn = document.createElement("button");
+      btn.className = "platform-btn"+(p.id===platform?" active":"");
+      btn.innerHTML = `<svg><use href="#${p.icon}"/></svg>${p.label}`;
+      btn.addEventListener("click",()=>{
+        platform = p.id;
+        document.querySelectorAll(".platform-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+      platformBar.appendChild(btn);
+    });
+
+    /* --- Advanced filters toggle --- */
+    document.getElementById("btnAdvanced").addEventListener("click",()=>{
+      document.getElementById("advancedPanel").classList.toggle("hidden");
+    });
+
+    /* --- Autocomplete (locations & languages) --- */
+    const locationsData = ["United States","Canada","United Kingdom","Australia","Germany","France","Spain","Italy","Brazil","Mexico","Argentina","Netherlands","Sweden","Switzerland","Belgium","Austria","Portugal","Ireland","Norway","Denmark","Poland","Russia","Japan","China","India","South Korea","Singapore","Malaysia","Thailand","Indonesia","Philippines","Vietnam","New Zealand","South Africa","Chile","Colombia","Peru","Venezuela","Ecuador","Bolivia","Uruguay","Costa Rica","Panama","Dominican Republic","Puerto Rico","Cuba","Jamaica","Trinidad and Tobago","Aruba","Bahamas","Barbados","United Arab Emirates","Saudi Arabia","Qatar","Egypt","Morocco","Tunisia","Nigeria","Kenya","Ghana"];
+    const languagesData = ["English","Spanish","French","German","Italian","Portuguese","Dutch","Swedish","Norwegian","Danish","Polish","Russian","Japanese","Mandarin","Korean","Hindi","Arabic","Turkish","Indonesian","Thai","Vietnamese","Tagalog","Greek","Hebrew","Czech","Hungarian","Romanian","Ukrainian","Finnish"];
+    
+    const locInput = document.getElementById("location");
+    const locList = document.getElementById("locList");
+    const langInput = document.getElementById("lang");
+    const langList = document.getElementById("langList");
+
+    function attachAuto(input, list, data){
+      input.addEventListener("input",()=>{
+        const val = input.value.toLowerCase();
+        if(!val){ hide(list); return; }
+        const filtered = data.filter(d=>d.toLowerCase().includes(val));
+        if(filtered.length){
+          list.innerHTML = filtered.map(d=>`<div>${d}</div>`).join("");
+          show(list);
+          list.querySelectorAll("div").forEach(div=>{
+            div.addEventListener("click",()=>{ input.value=div.textContent; hide(list); });
+          });
+        } else {
+          hide(list);
+        }
+      });
+      input.addEventListener("blur",()=>setTimeout(()=>hide(list),200));
+    }
+    attachAuto(locInput, locList, locationsData);
+    attachAuto(langInput, langList, languagesData);
+
+    /* --- Render rows (FIXED FIELD MAPPINGS) --- */
     function renderRows(list, platformFallback){
+      hide(loading);
+      show(resultsTable);
       tbody.innerHTML = "";
-      if (!list || !list.length){
-        hide(loading); show(noResults); return;
-      }
-      hide(loading); hide(noResults);
-
+      
       list.forEach(item=>{
         const tr=document.createElement("tr");
-        const avatar=item.profile_picture_url||"";
-        const name=item.full_name||"—";
-        const handle=item.username?`@${item.username}`:"—";
-        const followers=(item.followers!=null)?Number(item.followers).toLocaleString():"—";
-        const er=(item.engagement_rate!=null)?Number(item.engagement_rate).toFixed(2)+"%":"—";
-        const country=item.country||"—";
-        const email=(item.email || item.has_email) ? "✅" : "❌";
-        const pf=item.platform || platformFallback || "—";
-        const id=item.id || "";
+        
+        // FIXED: Access nested profile object
+        const profile = item.profile || {};
+        const avatar = profile.picture || "";
+        const name = profile.full_name || "—";
+        const handle = profile.username ? `@${profile.username}` : "—";
+        const followers = (profile.followers != null) ? Number(profile.followers).toLocaleString() : "—";
+        const er = (profile.engagement_percent != null) ? Number(profile.engagement_percent).toFixed(2)+"%" : "—";
+        const country = item.country || "—";
+        const email = (item.email || item.has_email) ? "✅" : "❌";
+        const pf = item.platform || platformFallback || "—";
+        const id = item.user_id || item.id || "";
 
         tr.innerHTML = `
           <td>
@@ -303,17 +322,17 @@
     function mockResults(pf){
       // 5 mock rows for UI continuity on error
       const base = [
-        { full_name:"Ava Hernandez",  username:"avatravels",   profile_picture_url:"", country:"Aruba", followers:84200, engagement_rate:3.2, has_email:true },
-        { full_name:"Kai Thompson",   username:"kaieats",      profile_picture_url:"", country:"USA",   followers:120300, engagement_rate:2.4, has_email:false },
-        { full_name:"Maya Singh",     username:"maya.explore", profile_picture_url:"", country:"UK",    followers:56300, engagement_rate:4.1, has_email:true },
-        { full_name:"Lucas Pereira",  username:"lucasgoes",    profile_picture_url:"", country:"Brazil",followers:90500, engagement_rate:1.9, has_email:false },
-        { full_name:"Noa Dubois",     username:"noa.food",     profile_picture_url:"", country:"France",followers:47300, engagement_rate:3.7, has_email:true }
+        { profile: { full_name:"Ava Hernandez",  username:"avatravels",   picture:"", followers:84200, engagement_percent:3.2 }, country:"Aruba", has_email:true },
+        { profile: { full_name:"Kai Thompson",   username:"kaieats",      picture:"", followers:120300, engagement_percent:2.4 }, country:"USA", has_email:false },
+        { profile: { full_name:"Maya Singh",     username:"maya.explore", picture:"", followers:56300, engagement_percent:4.1 }, country:"UK", has_email:true },
+        { profile: { full_name:"Lucas Pereira",  username:"lucasgoes",    picture:"", followers:90500, engagement_percent:1.9 }, country:"Brazil", has_email:false },
+        { profile: { full_name:"Noa Dubois",     username:"noa.food",     picture:"", followers:47300, engagement_percent:3.7 }, country:"France", has_email:true }
       ];
       base.forEach(b => b.platform = pf);
       return base;
     }
 
-    /* --- SEARCH (Make webhook; send ALL fields, even empty) --- */
+    /* --- SEARCH (n8n webhook) --- */
     const WEBHOOK_URL = "https://phoenixaisolutions.app.n8n.cloud/webhook-test/influencer-discovery";
 
     document.getElementById("btnSearch").addEventListener("click", async ()=>{
@@ -330,7 +349,7 @@
         sort: { sort_by: "relevancy", sort_order: "desc" },
         filters: {
           location: [ document.getElementById("location").value || "" ],
-          type: "", // reserved for future use
+          type: "", 
           gender: document.getElementById("gender").value || "",
           profile_language: [ document.getElementById("lang").value || "" ],
           ai_search: document.getElementById("kw").value || "",
@@ -347,7 +366,6 @@
             growth_percentage: n(document.getElementById("growthPct").value),
             time_range_months: n(document.getElementById("growthMonths").value)
           },
-          // Brand fit
           keywords_in_bio: (()=>{
             const raw = document.getElementById("bioKeywords").value || "";
             const arr = splitCsv(raw);
@@ -356,7 +374,6 @@
           has_done_brand_deals: document.getElementById("brandDeals").checked,
           promotes_affiliate_links: document.getElementById("affiliateLinks").checked,
           has_link_in_bio: document.getElementById("linkInBio").checked,
-          // Quality toggles
           exclude_private_profile: document.getElementById("excludePrivate").checked,
           is_verified: document.getElementById("verified").checked,
           has_email: document.getElementById("hasEmail").checked
@@ -371,45 +388,67 @@
           body: JSON.stringify(payload)
         });
 
-        // Handle possible empty body from Make
-const text = await res.text();
-let rows = [];
+        const text = await res.text();
+        let rows = [];
+        
+        // DEBUG: Log raw response
+        console.log("📥 Raw Response Text:", text);
+        debugContent.textContent = "Status: " + res.status + "\n\n" + 
+                                    "Raw Response:\n" + text + "\n\n";
+        
+        try {
+          if (text && text.trim().length) {
+            let payload = JSON.parse(text);
+            
+            // DEBUG: Log parsed payload
+            console.log("📦 Parsed Payload:", payload);
+            debugContent.textContent += "Parsed Payload:\n" + JSON.stringify(payload, null, 2) + "\n\n";
 
-try {
-  if (text && text.trim().length) {
-    let payload = JSON.parse(text);
+            // If wrapped as array, unwrap first item
+            if (Array.isArray(payload)) {
+              console.log("🔄 Unwrapping array...");
+              payload = payload[0] || {};
+              debugContent.textContent += "After unwrap:\n" + JSON.stringify(payload, null, 2) + "\n\n";
+            }
 
-    // If Make ever wraps the response as an array, unwrap first item.
-    if (Array.isArray(payload)) payload = payload[0] || {};
+            // Some setups return { data: {...} }
+            if (payload && typeof payload.data === 'object') {
+              console.log("📂 Found nested .data property");
+              payload = payload.data;
+            }
 
-    // Some setups return { data: {...} }
-    if (payload && typeof payload.data === 'object') {
-      payload = payload.data;
-    }
+            // Normalise common shapes
+            rows =
+              Array.isArray(payload.results)  ? payload.results  :
+              Array.isArray(payload.accounts) ? payload.accounts :
+              Array.isArray(payload)          ? payload          :
+              [];
+            
+            console.log("✅ Final rows array:", rows);
+            debugContent.textContent += "Final rows count: " + rows.length + "\n" +
+                                        "First row:\n" + JSON.stringify(rows[0], null, 2);
+          }
+        } catch (e) {
+          console.error("❌ JSON Parse Error:", e);
+          debugContent.textContent += "Parse Error: " + e.message;
+        }
 
-    // Normalise common shapes
-    rows =
-      Array.isArray(payload.results)  ? payload.results  :
-      Array.isArray(payload.accounts) ? payload.accounts :
-      Array.isArray(payload)          ? payload          :
-      [];
-  }
-} catch (e) {
-  console.warn("Non-JSON response from webhook; using mock rows.", e);
-}
-
-// Decide what to render
-if (!rows.length && !res.ok) {
-  renderRows(mockResults(platform), platform);
-} else if (!rows.length) {
-  hide(loading);
-  show(noResults);
-} else {
-  renderRows(rows, platform);
-}
+        // Decide what to render
+        if (!rows.length && !res.ok) {
+          console.log("⚠️ No rows and bad status, showing mock data");
+          renderRows(mockResults(platform), platform);
+        } else if (!rows.length) {
+          console.log("⚠️ No rows found");
+          hide(loading);
+          show(noResults);
+        } else {
+          console.log("🎉 Rendering", rows.length, "rows");
+          renderRows(rows, platform);
+        }
 
       } catch (error) {
-        console.error("Error during search:", error);
+        console.error("💥 Fetch Error:", error);
+        debugContent.textContent = "Fetch Error: " + error.message;
         renderRows(mockResults(platform), platform);
       }
     });
