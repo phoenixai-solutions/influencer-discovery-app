@@ -372,30 +372,46 @@
         });
 
         // Handle possible empty body from Make
-        const text = await res.text();
-        let data = [];
-        if (text) {
-          try {
-            const parsed = JSON.parse(text);
-            data = Array.isArray(parsed) ? parsed : (Array.isArray(parsed?.data) ? parsed.data : []);
-          } catch (e) {
-            console.warn("Non-JSON response from webhook, using mock data.");
-          }
-        }
-        if (!data.length && !res.ok) {
-          // On HTTP error, fall back to mock rows
-          renderRows(mockResults(platform), platform);
-        } else if (!data.length) {
-          // No results
-          hide(loading); show(noResults);
-        } else {
-          renderRows(data, platform);
-        }
-      } catch (err) {
-        console.error("Webhook error:", err);
-        // On network/JS error, fall back to mock rows
-        renderRows(mockResults(platform), platform);
-      }
+const text = await res.text();
+let data = [];
+
+if (text) {
+  try {
+    const parsed = JSON.parse(text);
+
+    // Normalise possible response shapes
+    if (Array.isArray(parsed)) {
+      data = parsed;
+    } else if (Array.isArray(parsed?.results)) {
+      data = parsed.results;
+    } else if (Array.isArray(parsed?.accounts)) {
+      data = parsed.accounts;
+    } else if (Array.isArray(parsed?.data)) {
+      data = parsed.data;
+    } else {
+      data = [];
+    }
+  } catch (e) {
+    console.warn("Non-JSON response from webhook, using mock data.", e);
+  }
+}
+
+// Evaluate results and render appropriately
+if (!res.ok) {
+  console.error("Webhook returned non-200 status:", res.status);
+  renderRows(mockResults(platform), platform);
+} else if (!data.length) {
+  console.log("No influencers found.");
+  hide(loading);
+  show(noResults);
+} else {
+  renderRows(data, platform);
+}
+
+} catch (err) {
+  console.error("Webhook or parsing error:", err);
+  renderRows(mockResults(platform), platform);
+}
     });
   </script>
 </body>
