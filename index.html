@@ -373,45 +373,45 @@
 
         // Handle possible empty body from Make
 const text = await res.text();
-let data = [];
+let rows = [];
 
-if (text) {
-  try {
-    const parsed = JSON.parse(text);
+try {
+  if (text && text.trim().length) {
+    let payload = JSON.parse(text);
 
-    // Normalise possible response shapes
-    if (Array.isArray(parsed)) {
-      data = parsed;
-    } else if (Array.isArray(parsed?.results)) {
-      data = parsed.results;
-    } else if (Array.isArray(parsed?.accounts)) {
-      data = parsed.accounts;
-    } else if (Array.isArray(parsed?.data)) {
-      data = parsed.data;
-    } else {
-      data = [];
+    // If Make ever wraps the response as an array, unwrap first item.
+    if (Array.isArray(payload)) payload = payload[0] || {};
+
+    // Some setups return { data: {...} }
+    if (payload && typeof payload.data === 'object') {
+      payload = payload.data;
     }
-  } catch (e) {
-    console.warn("Non-JSON response from webhook, using mock data.", e);
+
+    // Normalise common shapes
+    rows =
+      Array.isArray(payload.results)  ? payload.results  :
+      Array.isArray(payload.accounts) ? payload.accounts :
+      Array.isArray(payload)          ? payload          :
+      [];
   }
+} catch (e) {
+  console.warn("Non-JSON response from webhook; using mock rows.", e);
 }
 
-// Evaluate results and render appropriately
-if (!res.ok) {
-  console.error("Webhook returned non-200 status:", res.status);
+// Decide what to render
+if (!rows.length && !res.ok) {
   renderRows(mockResults(platform), platform);
-} else if (!data.length) {
-  console.log("No influencers found.");
+} else if (!rows.length) {
   hide(loading);
   show(noResults);
 } else {
-  renderRows(data, platform);
+  renderRows(rows, platform);
 }
 
-} catch (err) {
-  console.error("Webhook or parsing error:", err);
-  renderRows(mockResults(platform), platform);
-}
+      } catch (error) {
+        console.error("Error during search:", error);
+        renderRows(mockResults(platform), platform);
+      }
     });
   </script>
 </body>
