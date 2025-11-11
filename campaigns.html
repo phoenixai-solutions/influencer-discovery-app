@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Campaigns - Phoenix</title>
   
-  <!-- Import Navigation Styles & Script -->
+  <!-- Navigation Styles -->
   <link rel="stylesheet" href="nav-styles.css">
   
   <style>
@@ -154,6 +154,10 @@
       background: #6b7280;
       color: white;
     }
+    .status-paused {
+      background: #f59e0b;
+      color: white;
+    }
     .card-section {
       margin-bottom: 12px;
     }
@@ -222,9 +226,37 @@
       cursor: pointer;
       margin-top: 16px;
       font-size: 14px;
+      text-decoration: none;
+      text-align: center;
+      display: block;
     }
     .btn-view:hover {
       background: #dbeafe;
+    }
+    .loading-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: #6b7280;
+    }
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e5e7eb;
+      border-top-color: #0066ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: #6b7280;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
     }
     @media (max-width: 1024px) {
       .campaigns-grid {
@@ -240,7 +272,7 @@
 </head>
 <body>
 
-  <!-- Navigation will be injected here -->
+  <!-- Navigation (auto-injected) -->
   <div id="app-navigation"></div>
 
   <!-- Main Content -->
@@ -248,7 +280,7 @@
     
     <!-- Page Header -->
     <div class="page-header">
-      <button class="btn btn-primary">
+      <button class="btn btn-primary" onclick="window.location.href='create-campaign.html'">
         <span>+</span>
         <span>New Campaign</span>
       </button>
@@ -257,13 +289,13 @@
     <!-- Filter Bar -->
     <div class="filter-bar">
       <div class="filter-left">
-        <input type="text" class="search-box" placeholder="🔍 Search campaigns..." />
+        <input type="text" class="search-box" placeholder="🔍 Search campaigns..." id="searchBox" />
         <div class="filter-tabs">
-          <button class="filter-tab active">All</button>
-          <button class="filter-tab">Active</button>
-          <button class="filter-tab">Planning</button>
-          <button class="filter-tab">Completed</button>
-          <button class="filter-tab">Paused</button>
+          <button class="filter-tab active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="Active">Active</button>
+          <button class="filter-tab" data-filter="Planning">Planning</button>
+          <button class="filter-tab" data-filter="Completed">Completed</button>
+          <button class="filter-tab" data-filter="Paused">Paused</button>
         </div>
       </div>
       <div class="view-toggle">
@@ -272,156 +304,215 @@
       </div>
     </div>
 
-    <!-- Campaigns Grid -->
-    <div class="campaigns-grid">
-      
-      <!-- Card 1 -->
-      <div class="campaign-card">
-        <div class="card-header">
-          <div class="card-title">Spring Launch 2025</div>
-          <span class="status-badge status-active">● Active</span>
-        </div>
-        
-        <div class="card-section">
-          <div class="label">Campaign Budget</div>
-          <div class="value-lg">$50,000</div>
-        </div>
-        
-        <div class="card-section">
-          <div class="label">Spend to Date</div>
-          <div class="value-md">
-            $1,200 <span class="percent">(2.4%)</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 2.4%"></div>
-          </div>
-        </div>
-        
-        <div class="card-meta">
-          <span>👥</span>
-          <span>1 Influencer</span>
-        </div>
-        
-        <div class="card-dates">
-          <span>📅</span>
-          <span>Feb 28 - May 14, 2025</span>
-        </div>
-        
-        <button class="btn-view">View Campaign →</button>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="campaign-card">
-        <div class="card-header">
-          <div class="card-title">Q4 Growth Blitz</div>
-          <span class="status-badge status-active">● Active</span>
-        </div>
-        
-        <div class="card-section">
-          <div class="label">Campaign Budget</div>
-          <div class="value-lg">$75,000</div>
-        </div>
-        
-        <div class="card-section">
-          <div class="label">Spend to Date</div>
-          <div class="value-md">
-            $750 <span class="percent">(1.0%)</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 1%"></div>
-          </div>
-        </div>
-        
-        <div class="card-meta">
-          <span>👥</span>
-          <span>1 Influencer</span>
-        </div>
-        
-        <div class="card-dates">
-          <span>📅</span>
-          <span>Sep 14 - Nov 30, 2025</span>
-        </div>
-        
-        <button class="btn-view">View Campaign →</button>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="campaign-card">
-        <div class="card-header">
-          <div class="card-title">Summer Creator Series</div>
-          <span class="status-badge status-completed">✓ Completed</span>
-        </div>
-        
-        <div class="card-section">
-          <div class="label">Campaign Budget</div>
-          <div class="value-lg">$30,000</div>
-        </div>
-        
-        <div class="card-section">
-          <div class="label">Spend to Date</div>
-          <div class="value-md">
-            $29,100 <span class="percent">(97%)</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill green" style="width: 97%"></div>
-          </div>
-        </div>
-        
-        <div class="card-meta">
-          <span>👥</span>
-          <span>1 Influencer</span>
-        </div>
-        
-        <div class="card-dates">
-          <span>📅</span>
-          <span>Jun 9 - Jul 31, 2025</span>
-        </div>
-        
-        <button class="btn-view">View Campaign →</button>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="campaign-card">
-        <div class="card-header">
-          <div class="card-title">AI for Good Campaign</div>
-          <span class="status-badge status-planning">● Planning</span>
-        </div>
-        
-        <div class="card-section">
-          <div class="label">Campaign Budget</div>
-          <div class="value-lg">$20,000</div>
-        </div>
-        
-        <div class="card-section">
-          <div class="label">Spend to Date</div>
-          <div class="value-md">
-            $0 <span class="percent">(0%)</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 0%"></div>
-          </div>
-        </div>
-        
-        <div class="card-meta">
-          <span>👥</span>
-          <span>0 Influencers</span>
-        </div>
-        
-        <div class="card-dates">
-          <span>📅</span>
-          <span>Sep 30 - Nov 19, 2025</span>
-        </div>
-        
-        <button class="btn-view">View Campaign →</button>
-      </div>
-
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading campaigns...</p>
     </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <p style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No campaigns yet</p>
+      <p style="margin-bottom: 20px;">Create your first campaign to get started</p>
+      <button class="btn btn-primary" onclick="window.location.href='create-campaign.html'">
+        <span>+</span>
+        <span>Create Campaign</span>
+      </button>
+    </div>
+
+    <!-- Campaigns Grid -->
+    <div id="campaignsGrid" class="campaigns-grid" style="display: none;">
+      <!-- Campaign cards will be injected here -->
+    </div>
+
   </div>
 
-  <!-- Load Navigation Script -->
+  <!-- Page Scripts -->
+  <script>
+    // API Configuration
+    const API_ENDPOINTS = {
+      getCampaigns: 'https://phoenixaisolutions.app.n8n.cloud/webhook/get-campaigns',
+      createCampaign: 'https://phoenixaisolutions.app.n8n.cloud/webhook/create-campaign'
+    };
+
+    // State
+    let allCampaigns = [];
+    let currentFilter = 'all';
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCampaigns();
+      setupFilterListeners();
+      setupSearchListener();
+    });
+
+    // Load campaigns from Airtable
+    async function loadCampaigns() {
+      try {
+        const response = await fetch(API_ENDPOINTS.getCampaigns);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const campaigns = await response.json();
+        
+        console.log('Loaded campaigns:', campaigns);
+        
+        allCampaigns = campaigns;
+        
+        // Hide loading, show content
+        document.getElementById('loadingState').style.display = 'none';
+        
+        if (campaigns.length === 0) {
+          document.getElementById('emptyState').style.display = 'block';
+        } else {
+          document.getElementById('campaignsGrid').style.display = 'grid';
+          renderCampaigns(campaigns);
+        }
+        
+      } catch (error) {
+        console.error('Error loading campaigns:', error);
+        document.getElementById('loadingState').innerHTML = `
+          <p style="color: #ef4444; font-weight: 600;">Error loading campaigns</p>
+          <p style="margin-top: 8px;">${error.message}</p>
+          <button class="btn btn-primary" onclick="loadCampaigns()" style="margin-top: 16px;">
+            Try Again
+          </button>
+        `;
+      }
+    }
+
+    // Render campaigns
+    function renderCampaigns(campaigns) {
+      const grid = document.getElementById('campaignsGrid');
+      
+      if (campaigns.length === 0) {
+        grid.style.display = 'none';
+        document.getElementById('emptyState').style.display = 'block';
+        return;
+      }
+      
+      grid.style.display = 'grid';
+      document.getElementById('emptyState').style.display = 'none';
+      
+      grid.innerHTML = campaigns.map(campaign => createCampaignCard(campaign)).join('');
+    }
+
+    // Create campaign card HTML
+    function createCampaignCard(campaign) {
+      const statusClass = `status-${campaign.status.toLowerCase()}`;
+      const statusIcon = getStatusIcon(campaign.status);
+      const progressClass = campaign.spendPercent >= 90 ? 'green' : '';
+      
+      // Format dates
+      const startDate = campaign.startDate ? new Date(campaign.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+      const endDate = campaign.endDate ? new Date(campaign.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      const dateRange = startDate && endDate ? `${startDate} - ${endDate}` : 'Dates TBD';
+      
+      return `
+        <div class="campaign-card" data-status="${campaign.status}">
+          <div class="card-header">
+            <div class="card-title">${campaign.name}</div>
+            <span class="status-badge ${statusClass}">${statusIcon} ${campaign.status}</span>
+          </div>
+          
+          <div class="card-section">
+            <div class="label">Campaign Budget</div>
+            <div class="value-lg">$${campaign.budget.toLocaleString()}</div>
+          </div>
+          
+          <div class="card-section">
+            <div class="label">Spend to Date</div>
+            <div class="value-md">
+              $${campaign.spend.toLocaleString()} <span class="percent">(${campaign.spendPercent}%)</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill ${progressClass}" style="width: ${campaign.spendPercent}%"></div>
+            </div>
+          </div>
+          
+          <div class="card-meta">
+            <span>👥</span>
+            <span>${campaign.influencerCount} Influencer${campaign.influencerCount !== 1 ? 's' : ''}</span>
+          </div>
+          
+          <div class="card-dates">
+            <span>📅</span>
+            <span>${dateRange}</span>
+          </div>
+          
+          <a href="campaign-performance.html?id=${campaign.id}" class="btn-view">View Campaign →</a>
+        </div>
+      `;
+    }
+
+    // Get status icon
+    function getStatusIcon(status) {
+      const icons = {
+        'Active': '●',
+        'Planning': '●',
+        'Completed': '✓',
+        'Paused': '●'
+      };
+      return icons[status] || '●';
+    }
+
+    // Filter campaigns
+    function filterCampaigns(filter) {
+      currentFilter = filter;
+      
+      let filtered = allCampaigns;
+      
+      // Apply status filter
+      if (filter !== 'all') {
+        filtered = filtered.filter(c => c.status === filter);
+      }
+      
+      // Apply search filter
+      const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+      if (searchTerm) {
+        filtered = filtered.filter(c => 
+          c.name.toLowerCase().includes(searchTerm) ||
+          (c.client && c.client.toLowerCase().includes(searchTerm))
+        );
+      }
+      
+      renderCampaigns(filtered);
+    }
+
+    // Setup filter button listeners
+    function setupFilterListeners() {
+      document.querySelectorAll('.filter-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Update active state
+          document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          // Filter campaigns
+          const filter = btn.dataset.filter;
+          filterCampaigns(filter);
+        });
+      });
+    }
+
+    // Setup search listener
+    function setupSearchListener() {
+      const searchBox = document.getElementById('searchBox');
+      let searchTimeout;
+      
+      searchBox.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          filterCampaigns(currentFilter);
+        }, 300);
+      });
+    }
+  </script>
+
+  <!-- Navigation Script -->
   <script src="nav-component.js"></script>
   <script>
-    // Initialize navigation with current page context
     PhoenixNav.init({
       currentPage: 'campaigns',
       currentSubPage: 'overview'
