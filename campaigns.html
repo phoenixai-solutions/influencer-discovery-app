@@ -400,6 +400,9 @@
         return;
       }
       
+      // DEBUG: Log the first campaign to see its structure
+      console.log('First campaign structure:', JSON.stringify(campaigns[0], null, 2));
+      
       grid.style.display = 'grid';
       document.getElementById('emptyState').style.display = 'none';
       
