@@ -408,10 +408,17 @@
 
     // Create campaign card HTML
     function createCampaignCard(campaign) {
-const status = campaign.status || 'Planning';
-const statusClass = `status-${status.toLowerCase()}`;
-      const statusIcon = getStatusIcon(campaign.status);
-      const progressClass = campaign.spendPercent >= 90 ? 'green' : '';
+      // Safety checks for all fields
+      const status = campaign.status || 'Planning';
+      const statusClass = `status-${status.toLowerCase()}`;
+      const statusIcon = getStatusIcon(status);
+      const budget = campaign.budget || 0;
+      const spend = campaign.spend || 0;
+      const spendPercent = campaign.spendPercent || 0;
+      const influencerCount = campaign.influencerCount || 0;
+      const name = campaign.name || 'Untitled Campaign';
+      const id = campaign.id || '';
+      const progressClass = spendPercent >= 90 ? 'green' : '';
       
       // Format dates
       const startDate = campaign.startDate ? new Date(campaign.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
@@ -419,30 +426,30 @@ const statusClass = `status-${status.toLowerCase()}`;
       const dateRange = startDate && endDate ? `${startDate} - ${endDate}` : 'Dates TBD';
       
       return `
-        <div class="campaign-card" data-status="${campaign.status}">
+        <div class="campaign-card" data-status="${status}">
           <div class="card-header">
-            <div class="card-title">${campaign.name}</div>
-            <span class="status-badge ${statusClass}">${statusIcon} ${campaign.status}</span>
+            <div class="card-title">${name}</div>
+            <span class="status-badge ${statusClass}">${statusIcon} ${status}</span>
           </div>
           
           <div class="card-section">
             <div class="label">Campaign Budget</div>
-            <div class="value-lg">$${campaign.budget.toLocaleString()}</div>
+            <div class="value-lg">$${budget.toLocaleString()}</div>
           </div>
           
           <div class="card-section">
             <div class="label">Spend to Date</div>
             <div class="value-md">
-              $${campaign.spend.toLocaleString()} <span class="percent">(${campaign.spendPercent}%)</span>
+              $${spend.toLocaleString()} <span class="percent">(${spendPercent}%)</span>
             </div>
             <div class="progress-bar">
-              <div class="progress-fill ${progressClass}" style="width: ${campaign.spendPercent}%"></div>
+              <div class="progress-fill ${progressClass}" style="width: ${spendPercent}%"></div>
             </div>
           </div>
           
           <div class="card-meta">
             <span>👥</span>
-            <span>${campaign.influencerCount} Influencer${campaign.influencerCount !== 1 ? 's' : ''}</span>
+            <span>${influencerCount} Influencer${influencerCount !== 1 ? 's' : ''}</span>
           </div>
           
           <div class="card-dates">
@@ -450,7 +457,7 @@ const statusClass = `status-${status.toLowerCase()}`;
             <span>${dateRange}</span>
           </div>
           
-          <a href="campaign-performance.html?id=${campaign.id}" class="btn-view">View Campaign →</a>
+          <a href="campaign-performance.html?id=${id}" class="btn-view">View Campaign →</a>
         </div>
       `;
     }
