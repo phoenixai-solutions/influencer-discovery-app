@@ -408,7 +408,8 @@
 
     // Create campaign card HTML
     function createCampaignCard(campaign) {
-      const statusClass = `status-${campaign.status.toLowerCase()}`;
+const status = campaign.status || 'Planning';
+const statusClass = `status-${status.toLowerCase()}`;
       const statusIcon = getStatusIcon(campaign.status);
       const progressClass = campaign.spendPercent >= 90 ? 'green' : '';
       
