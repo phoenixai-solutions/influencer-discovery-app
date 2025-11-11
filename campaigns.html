@@ -411,22 +411,24 @@
 
     // Create campaign card HTML
     function createCampaignCard(campaign) {
-      // Safety checks for all fields
+      // Data is wrapped in .json property
       const data = campaign.json || campaign;
-      // const status = campaign.status || 'Planning';
+      
+      // Safety checks for all fields
+      const status = data.status || 'Planning';
       const statusClass = `status-${status.toLowerCase()}`;
       const statusIcon = getStatusIcon(status);
-      const budget = campaign.budget || 0;
-      const spend = campaign.spend || 0;
-      const spendPercent = campaign.spendPercent || 0;
-      const influencerCount = campaign.influencerCount || 0;
-      const name = campaign.name || 'Untitled Campaign';
-      const id = campaign.id || '';
+      const budget = data.budget || 0;
+      const spend = data.spend || 0;
+      const spendPercent = data.spendPercent || 0;
+      const influencerCount = data.influencerCount || 0;
+      const name = data.name || 'Untitled Campaign';
+      const id = data.id || '';
       const progressClass = spendPercent >= 90 ? 'green' : '';
       
       // Format dates
-      const startDate = campaign.startDate ? new Date(campaign.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
-      const endDate = campaign.endDate ? new Date(campaign.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      const startDate = data.startDate ? new Date(data.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+      const endDate = data.endDate ? new Date(data.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
       const dateRange = startDate && endDate ? `${startDate} - ${endDate}` : 'Dates TBD';
       
       return `
