@@ -413,7 +413,7 @@
     function createCampaignCard(campaign) {
       // Safety checks for all fields
       const data = campaign.json || campaign;
-      const status = campaign.status || 'Planning';
+      // const status = campaign.status || 'Planning';
       const statusClass = `status-${status.toLowerCase()}`;
       const statusIcon = getStatusIcon(status);
       const budget = campaign.budget || 0;
