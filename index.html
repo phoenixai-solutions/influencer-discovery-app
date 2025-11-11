@@ -618,11 +618,14 @@
       });
     }
   </script>
-<script>
-PhoenixNav.init({
-  currentPage: 'discovery',
-  currentSubPage: ''  // No sub-nav for this page
-});
-</script>
+  <!-- Load Navigation Script -->
+  <script src="nav-component.js"></script>
+  <script>
+    // Initialize navigation with current page context
+    PhoenixNav.init({
+      currentPage: 'discovery',
+      currentSubPage: ''
+    });
+  </script>
 </body>
 </html>
