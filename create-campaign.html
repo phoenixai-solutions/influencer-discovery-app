@@ -559,44 +559,70 @@
 
       // Set loading state
       setLoading(true);
+      
+try {
+  // Send to n8n webhook
+  const response = await fetch(API_CONFIG.createCampaign, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
 
-      try {
-        // Send to n8n webhook
-        const response = await fetch(API_CONFIG.createCampaign, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
+  console.log('📥 Response status:', response.status);
+  console.log('📥 Response headers:', [...response.headers.entries()]);
+  
+  // Get the raw response text first
+  const responseText = await response.text();
+  console.log('📥 Raw response text:', responseText);
+  console.log('📥 Response text length:', responseText.length);
+  
+  // Check if response is empty
+  if (!responseText || responseText.trim().length === 0) {
+    console.error('❌ Response body is empty!');
+    showAlert('Server returned empty response. Campaign may have been created - check Airtable.');
+    setLoading(false);
+    return;
+  }
+  
+  // Try to parse JSON
+  let result;
+  try {
+    result = JSON.parse(responseText);
+    console.log('✅ Parsed JSON successfully:', result);
+  } catch (parseError) {
+    console.error('❌ JSON parse error:', parseError);
+    console.error('❌ Failed to parse this text:', responseText);
+    showAlert('Server returned invalid JSON: ' + responseText.substring(0, 100));
+    setLoading(false);
+    return;
+  }
 
-        console.log('📥 Response status:', response.status);
+  // Check if successful
+  if (response.ok && result.success) {
+    showAlert('Campaign created successfully! Redirecting...', 'success');
+    
+    // Clear draft
+    localStorage.removeItem('campaignDraft');
+    
+    // Redirect to campaigns page after short delay
+    setTimeout(() => {
+      window.location.href = 'campaigns.html';
+    }, 1500);
+    
+  } else {
+    // Handle error response
+    const errorMessage = result.error || result.message || 'Failed to create campaign';
+    showAlert(errorMessage);
+    setLoading(false);
+  }
 
-        // Parse response
-        const result = await response.json();
-        console.log('📥 Response data:', result);
-
-        // Check if successful
-        if (response.ok && result.success) {
-          showAlert('Campaign created successfully! Redirecting...', 'success');
-          
-          // Redirect to campaigns page after short delay
-          setTimeout(() => {
-            window.location.href = 'campaigns.html';
-          }, 1500);
-          
-        } else {
-          // Handle error response
-          const errorMessage = result.error || result.message || 'Failed to create campaign';
-          showAlert(errorMessage);
-          setLoading(false);
-        }
-
-      } catch (error) {
-        console.error('❌ Error creating campaign:', error);
-        showAlert('Network error: Could not connect to server. Please try again.');
-        setLoading(false);
-      }
+} catch (error) {
+  console.error('❌ Error creating campaign:', error);
+  showAlert('Network error: Could not connect to server. Please try again.');
+  setLoading(false);
+}
     });
 
     // ================================================
