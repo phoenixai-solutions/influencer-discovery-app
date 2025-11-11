@@ -291,6 +291,19 @@
             required 
           />
         </div>
+          <div class="form-group">
+    <label class="form-label">
+      Brand Partner (Optional)
+    </label>
+    <input 
+      type="text" 
+      id="partner"
+      name="partner"
+      class="form-input" 
+      placeholder="e.g., Nike, Local Restaurant Group, Tourism Board"
+    />
+    <div class="form-help">If this campaign is in partnership with another brand or organization</div>
+  </div>
 
         <div class="form-group">
           <label class="form-label">
@@ -559,7 +572,7 @@
 
       // Set loading state
       setLoading(true);
-      
+
 try {
   // Send to n8n webhook
   const response = await fetch(API_CONFIG.createCampaign, {
