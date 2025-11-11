@@ -112,6 +112,40 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
+    .campaigns-list {
+      display: none;
+    }
+    .campaigns-list.active {
+      display: block;
+    }
+    .list-item {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 150px;
+      gap: 16px;
+      align-items: center;
+      transition: box-shadow 0.2s;
+    }
+    .list-item:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .list-name {
+      font-weight: 600;
+      color: #111827;
+    }
+    .list-value {
+      font-size: 14px;
+      color: #374151;
+    }
+    .list-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
     .campaign-card {
       background: white;
       border: 1px solid #e5e7eb;
@@ -325,6 +359,11 @@
       <!-- Campaign cards will be injected here -->
     </div>
 
+    <!-- Campaigns List -->
+    <div id="campaignsList" class="campaigns-list" style="display: none;">
+      <!-- Campaign list items will be injected here -->
+    </div>
+
   </div>
 
   <!-- Page Scripts -->
@@ -338,6 +377,7 @@
     // State
     let allCampaigns = [];
     let currentFilter = 'all';
+    let currentView = 'grid'; // 'grid' or 'list'
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
@@ -345,6 +385,7 @@
       loadCampaigns();
       setupFilterListeners();
       setupSearchListener();
+      setupViewToggle();
     });
 
     // Load campaigns from Airtable
@@ -393,9 +434,11 @@
     // Render campaigns
     function renderCampaigns(campaigns) {
       const grid = document.getElementById('campaignsGrid');
+      const list = document.getElementById('campaignsList');
       
       if (campaigns.length === 0) {
         grid.style.display = 'none';
+        list.style.display = 'none';
         document.getElementById('emptyState').style.display = 'block';
         return;
       }
@@ -403,10 +446,17 @@
       // DEBUG: Log the first campaign to see its structure
       console.log('First campaign structure:', JSON.stringify(campaigns[0], null, 2));
       
-      grid.style.display = 'grid';
       document.getElementById('emptyState').style.display = 'none';
       
-      grid.innerHTML = campaigns.map(campaign => createCampaignCard(campaign)).join('');
+      if (currentView === 'grid') {
+        grid.style.display = 'grid';
+        list.style.display = 'none';
+        grid.innerHTML = campaigns.map(campaign => createCampaignCard(campaign)).join('');
+      } else {
+        grid.style.display = 'none';
+        list.style.display = 'block';
+        list.innerHTML = campaigns.map(campaign => createCampaignListItem(campaign)).join('');
+      }
     }
 
     // Create campaign card HTML
@@ -479,6 +529,72 @@
       return icons[status] || '●';
     }
 
+    // Create campaign list item HTML
+    function createCampaignListItem(campaign) {
+      const data = campaign.json || campaign;
+      const status = data.status || 'Planning';
+      const statusClass = `status-${status.toLowerCase()}`;
+      const statusIcon = getStatusIcon(status);
+      const budget = data.budget || 0;
+      const spend = data.spend || 0;
+      const spendPercent = data.spendPercent || 0;
+      const influencerCount = data.influencerCount || 0;
+      const name = data.name || 'Untitled Campaign';
+      const id = data.id || '';
+      
+      const startDate = data.startDate ? new Date(data.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+      const endDate = data.endDate ? new Date(data.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      const dateRange = startDate && endDate ? `${startDate} - ${endDate}` : 'Dates TBD';
+      
+      return `
+        <div class="list-item">
+          <div>
+            <div class="list-name">${name}</div>
+            <span class="status-badge ${statusClass}" style="margin-top: 4px; display: inline-block;">${statusIcon} ${status}</span>
+          </div>
+          <div>
+            <div class="list-label">Budget</div>
+            <div class="list-value">$${budget.toLocaleString()}</div>
+          </div>
+          <div>
+            <div class="list-label">Spend</div>
+            <div class="list-value">$${spend.toLocaleString()} (${spendPercent}%)</div>
+          </div>
+          <div>
+            <div class="list-label">Influencers</div>
+            <div class="list-value">${influencerCount}</div>
+          </div>
+          <div>
+            <div class="list-label">Dates</div>
+            <div class="list-value">${dateRange}</div>
+          </div>
+          <div>
+            <a href="campaign-performance.html?id=${id}" class="btn-view" style="margin-top: 0;">View Campaign →</a>
+          </div>
+        </div>
+      `;
+    }
+
+    // Setup view toggle
+    function setupViewToggle() {
+      const viewBtns = document.querySelectorAll('.view-btn');
+      viewBtns.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+          // Update active state
+          viewBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          // Switch view
+          currentView = index === 0 ? 'grid' : 'list';
+          renderCampaigns(allCampaigns.filter(c => {
+            if (currentFilter === 'all') return true;
+            const data = c.json || c;
+            return data.status === currentFilter;
+          }));
+        });
+      });
+    }
+
     // Filter campaigns
     function filterCampaigns(filter) {
       currentFilter = filter;
@@ -487,16 +603,20 @@
       
       // Apply status filter
       if (filter !== 'all') {
-        filtered = filtered.filter(c => c.status === filter);
+        filtered = filtered.filter(c => {
+          const data = c.json || c;
+          return data.status === filter;
+        });
       }
       
       // Apply search filter
       const searchTerm = document.getElementById('searchBox').value.toLowerCase();
       if (searchTerm) {
-        filtered = filtered.filter(c => 
-          c.name.toLowerCase().includes(searchTerm) ||
-          (c.client && c.client.toLowerCase().includes(searchTerm))
-        );
+        filtered = filtered.filter(c => {
+          const data = c.json || c;
+          return (data.name && data.name.toLowerCase().includes(searchTerm)) ||
+                 (data.client && data.client.toLowerCase().includes(searchTerm));
+        });
       }
       
       renderCampaigns(filtered);
