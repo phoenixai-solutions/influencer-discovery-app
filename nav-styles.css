@@ -1,0 +1,121 @@
+/* nav-styles.css - Reusable Navigation Styles for Phoenix Platform */
+
+/* Main Navigation - Horizontal at top */
+.main-nav {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 24px;
+}
+
+.main-nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.brand {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  padding: 16px 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  flex: 1;
+}
+
+.nav-link {
+  padding: 16px 0;
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.nav-link.active {
+  color: #0066ff;
+  border-bottom-color: #0066ff;
+}
+
+.nav-link:hover {
+  color: #111827;
+}
+
+.user-badge {
+  width: 40px;
+  height: 40px;
+  background: #0066ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Page Title Section */
+.page-title-section {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 20px 24px 0;
+}
+
+.page-title-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+/* Sub Navigation */
+.sub-nav {
+  display: flex;
+  gap: 24px;
+}
+
+.sub-nav-tab {
+  padding: 12px 0;
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+}
+
+.sub-nav-tab.active {
+  color: #0066ff;
+  border-bottom-color: #0066ff;
+}
+
+.sub-nav-tab:hover {
+  color: #111827;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-nav-container {
+    gap: 16px;
+  }
+  
+  .nav-links {
+    gap: 16px;
+    font-size: 13px;
+  }
+  
+  .brand {
+    font-size: 16px;
+  }
+}

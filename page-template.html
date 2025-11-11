@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Title - Phoenix</title>
+  
+  <!-- Navigation Styles -->
+  <link rel="stylesheet" href="nav-styles.css">
+  
+  <!-- Page Styles -->
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    
+    /* Add your page-specific styles below */
+    
+  </style>
+</head>
+<body>
+
+  <!-- Navigation (auto-injected) -->
+  <div id="app-navigation"></div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <h1>Your Page Content Here</h1>
+    
+    <!-- Add your page content below -->
+    
+  </div>
+
+  <!-- Page Scripts -->
+  <script>
+    // Your page-specific JavaScript here
+  </script>
+
+  <!-- Navigation Script -->
+  <script src="nav-component.js"></script>
+  <script>
+    PhoenixNav.init({
+      currentPage: 'discovery',      // CHANGE THIS: 'discovery', 'campaigns', 'emails', 'snippets'
+      currentSubPage: ''              // CHANGE THIS: 'overview', 'create', 'performance' (or leave blank)
+    });
+  </script>
+
+</body>
+</html>
