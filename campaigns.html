@@ -341,6 +341,7 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('Page loaded, starting to fetch campaigns...');
       loadCampaigns();
       setupFilterListeners();
       setupSearchListener();
@@ -348,8 +349,13 @@
 
     // Load campaigns from Airtable
     async function loadCampaigns() {
+      console.log('Fetching from:', API_ENDPOINTS.getCampaigns);
+      
       try {
         const response = await fetch(API_ENDPOINTS.getCampaigns);
+        
+        console.log('Response status:', response.status);
+        console.log('Response OK:', response.ok);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -358,6 +364,7 @@
         const campaigns = await response.json();
         
         console.log('Loaded campaigns:', campaigns);
+        console.log('Number of campaigns:', campaigns.length);
         
         allCampaigns = campaigns;
         
