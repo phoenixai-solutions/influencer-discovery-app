@@ -241,7 +241,7 @@
   </style>
 </head>
 <body>
-  
+
   <!-- Navigation will be injected here -->
   <div id="app-navigation"></div>
 
@@ -703,6 +703,13 @@ try {
     });
 
   </script>
-
+    <!-- ADD THIS: Load Navigation Script -->
+  <script src="nav-component.js"></script>
+  <script>
+PhoenixNav.init({
+  currentPage: 'campaigns',
+  currentSubPage: 'create'
+});
+  </script>
 </body>
 </html>
