@@ -27,6 +27,11 @@
       align-items: center;
       margin-bottom: 24px;
     }
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+    }
     .btn {
       padding: 10px 20px;
       border-radius: 8px;
@@ -314,6 +319,7 @@
     
     <!-- Page Header -->
     <div class="page-header">
+      <h1 class="page-title">Manage Campaigns</h1>
       <button class="btn btn-primary" onclick="window.location.href='create-campaign.html'">
         <span>+</span>
         <span>New Campaign</span>
@@ -392,8 +398,21 @@
     async function loadCampaigns() {
       console.log('Fetching from:', API_ENDPOINTS.getCampaigns);
       
+      // Add a timeout warning
+      const timeoutWarning = setTimeout(() => {
+        document.getElementById('loadingState').innerHTML = `
+          <div class="loading-spinner"></div>
+          <p>Still loading... This is taking longer than expected.</p>
+          <p style="font-size: 13px; color: #6b7280; margin-top: 8px;">The server might be processing a large dataset.</p>
+        `;
+      }, 5000); // Show warning after 5 seconds
+      
       try {
-        const response = await fetch(API_ENDPOINTS.getCampaigns);
+        const response = await fetch(API_ENDPOINTS.getCampaigns, {
+          signal: AbortSignal.timeout(30000) // 30 second timeout
+        });
+        
+        clearTimeout(timeoutWarning);
         
         console.log('Response status:', response.status);
         console.log('Response OK:', response.ok);
@@ -420,14 +439,26 @@
         }
         
       } catch (error) {
+        clearTimeout(timeoutWarning);
         console.error('Error loading campaigns:', error);
-        document.getElementById('loadingState').innerHTML = `
-          <p style="color: #ef4444; font-weight: 600;">Error loading campaigns</p>
-          <p style="margin-top: 8px;">${error.message}</p>
-          <button class="btn btn-primary" onclick="loadCampaigns()" style="margin-top: 16px;">
-            Try Again
-          </button>
-        `;
+        
+        if (error.name === 'TimeoutError') {
+          document.getElementById('loadingState').innerHTML = `
+            <p style="color: #f59e0b; font-weight: 600;">⚠️ Request Timeout</p>
+            <p style="margin-top: 8px;">The server took too long to respond. This might be due to a slow network or server processing.</p>
+            <button class="btn btn-primary" onclick="loadCampaigns()" style="margin-top: 16px;">
+              Try Again
+            </button>
+          `;
+        } else {
+          document.getElementById('loadingState').innerHTML = `
+            <p style="color: #ef4444; font-weight: 600;">Error loading campaigns</p>
+            <p style="margin-top: 8px;">${error.message}</p>
+            <button class="btn btn-primary" onclick="loadCampaigns()" style="margin-top: 16px;">
+              Try Again
+            </button>
+          `;
+        }
       }
     }
 
