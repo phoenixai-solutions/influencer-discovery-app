@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create New Campaign - Phoenix</title>
+  <title>Manage Campaigns - Phoenix</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -64,137 +64,41 @@
       text-decoration: none;
       font-weight: 500;
       border-bottom: 2px solid transparent;
+      transition: all 0.2s;
     }
     .nav-tab.active {
       color: #0066ff;
       border-bottom-color: #0066ff;
     }
+    .nav-tab:hover {
+      color: #111827;
+    }
     .container {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 32px 24px;
     }
-    .back-link {
-      color: #6b7280;
-      text-decoration: none;
-      font-weight: 500;
-      display: inline-block;
-      margin-bottom: 24px;
-    }
-    .back-link:hover {
-      color: #111827;
-    }
     .page-header {
-      margin-bottom: 32px;
-    }
-    .page-header h1 {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .page-header p {
-      color: #6b7280;
-      font-size: 15px;
-    }
-    .form-container {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 32px;
-    }
-    .form-section {
-      margin-bottom: 32px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    .form-section:last-of-type {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-    .section-title {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 24px;
-      color: #111827;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-label {
-      display: block;
-      font-size: 14px;
-      font-weight: 500;
-      color: #374151;
-      margin-bottom: 8px;
-    }
-    .required {
-      color: #dc2626;
-      margin-left: 4px;
-    }
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: inherit;
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      outline: none;
-      border-color: #0066ff;
-      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
-    }
-    .form-textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-    .form-help {
-      font-size: 13px;
-      color: #6b7280;
-      margin-top: 6px;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    .input-prefix {
-      position: relative;
-    }
-    .input-prefix .prefix {
-      position: absolute;
-      left: 12px;
-      top: 11px;
-      color: #6b7280;
-      font-weight: 500;
-    }
-    .input-prefix input {
-      padding-left: 28px;
-    }
-    .form-actions {
       display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid #e5e7eb;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
     }
     .btn {
-      padding: 10px 24px;
+      padding: 10px 20px;
       border-radius: 8px;
       font-weight: 500;
       font-size: 14px;
       cursor: pointer;
       border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       transition: all 0.2s;
-    }
-    .btn-secondary {
-      background: white;
-      border: 1px solid #d1d5db;
-      color: #374151;
-    }
-    .btn-secondary:hover {
-      background: #f9fafb;
     }
     .btn-primary {
       background: #0066ff;
@@ -203,40 +107,378 @@
     .btn-primary:hover {
       background: #0052cc;
     }
-    .btn-primary:disabled {
+    .filter-bar {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .filter-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .search-box {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      width: 300px;
+      font-size: 14px;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    .filter-tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      background: white;
+      color: #6b7280;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .filter-tab.active {
+      background: #0066ff;
+      color: white;
+    }
+    .filter-tab:hover {
+      background: #f3f4f6;
+    }
+    .filter-tab.active:hover {
+      background: #0052cc;
+    }
+    .campaigns-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .campaign-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 24px;
+      transition: box-shadow 0.2s;
+    }
+    .campaign-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      flex: 1;
+      margin-right: 12px;
+    }
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .status-active, .status-Active {
+      background: #0066ff;
+      color: white;
+    }
+    .status-completed, .status-Completed {
+      background: #10b981;
+      color: white;
+    }
+    .status-planning, .status-Planning {
+      background: #6b7280;
+      color: white;
+    }
+    .status-paused, .status-Paused {
+      background: #f59e0b;
+      color: white;
+    }
+    .card-section {
+      margin-bottom: 12px;
+    }
+    .label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    .value-lg {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .value-md {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .percent {
+      font-size: 13px;
+      color: #6b7280;
+      margin-left: 4px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #0066ff;
+      border-radius: 3px;
+    }
+    .progress-fill.green {
+      background: #10b981;
+    }
+    .card-meta {
+      padding-top: 12px;
+      border-top: 1px solid #f3f4f6;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-dates {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .btn-view {
+      flex: 1;
+      background: #eff6ff;
+      color: #0066ff;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-view:hover {
+      background: #dbeafe;
+    }
+    .btn-delete {
+      background: white;
+      border: 1px solid #e5e7eb;
+      color: #dc2626;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-delete:hover {
+      background: #fef2f2;
+      border-color: #dc2626;
+    }
+    .btn-delete svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* Loading State */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6b7280;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #0066ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6b7280;
+    }
+    .empty-state h3 {
+      font-size: 18px;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+    
+    /* Confirmation Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .modal-icon {
+      width: 48px;
+      height: 48px;
+      background: #fef2f2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #dc2626;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .modal-body {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .modal-campaign-name {
+      font-weight: 600;
+      color: #111827;
+    }
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    .btn-cancel {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-cancel:hover {
+      background: #f9fafb;
+    }
+    .btn-confirm-delete {
+      background: #dc2626;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-confirm-delete:hover {
+      background: #b91c1c;
+    }
+    .btn-confirm-delete:disabled {
       background: #9ca3af;
       cursor: not-allowed;
     }
     
-    /* Loading and Error States */
-    .alert {
-      padding: 12px 16px;
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border: 1px solid #e5e7eb;
       border-radius: 8px;
-      margin-bottom: 20px;
+      padding: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 300px;
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    .toast-success {
+      border-left: 4px solid #10b981;
+    }
+    .toast-error {
+      border-left: 4px solid #dc2626;
+    }
+    .toast-icon {
+      width: 20px;
+      height: 20px;
+    }
+    .toast-message {
+      flex: 1;
       font-size: 14px;
+      color: #111827;
     }
-    .alert-error {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #dc2626;
+    
+    @media (max-width: 1024px) {
+      .campaigns-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
-    .alert-success {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      color: #16a34a;
-    }
-    .loading-spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #ffffff;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      margin-right: 8px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    @media (max-width: 768px) {
+      .campaigns-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -262,460 +504,327 @@
   <!-- Main Content -->
   <div class="container">
     
-    <a href="campaigns.html" class="back-link">← Back to Campaigns</a>
-
+    <!-- Page Header -->
     <div class="page-header">
-      <h1>Create New Campaign</h1>
-      <p>Fill in the details below to create your influencer marketing campaign</p>
+      <h1 class="page-title">Manage Campaigns</h1>
+      <button class="btn btn-primary" onclick="window.location.href='create-campaign.html'">
+        <span>+</span>
+        <span>New Campaign</span>
+      </button>
     </div>
 
-    <!-- Alert Messages -->
-    <div id="alertContainer"></div>
-
-    <form id="campaignForm" class="form-container">
-      
-      <!-- Campaign Details Section -->
-      <div class="form-section">
-        <h2 class="section-title">Campaign Details</h2>
-        
-        <div class="form-group">
-          <label class="form-label">
-            Campaign Name <span class="required">*</span>
-          </label>
-          <input 
-            type="text" 
-            id="campaignName"
-            name="campaignName"
-            class="form-input" 
-            placeholder="e.g., Spring Product Launch 2025"
-            required 
-          />
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-left">
+        <input type="text" id="searchBox" class="search-box" placeholder="🔍 Search campaigns..." />
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-status="all">All</button>
+          <button class="filter-tab" data-status="Active">Active</button>
+          <button class="filter-tab" data-status="Planning">Planning</button>
+          <button class="filter-tab" data-status="Completed">Completed</button>
+          <button class="filter-tab" data-status="Paused">Paused</button>
         </div>
-          <div class="form-group">
-    <label class="form-label">
-      Brand Partner (Optional)
-    </label>
-    <input 
-      type="text" 
-      id="partner"
-      name="partner"
-      class="form-input" 
-      placeholder="e.g., Nike, Local Restaurant Group, Tourism Board"
-    />
-    <div class="form-help">If this campaign is in partnership with another brand or organization</div>
+      </div>
+    </div>
+
+    <!-- Campaigns Grid -->
+    <div id="campaignsContainer">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading campaigns...</p>
+      </div>
+    </div>
+
   </div>
 
-        <div class="form-group">
-          <label class="form-label">
-            Campaign Status <span class="required">*</span>
-          </label>
-          <select id="status" name="status" class="form-select" required>
-            <option value="Planning" selected>Planning</option>
-            <option value="Active">Active</option>
-            <option value="Paused">Paused</option>
-            <option value="Completed">Completed</option>
-          </select>
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Campaign Objective <span class="required">*</span>
-          </label>
-          <textarea 
-            id="objective"
-            name="objective"
-            class="form-textarea" 
-            placeholder="What are the goals of this campaign?"
-            required
-          ></textarea>
-          <div class="form-help">Describe what you want to achieve with this campaign</div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              Campaign Budget <span class="required">*</span>
-            </label>
-            <div class="input-prefix">
-              <span class="prefix">$</span>
-              <input 
-                type="number" 
-                id="budget"
-                name="budget"
-                class="form-input" 
-                placeholder="50000"
-                min="0"
-                step="100"
-                required 
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              Start Date <span class="required">*</span>
-            </label>
-            <input 
-              type="date" 
-              id="startDate"
-              name="startDate"
-              class="form-input" 
-              required 
-            />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              End Date <span class="required">*</span>
-            </label>
-            <input 
-              type="date" 
-              id="endDate"
-              name="endDate"
-              class="form-input" 
-              required 
-            />
-          </div>
-        </div>
+        <h3 class="modal-title">Delete Campaign</h3>
       </div>
-
-      <!-- Target Audience Section -->
-      <div class="form-section">
-        <h2 class="section-title">Target Audience</h2>
-        
-        <div class="form-group">
-          <label class="form-label">
-            Target Audience Description
-          </label>
-          <textarea 
-            id="targetAudience"
-            name="targetAudience"
-            class="form-textarea" 
-            placeholder="Describe your target audience demographics, interests, and behaviors..."
-          ></textarea>
-          <div class="form-help">This helps influencers create more relevant content</div>
-        </div>
+      <div class="modal-body">
+        Are you sure you want to delete <span class="modal-campaign-name" id="deleteCampaignName"></span>? This action cannot be undone.
       </div>
-
-      <!-- Deliverables Section -->
-      <div class="form-section">
-        <h2 class="section-title">Deliverable Requirements</h2>
-        
-        <div class="form-group">
-          <label class="form-label">
-            Deliverables Description
-          </label>
-          <textarea 
-            id="deliverables"
-            name="deliverables"
-            class="form-textarea" 
-            style="min-height: 100px;"
-            placeholder="e.g., 10 Instagram Reels, 5 LinkedIn posts, 3 YouTube videos..."
-          ></textarea>
-          <div class="form-help">List the types and quantities of content you need</div>
-        </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+        <button class="btn-confirm-delete" id="confirmDeleteBtn">Delete Campaign</button>
       </div>
-
-      <!-- Campaign Tracking Section -->
-      <div class="form-section">
-        <h2 class="section-title">Campaign Tracking</h2>
-        
-        <div class="form-group">
-          <label class="form-label">
-            Campaign Hashtags
-          </label>
-          <input 
-            type="text" 
-            id="hashtags"
-            name="hashtags"
-            class="form-input" 
-            placeholder="e.g., #summersale, #brandname, #campaign2025"
-          />
-          <div class="form-help">Comma-separated hashtags for tracking campaign posts</div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Required Phrases
-          </label>
-          <input 
-            type="text" 
-            id="requiredPhrases"
-            name="requiredPhrases"
-            class="form-input" 
-            placeholder="e.g., Brand name, Product features, Call to action"
-          />
-          <div class="form-help">Key phrases or terms that must appear in influencer content</div>
-        </div>
-      </div>
-
-      <!-- Form Actions -->
-      <div class="form-actions">
-        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
-        <button type="submit" id="submitBtn" class="btn btn-primary">
-          <span id="submitText">Create Campaign</span>
-        </button>
-      </div>
-
-    </form>
-
+    </div>
   </div>
 
   <script>
-    // ================================================
     // API Configuration
-    // ================================================
-    const API_CONFIG = {
-      createCampaign: 'https://phoenixaisolutions.app.n8n.cloud/webhook/create-campaign'
+    const API_ENDPOINTS = {
+      getCampaigns: 'https://phoenixaisolutions.app.n8n.cloud/webhook/get-campaigns',
+      deleteCampaign: 'https://phoenixaisolutions.app.n8n.cloud/webhook/delete-campaign'
     };
 
-    // ================================================
-    // DOM Elements
-    // ================================================
-    const form = document.getElementById('campaignForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const submitText = document.getElementById('submitText');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const alertContainer = document.getElementById('alertContainer');
+    // State
+    let allCampaigns = [];
+    let filteredCampaigns = [];
+    let currentStatusFilter = 'all';
+    let searchQuery = '';
+    let campaignToDelete = null;
 
-    // ================================================
-    // Helper Functions
-    // ================================================
+    // Load campaigns on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCampaigns();
+      setupEventListeners();
+    });
 
-    function showAlert(message, type = 'error') {
-      alertContainer.innerHTML = `
-        <div class="alert alert-${type}">
-          ${message}
+    // Setup Event Listeners
+    function setupEventListeners() {
+      // Status filter tabs
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentStatusFilter = tab.dataset.status;
+          filterAndRenderCampaigns();
+        });
+      });
+
+      // Search box
+      document.getElementById('searchBox').addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+        filterAndRenderCampaigns();
+      });
+
+      // Close modal on outside click
+      document.getElementById('deleteModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) {
+          closeDeleteModal();
+        }
+      });
+    }
+
+    // Load Campaigns from API
+    async function loadCampaigns() {
+      try {
+        const response = await fetch(API_ENDPOINTS.getCampaigns);
+        const data = await response.json();
+        
+        // Handle the wrapped format from n8n
+        allCampaigns = Array.isArray(data) ? data : [];
+        
+        console.log('📦 Loaded campaigns:', allCampaigns.length);
+        
+        filterAndRenderCampaigns();
+      } catch (error) {
+        console.error('❌ Error loading campaigns:', error);
+        showError();
+      }
+    }
+
+    // Filter and Render Campaigns
+    function filterAndRenderCampaigns() {
+      // Filter by status
+      if (currentStatusFilter === 'all') {
+        filteredCampaigns = allCampaigns;
+      } else {
+        filteredCampaigns = allCampaigns.filter(campaign => 
+          campaign.json.status === currentStatusFilter
+        );
+      }
+
+      // Filter by search query
+      if (searchQuery) {
+        filteredCampaigns = filteredCampaigns.filter(campaign => 
+          campaign.json.name.toLowerCase().includes(searchQuery)
+        );
+      }
+
+      renderCampaigns();
+    }
+
+    // Render Campaigns
+    function renderCampaigns() {
+      const container = document.getElementById('campaignsContainer');
+      
+      if (filteredCampaigns.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>No campaigns found</h3>
+            <p>Try adjusting your filters or create a new campaign</p>
+          </div>
+        `;
+        return;
+      }
+
+      const grid = document.createElement('div');
+      grid.className = 'campaigns-grid';
+      
+      filteredCampaigns.forEach(campaign => {
+        const card = createCampaignCard(campaign.json);
+        grid.appendChild(card);
+      });
+      
+      container.innerHTML = '';
+      container.appendChild(grid);
+    }
+
+    // Create Campaign Card
+    function createCampaignCard(campaign) {
+      const card = document.createElement('div');
+      card.className = 'campaign-card';
+      
+      const budget = campaign.budget || 0;
+      const spend = campaign.spend || 0;
+      const spendPercent = budget > 0 ? ((spend / budget) * 100).toFixed(1) : 0;
+      const influencerCount = campaign.influencerCount || 0;
+      
+      // Format dates
+      const startDate = campaign.startDate ? new Date(campaign.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      const endDate = campaign.endDate ? new Date(campaign.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-title">${campaign.name || 'Untitled Campaign'}</div>
+          <span class="status-badge status-${campaign.status || 'Planning'}">
+            ${campaign.status === 'Active' ? '●' : campaign.status === 'Completed' ? '✓' : '●'} ${campaign.status || 'Planning'}
+          </span>
+        </div>
+        
+        <div class="card-section">
+          <div class="label">Campaign Budget</div>
+          <div class="value-lg">$${budget.toLocaleString()}</div>
+        </div>
+        
+        <div class="card-section">
+          <div class="label">Spend to Date</div>
+          <div class="value-md">
+            $${spend.toLocaleString()} <span class="percent">(${spendPercent}%)</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill ${spendPercent > 90 ? 'green' : ''}" style="width: ${Math.min(spendPercent, 100)}%"></div>
+          </div>
+        </div>
+        
+        <div class="card-meta">
+          <span>👥</span>
+          <span>${influencerCount} Influencer${influencerCount !== 1 ? 's' : ''}</span>
+        </div>
+        
+        <div class="card-dates">
+          <span>📅</span>
+          <span>${startDate} - ${endDate}</span>
+        </div>
+        
+        <div class="card-actions">
+          <a href="campaign-performance.html?id=${campaign.id}" class="btn-view">
+            View Campaign →
+          </a>
+          <button class="btn-delete" onclick="confirmDelete('${campaign.id}', '${campaign.name.replace(/'/g, "\\'")}')">
+            <svg fill="currentColor" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+              <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg>
+          </button>
         </div>
       `;
-      // Scroll to top to show alert
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       
-      // Auto-dismiss success messages after 3 seconds
-      if (type === 'success') {
-        setTimeout(() => {
-          alertContainer.innerHTML = '';
-        }, 3000);
-      }
+      return card;
     }
 
-    function clearAlert() {
-      alertContainer.innerHTML = '';
+    // Show Error State
+    function showError() {
+      document.getElementById('campaignsContainer').innerHTML = `
+        <div class="empty-state">
+          <h3>Error Loading Campaigns</h3>
+          <p>Failed to load campaigns. Please try again.</p>
+          <button class="btn btn-primary" onclick="loadCampaigns()" style="margin-top: 16px;">
+            Retry
+          </button>
+        </div>
+      `;
     }
 
-    function setLoading(isLoading) {
-      submitBtn.disabled = isLoading;
-      if (isLoading) {
-        submitText.innerHTML = '<span class="loading-spinner"></span>Creating...';
-      } else {
-        submitText.textContent = 'Create Campaign';
-      }
+    // Delete Campaign Functions
+    function confirmDelete(campaignId, campaignName) {
+      campaignToDelete = campaignId;
+      document.getElementById('deleteCampaignName').textContent = campaignName;
+      document.getElementById('deleteModal').classList.add('show');
     }
 
-    // ================================================
-    // Form Submission Handler
-    // ================================================
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('show');
+      campaignToDelete = null;
+    }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      clearAlert();
+    // Handle delete confirmation
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+      if (!campaignToDelete) return;
       
-      // Get form data
-      const formData = new FormData(form);
+      const btn = this;
+      btn.disabled = true;
+      btn.textContent = 'Deleting...';
       
-      // Build payload object with correct field names
-      const payload = {
-        campaignName: formData.get('campaignName').trim(),
-        status: formData.get('status'),
-        budget: parseFloat(formData.get('budget')),
-        startDate: formData.get('startDate'),
-        endDate: formData.get('endDate'),
-        objective: formData.get('objective').trim(),
-        deliverables: formData.get('deliverables').trim(),
-        targetAudience: formData.get('targetAudience').trim(),
-        hashtags: formData.get('hashtags').trim(),
-        requiredPhrases: formData.get('requiredPhrases').trim()
-      };
-
-      // Client-side validation
-      if (!payload.campaignName) {
-        showAlert('Campaign name is required');
-        return;
-      }
-
-      if (!payload.budget || payload.budget < 0) {
-        showAlert('Please enter a valid budget');
-        return;
-      }
-
-      if (!payload.startDate || !payload.endDate) {
-        showAlert('Start and end dates are required');
-        return;
-      }
-
-      // Check that end date is after start date
-      const startDate = new Date(payload.startDate);
-      const endDate = new Date(payload.endDate);
-      
-      if (endDate < startDate) {
-        showAlert('End date must be after start date');
-        return;
-      }
-
-      if (!payload.objective) {
-        showAlert('Campaign objective is required');
-        return;
-      }
-
-      // Log payload for debugging
-      console.log('📤 Sending payload:', payload);
-
-      // Set loading state
-      setLoading(true);
-
-try {
-  // Send to n8n webhook
-  const response = await fetch(API_CONFIG.createCampaign, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  });
-
-  console.log('📥 Response status:', response.status);
-  console.log('📥 Response headers:', [...response.headers.entries()]);
-  
-  // Get the raw response text first
-  const responseText = await response.text();
-  console.log('📥 Raw response text:', responseText);
-  console.log('📥 Response text length:', responseText.length);
-  
-  // Check if response is empty
-  if (!responseText || responseText.trim().length === 0) {
-    console.error('❌ Response body is empty!');
-    showAlert('Server returned empty response. Campaign may have been created - check Airtable.');
-    setLoading(false);
-    return;
-  }
-  
-  // Try to parse JSON
-  let result;
-  try {
-    result = JSON.parse(responseText);
-    console.log('✅ Parsed JSON successfully:', result);
-  } catch (parseError) {
-    console.error('❌ JSON parse error:', parseError);
-    console.error('❌ Failed to parse this text:', responseText);
-    showAlert('Server returned invalid JSON: ' + responseText.substring(0, 100));
-    setLoading(false);
-    return;
-  }
-
-  // Check if successful
-  if (response.ok && result.success) {
-    showAlert('Campaign created successfully! Redirecting...', 'success');
-    
-    // Clear draft
-    localStorage.removeItem('campaignDraft');
-    
-    // Redirect to campaigns page after short delay
-    setTimeout(() => {
-      window.location.href = 'campaigns.html';
-    }, 1500);
-    
-  } else {
-    // Handle error response
-    const errorMessage = result.error || result.message || 'Failed to create campaign';
-    showAlert(errorMessage);
-    setLoading(false);
-  }
-
-} catch (error) {
-  console.error('❌ Error creating campaign:', error);
-  showAlert('Network error: Could not connect to server. Please try again.');
-  setLoading(false);
-}
-    });
-
-    // ================================================
-    // Cancel Button Handler
-    // ================================================
-
-    cancelBtn.addEventListener('click', () => {
-      if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
-        window.location.href = 'campaigns.html';
-      }
-    });
-
-    // ================================================
-    // Date Validation
-    // ================================================
-
-    // Set minimum date to today for start date
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-    
-    const today = new Date().toISOString().split('T')[0];
-    startDateInput.setAttribute('min', today);
-
-    // Update end date minimum when start date changes
-    startDateInput.addEventListener('change', () => {
-      endDateInput.setAttribute('min', startDateInput.value);
-      
-      // If end date is now before start date, clear it
-      if (endDateInput.value && endDateInput.value < startDateInput.value) {
-        endDateInput.value = '';
-      }
-    });
-
-    // ================================================
-    // Form Auto-save (Optional)
-    // ================================================
-
-    // Save form data to localStorage on input
-    let saveTimeout;
-    const formInputs = form.querySelectorAll('input, select, textarea');
-    
-    formInputs.forEach(input => {
-      input.addEventListener('input', () => {
-        clearTimeout(saveTimeout);
-        saveTimeout = setTimeout(() => {
-          const formData = new FormData(form);
-          const data = Object.fromEntries(formData.entries());
-          localStorage.setItem('campaignDraft', JSON.stringify(data));
-          console.log('💾 Draft saved');
-        }, 1000);
-      });
-    });
-
-    // Restore draft on page load
-    window.addEventListener('DOMContentLoaded', () => {
-      const draft = localStorage.getItem('campaignDraft');
-      if (draft) {
-        try {
-          const data = JSON.parse(draft);
-          Object.keys(data).forEach(key => {
-            const input = form.querySelector(`[name="${key}"]`);
-            if (input && data[key]) {
-              input.value = data[key];
-            }
-          });
-          console.log('📝 Draft restored');
-        } catch (e) {
-          console.error('Error restoring draft:', e);
+      try {
+        const response = await fetch(API_ENDPOINTS.deleteCampaign, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            campaignId: campaignToDelete
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+          showToast('Campaign deleted successfully', 'success');
+          closeDeleteModal();
+          
+          // Reload campaigns after short delay
+          setTimeout(() => {
+            loadCampaigns();
+          }, 500);
+          
+        } else {
+          throw new Error(result.message || 'Failed to delete campaign');
         }
+        
+      } catch (error) {
+        console.error('❌ Error deleting campaign:', error);
+        showToast('Failed to delete campaign. Please try again.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Delete Campaign';
       }
     });
 
-    // Clear draft after successful submission
-    window.addEventListener('beforeunload', (e) => {
-      if (!form.checkValidity()) {
-        // Keep draft if form is incomplete
-        return;
-      }
-    });
-
+    // Toast Notification Function
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      const icon = type === 'success' 
+        ? '<svg class="toast-icon" fill="currentColor" viewBox="0 0 16 16" style="color: #10b981;"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>'
+        : '<svg class="toast-icon" fill="currentColor" viewBox="0 0 16 16" style="color: #dc2626;"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>';
+      
+      toast.innerHTML = `
+        ${icon}
+        <div class="toast-message">${message}</div>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // Auto remove after 3 seconds
+      setTimeout(() => {
+        toast.style.animation = 'slideIn 0.3s ease-out reverse';
+        setTimeout(() => {
+          if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+          }
+        }, 300);
+      }, 3000);
+    }
   </script>
 
 </body>
