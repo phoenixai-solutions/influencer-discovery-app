@@ -4,10 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Campaigns - Phoenix</title>
-  
-  <!-- Navigation Styles -->
-  <link rel="stylesheet" href="nav-styles.css">
-  
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -15,7 +11,68 @@
       background: #fafafc;
       color: #1a1a1a;
     }
-    
+    .top-bar {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #ef4444;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .user-badge {
+      width: 40px;
+      height: 40px;
+      background: #0066ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .nav-tabs {
+      background: white;
+      padding: 0 24px;
+      display: flex;
+      gap: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-tab {
+      padding: 12px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-tab.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .nav-tab:hover {
+      color: #111827;
+    }
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -30,7 +87,6 @@
     .page-title {
       font-size: 28px;
       font-weight: 700;
-      color: #111827;
     }
     .btn {
       padding: 10px 20px;
@@ -97,59 +153,10 @@
     .filter-tab.active:hover {
       background: #0052cc;
     }
-    .view-toggle {
-      display: flex;
-      gap: 8px;
-    }
-    .view-btn {
-      padding: 8px;
-      border: none;
-      background: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .view-btn.active {
-      background: #eff6ff;
-      color: #0066ff;
-    }
     .campaigns-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
-    }
-    .campaigns-list {
-      display: none;
-    }
-    .campaigns-list.active {
-      display: block;
-    }
-    .list-item {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 20px 24px;
-      margin-bottom: 12px;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 150px;
-      gap: 16px;
-      align-items: center;
-      transition: box-shadow 0.2s;
-    }
-    .list-item:hover {
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .list-name {
-      font-weight: 600;
-      color: #111827;
-    }
-    .list-value {
-      font-size: 14px;
-      color: #374151;
-    }
-    .list-label {
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 2px;
     }
     .campaign-card {
       background: white;
@@ -181,19 +188,19 @@
       font-weight: 500;
       white-space: nowrap;
     }
-    .status-active {
+    .status-active, .status-Active {
       background: #0066ff;
       color: white;
     }
-    .status-completed {
+    .status-completed, .status-Completed {
       background: #10b981;
       color: white;
     }
-    .status-planning {
+    .status-planning, .status-Planning {
       background: #6b7280;
       color: white;
     }
-    .status-paused {
+    .status-paused, .status-Paused {
       background: #f59e0b;
       color: white;
     }
@@ -254,8 +261,13 @@
       align-items: center;
       gap: 6px;
     }
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
     .btn-view {
-      width: 100%;
+      flex: 1;
       background: #eff6ff;
       color: #0066ff;
       padding: 10px;
@@ -263,40 +275,201 @@
       border: none;
       font-weight: 500;
       cursor: pointer;
-      margin-top: 16px;
       font-size: 14px;
       text-decoration: none;
-      text-align: center;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .btn-view:hover {
       background: #dbeafe;
     }
-    .loading-state {
+    .btn-delete {
+      background: white;
+      border: 1px solid #e5e7eb;
+      color: #dc2626;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-delete:hover {
+      background: #fef2f2;
+      border-color: #dc2626;
+    }
+    .btn-delete svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* Loading State */
+    .loading {
       text-align: center;
-      padding: 60px 24px;
+      padding: 60px 20px;
       color: #6b7280;
     }
-    .loading-spinner {
+    .spinner {
       width: 40px;
       height: 40px;
-      border: 4px solid #e5e7eb;
+      border: 3px solid #e5e7eb;
       border-top-color: #0066ff;
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: spin 0.8s linear infinite;
       margin: 0 auto 16px;
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    
+    /* Empty State */
     .empty-state {
       text-align: center;
-      padding: 60px 24px;
+      padding: 60px 20px;
       color: #6b7280;
+    }
+    .empty-state h3 {
+      font-size: 18px;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+    
+    /* Confirmation Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .modal-icon {
+      width: 48px;
+      height: 48px;
+      background: #fef2f2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #dc2626;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .modal-body {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .modal-campaign-name {
+      font-weight: 600;
+      color: #111827;
+    }
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    .btn-cancel {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-cancel:hover {
+      background: #f9fafb;
+    }
+    .btn-confirm-delete {
+      background: #dc2626;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-confirm-delete:hover {
+      background: #b91c1c;
+    }
+    .btn-confirm-delete:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
       background: white;
       border: 1px solid #e5e7eb;
       border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 300px;
+      animation: slideIn 0.3s ease-out;
     }
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    .toast-success {
+      border-left: 4px solid #10b981;
+    }
+    .toast-error {
+      border-left: 4px solid #dc2626;
+    }
+    .toast-icon {
+      width: 20px;
+      height: 20px;
+    }
+    .toast-message {
+      flex: 1;
+      font-size: 14px;
+      color: #111827;
+    }
+    
     @media (max-width: 1024px) {
       .campaigns-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -311,8 +484,22 @@
 </head>
 <body>
 
-  <!-- Navigation (auto-injected) -->
-  <div id="app-navigation"></div>
+  <!-- Top Navigation -->
+  <div class="top-bar">
+    <div class="logo-area">
+      <div class="logo-icon">P</div>
+      <span class="logo-text">Influencer Management</span>
+    </div>
+    <div class="user-badge">JD</div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <a href="index.html" class="nav-tab">Find Influencers</a>
+    <a href="campaigns.html" class="nav-tab active">Manage Campaigns</a>
+    <a href="#" class="nav-tab">Performance</a>
+    <a href="#" class="nav-tab">Share of Voice</a>
+  </div>
 
   <!-- Main Content -->
   <div class="container">
@@ -329,366 +516,315 @@
     <!-- Filter Bar -->
     <div class="filter-bar">
       <div class="filter-left">
-        <input type="text" class="search-box" placeholder="🔍 Search campaigns..." id="searchBox" />
+        <input type="text" id="searchBox" class="search-box" placeholder="🔍 Search campaigns..." />
         <div class="filter-tabs">
-          <button class="filter-tab active" data-filter="all">All</button>
-          <button class="filter-tab" data-filter="Active">Active</button>
-          <button class="filter-tab" data-filter="Planning">Planning</button>
-          <button class="filter-tab" data-filter="Completed">Completed</button>
-          <button class="filter-tab" data-filter="Paused">Paused</button>
+          <button class="filter-tab active" data-status="all">All</button>
+          <button class="filter-tab" data-status="Active">Active</button>
+          <button class="filter-tab" data-status="Planning">Planning</button>
+          <button class="filter-tab" data-status="Completed">Completed</button>
+          <button class="filter-tab" data-status="Paused">Paused</button>
         </div>
       </div>
-      <div class="view-toggle">
-        <button class="view-btn active" title="Card View">⊞</button>
-        <button class="view-btn" title="List View">☰</button>
-      </div>
-    </div>
-
-    <!-- Loading State -->
-    <div id="loadingState" class="loading-state">
-      <div class="loading-spinner"></div>
-      <p>Loading campaigns...</p>
-    </div>
-
-    <!-- Empty State -->
-    <div id="emptyState" class="empty-state" style="display: none;">
-      <p style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No campaigns yet</p>
-      <p style="margin-bottom: 20px;">Create your first campaign to get started</p>
-      <button class="btn btn-primary" onclick="window.location.href='create-campaign.html'">
-        <span>+</span>
-        <span>Create Campaign</span>
-      </button>
     </div>
 
     <!-- Campaigns Grid -->
-    <div id="campaignsGrid" class="campaigns-grid" style="display: none;">
-      <!-- Campaign cards will be injected here -->
-    </div>
-
-    <!-- Campaigns List -->
-    <div id="campaignsList" class="campaigns-list" style="display: none;">
-      <!-- Campaign list items will be injected here -->
+    <div id="campaignsContainer">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading campaigns...</p>
+      </div>
     </div>
 
   </div>
 
-  <!-- Page Scripts -->
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </svg>
+        </div>
+        <h3 class="modal-title">Delete Campaign</h3>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete <span class="modal-campaign-name" id="deleteCampaignName"></span>? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+        <button class="btn-confirm-delete" id="confirmDeleteBtn">Delete Campaign</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // API Configuration
     const API_ENDPOINTS = {
       getCampaigns: 'https://phoenixaisolutions.app.n8n.cloud/webhook/get-campaigns',
-      createCampaign: 'https://phoenixaisolutions.app.n8n.cloud/webhook/create-campaign'
+      deleteCampaign: 'https://phoenixaisolutions.app.n8n.cloud/webhook/delete-campaign'
     };
 
     // State
     let allCampaigns = [];
-    let currentFilter = 'all';
-    let currentView = 'grid'; // 'grid' or 'list'
+    let filteredCampaigns = [];
+    let currentStatusFilter = 'all';
+    let searchQuery = '';
+    let campaignToDelete = null;
 
-    // Initialize
+    // Load campaigns on page load
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('Page loaded, starting to fetch campaigns...');
       loadCampaigns();
-      setupFilterListeners();
-      setupSearchListener();
-      setupViewToggle();
+      setupEventListeners();
     });
 
-    // Load campaigns from Airtable
+    // Setup Event Listeners
+    function setupEventListeners() {
+      // Status filter tabs
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentStatusFilter = tab.dataset.status;
+          filterAndRenderCampaigns();
+        });
+      });
+
+      // Search box
+      document.getElementById('searchBox').addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+        filterAndRenderCampaigns();
+      });
+
+      // Close modal on outside click
+      document.getElementById('deleteModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) {
+          closeDeleteModal();
+        }
+      });
+    }
+
+    // Load Campaigns from API
     async function loadCampaigns() {
-      console.log('Fetching from:', API_ENDPOINTS.getCampaigns);
+      try {
+        const response = await fetch(API_ENDPOINTS.getCampaigns);
+        const data = await response.json();
+        
+        // Handle the wrapped format from n8n
+        allCampaigns = Array.isArray(data) ? data : [];
+        
+        console.log('📦 Loaded campaigns:', allCampaigns.length);
+        
+        filterAndRenderCampaigns();
+      } catch (error) {
+        console.error('❌ Error loading campaigns:', error);
+        showError();
+      }
+    }
+
+    // Filter and Render Campaigns
+    function filterAndRenderCampaigns() {
+      // Filter by status
+      if (currentStatusFilter === 'all') {
+        filteredCampaigns = allCampaigns;
+      } else {
+        filteredCampaigns = allCampaigns.filter(campaign => 
+          campaign.json.status === currentStatusFilter
+        );
+      }
+
+      // Filter by search query
+      if (searchQuery) {
+        filteredCampaigns = filteredCampaigns.filter(campaign => 
+          campaign.json.name.toLowerCase().includes(searchQuery)
+        );
+      }
+
+      renderCampaigns();
+    }
+
+    // Render Campaigns
+    function renderCampaigns() {
+      const container = document.getElementById('campaignsContainer');
       
-      // Add a timeout warning
-      const timeoutWarning = setTimeout(() => {
-        document.getElementById('loadingState').innerHTML = `
-          <div class="loading-spinner"></div>
-          <p>Still loading... This is taking longer than expected.</p>
-          <p style="font-size: 13px; color: #6b7280; margin-top: 8px;">The server might be processing a large dataset.</p>
+      if (filteredCampaigns.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>No campaigns found</h3>
+            <p>Try adjusting your filters or create a new campaign</p>
+          </div>
         `;
-      }, 5000); // Show warning after 5 seconds
+        return;
+      }
+
+      const grid = document.createElement('div');
+      grid.className = 'campaigns-grid';
+      
+      filteredCampaigns.forEach(campaign => {
+        const card = createCampaignCard(campaign.json);
+        grid.appendChild(card);
+      });
+      
+      container.innerHTML = '';
+      container.appendChild(grid);
+    }
+
+    // Create Campaign Card
+    function createCampaignCard(campaign) {
+      const card = document.createElement('div');
+      card.className = 'campaign-card';
+      
+      const budget = campaign.budget || 0;
+      const spend = campaign.spend || 0;
+      const spendPercent = budget > 0 ? ((spend / budget) * 100).toFixed(1) : 0;
+      const influencerCount = campaign.influencerCount || 0;
+      
+      // Format dates
+      const startDate = campaign.startDate ? new Date(campaign.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      const endDate = campaign.endDate ? new Date(campaign.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-title">${campaign.name || 'Untitled Campaign'}</div>
+          <span class="status-badge status-${campaign.status || 'Planning'}">
+            ${campaign.status === 'Active' ? '●' : campaign.status === 'Completed' ? '✓' : '●'} ${campaign.status || 'Planning'}
+          </span>
+        </div>
+        
+        <div class="card-section">
+          <div class="label">Campaign Budget</div>
+          <div class="value-lg">$${budget.toLocaleString()}</div>
+        </div>
+        
+        <div class="card-section">
+          <div class="label">Spend to Date</div>
+          <div class="value-md">
+            $${spend.toLocaleString()} <span class="percent">(${spendPercent}%)</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill ${spendPercent > 90 ? 'green' : ''}" style="width: ${Math.min(spendPercent, 100)}%"></div>
+          </div>
+        </div>
+        
+        <div class="card-meta">
+          <span>👥</span>
+          <span>${influencerCount} Influencer${influencerCount !== 1 ? 's' : ''}</span>
+        </div>
+        
+        <div class="card-dates">
+          <span>📅</span>
+          <span>${startDate} - ${endDate}</span>
+        </div>
+        
+        <div class="card-actions">
+          <a href="campaign-performance.html?id=${campaign.id}" class="btn-view">
+            View Campaign →
+          </a>
+          <button class="btn-delete" onclick="confirmDelete('${campaign.id}', '${campaign.name.replace(/'/g, "\\'")}')">
+            <svg fill="currentColor" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+              <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg>
+          </button>
+        </div>
+      `;
+      
+      return card;
+    }
+
+    // Show Error State
+    function showError() {
+      document.getElementById('campaignsContainer').innerHTML = `
+        <div class="empty-state">
+          <h3>Error Loading Campaigns</h3>
+          <p>Failed to load campaigns. Please try again.</p>
+          <button class="btn btn-primary" onclick="loadCampaigns()" style="margin-top: 16px;">
+            Retry
+          </button>
+        </div>
+      `;
+    }
+
+    // Delete Campaign Functions
+    function confirmDelete(campaignId, campaignName) {
+      campaignToDelete = campaignId;
+      document.getElementById('deleteCampaignName').textContent = campaignName;
+      document.getElementById('deleteModal').classList.add('show');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('show');
+      campaignToDelete = null;
+    }
+
+    // Handle delete confirmation
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+      if (!campaignToDelete) return;
+      
+      const btn = this;
+      btn.disabled = true;
+      btn.textContent = 'Deleting...';
       
       try {
-        const response = await fetch(API_ENDPOINTS.getCampaigns, {
-          signal: AbortSignal.timeout(30000) // 30 second timeout
+        const response = await fetch(API_ENDPOINTS.deleteCampaign, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            campaignId: campaignToDelete
+          })
         });
         
-        clearTimeout(timeoutWarning);
+        const result = await response.json();
         
-        console.log('Response status:', response.status);
-        console.log('Response OK:', response.ok);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const campaigns = await response.json();
-        
-        console.log('Loaded campaigns:', campaigns);
-        console.log('Number of campaigns:', campaigns.length);
-        
-        allCampaigns = campaigns;
-        
-        // Hide loading, show content
-        document.getElementById('loadingState').style.display = 'none';
-        
-        if (campaigns.length === 0) {
-          document.getElementById('emptyState').style.display = 'block';
+        if (response.ok && result.success) {
+          showToast('Campaign deleted successfully', 'success');
+          closeDeleteModal();
+          
+          // Reload campaigns after short delay
+          setTimeout(() => {
+            loadCampaigns();
+          }, 500);
+          
         } else {
-          document.getElementById('campaignsGrid').style.display = 'grid';
-          renderCampaigns(campaigns);
+          throw new Error(result.message || 'Failed to delete campaign');
         }
         
       } catch (error) {
-        clearTimeout(timeoutWarning);
-        console.error('Error loading campaigns:', error);
-        
-        if (error.name === 'TimeoutError') {
-          document.getElementById('loadingState').innerHTML = `
-            <p style="color: #f59e0b; font-weight: 600;">⚠️ Request Timeout</p>
-            <p style="margin-top: 8px;">The server took too long to respond. This might be due to a slow network or server processing.</p>
-            <button class="btn btn-primary" onclick="loadCampaigns()" style="margin-top: 16px;">
-              Try Again
-            </button>
-          `;
-        } else {
-          document.getElementById('loadingState').innerHTML = `
-            <p style="color: #ef4444; font-weight: 600;">Error loading campaigns</p>
-            <p style="margin-top: 8px;">${error.message}</p>
-            <button class="btn btn-primary" onclick="loadCampaigns()" style="margin-top: 16px;">
-              Try Again
-            </button>
-          `;
-        }
+        console.error('❌ Error deleting campaign:', error);
+        showToast('Failed to delete campaign. Please try again.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Delete Campaign';
       }
-    }
-
-    // Render campaigns
-    function renderCampaigns(campaigns) {
-      const grid = document.getElementById('campaignsGrid');
-      const list = document.getElementById('campaignsList');
-      
-      if (campaigns.length === 0) {
-        grid.style.display = 'none';
-        list.style.display = 'none';
-        document.getElementById('emptyState').style.display = 'block';
-        return;
-      }
-      
-      // DEBUG: Log the first campaign to see its structure
-      console.log('First campaign structure:', JSON.stringify(campaigns[0], null, 2));
-      
-      document.getElementById('emptyState').style.display = 'none';
-      
-      if (currentView === 'grid') {
-        grid.style.display = 'grid';
-        list.style.display = 'none';
-        grid.innerHTML = campaigns.map(campaign => createCampaignCard(campaign)).join('');
-      } else {
-        grid.style.display = 'none';
-        list.style.display = 'block';
-        list.innerHTML = campaigns.map(campaign => createCampaignListItem(campaign)).join('');
-      }
-    }
-
-    // Create campaign card HTML
-    function createCampaignCard(campaign) {
-      // Data is wrapped in .json property
-      const data = campaign.json || campaign;
-      
-      // Safety checks for all fields
-      const status = data.status || 'Planning';
-      const statusClass = `status-${status.toLowerCase()}`;
-      const statusIcon = getStatusIcon(status);
-      const budget = data.budget || 0;
-      const spend = data.spend || 0;
-      const spendPercent = data.spendPercent || 0;
-      const influencerCount = data.influencerCount || 0;
-      const name = data.name || 'Untitled Campaign';
-      const id = data.id || '';
-      const progressClass = spendPercent >= 90 ? 'green' : '';
-      
-      // Format dates
-      const startDate = data.startDate ? new Date(data.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
-      const endDate = data.endDate ? new Date(data.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
-      const dateRange = startDate && endDate ? `${startDate} - ${endDate}` : 'Dates TBD';
-      
-      return `
-        <div class="campaign-card" data-status="${status}">
-          <div class="card-header">
-            <div class="card-title">${name}</div>
-            <span class="status-badge ${statusClass}">${statusIcon} ${status}</span>
-          </div>
-          
-          <div class="card-section">
-            <div class="label">Campaign Budget</div>
-            <div class="value-lg">$${budget.toLocaleString()}</div>
-          </div>
-          
-          <div class="card-section">
-            <div class="label">Spend to Date</div>
-            <div class="value-md">
-              $${spend.toLocaleString()} <span class="percent">(${spendPercent}%)</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill ${progressClass}" style="width: ${spendPercent}%"></div>
-            </div>
-          </div>
-          
-          <div class="card-meta">
-            <span>👥</span>
-            <span>${influencerCount} Influencer${influencerCount !== 1 ? 's' : ''}</span>
-          </div>
-          
-          <div class="card-dates">
-            <span>📅</span>
-            <span>${dateRange}</span>
-          </div>
-          
-          <a href="campaign-performance.html?id=${id}" class="btn-view">View Campaign →</a>
-        </div>
-      `;
-    }
-
-    // Get status icon
-    function getStatusIcon(status) {
-      const icons = {
-        'Active': '●',
-        'Planning': '●',
-        'Completed': '✓',
-        'Paused': '●'
-      };
-      return icons[status] || '●';
-    }
-
-    // Create campaign list item HTML
-    function createCampaignListItem(campaign) {
-      const data = campaign.json || campaign;
-      const status = data.status || 'Planning';
-      const statusClass = `status-${status.toLowerCase()}`;
-      const statusIcon = getStatusIcon(status);
-      const budget = data.budget || 0;
-      const spend = data.spend || 0;
-      const spendPercent = data.spendPercent || 0;
-      const influencerCount = data.influencerCount || 0;
-      const name = data.name || 'Untitled Campaign';
-      const id = data.id || '';
-      
-      const startDate = data.startDate ? new Date(data.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
-      const endDate = data.endDate ? new Date(data.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
-      const dateRange = startDate && endDate ? `${startDate} - ${endDate}` : 'Dates TBD';
-      
-      return `
-        <div class="list-item">
-          <div>
-            <div class="list-name">${name}</div>
-            <span class="status-badge ${statusClass}" style="margin-top: 4px; display: inline-block;">${statusIcon} ${status}</span>
-          </div>
-          <div>
-            <div class="list-label">Budget</div>
-            <div class="list-value">$${budget.toLocaleString()}</div>
-          </div>
-          <div>
-            <div class="list-label">Spend</div>
-            <div class="list-value">$${spend.toLocaleString()} (${spendPercent}%)</div>
-          </div>
-          <div>
-            <div class="list-label">Influencers</div>
-            <div class="list-value">${influencerCount}</div>
-          </div>
-          <div>
-            <div class="list-label">Dates</div>
-            <div class="list-value">${dateRange}</div>
-          </div>
-          <div>
-            <a href="campaign-performance.html?id=${id}" class="btn-view" style="margin-top: 0;">View Campaign →</a>
-          </div>
-        </div>
-      `;
-    }
-
-    // Setup view toggle
-    function setupViewToggle() {
-      const viewBtns = document.querySelectorAll('.view-btn');
-      viewBtns.forEach((btn, index) => {
-        btn.addEventListener('click', () => {
-          // Update active state
-          viewBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          
-          // Switch view
-          currentView = index === 0 ? 'grid' : 'list';
-          renderCampaigns(allCampaigns.filter(c => {
-            if (currentFilter === 'all') return true;
-            const data = c.json || c;
-            return data.status === currentFilter;
-          }));
-        });
-      });
-    }
-
-    // Filter campaigns
-    function filterCampaigns(filter) {
-      currentFilter = filter;
-      
-      let filtered = allCampaigns;
-      
-      // Apply status filter
-      if (filter !== 'all') {
-        filtered = filtered.filter(c => {
-          const data = c.json || c;
-          return data.status === filter;
-        });
-      }
-      
-      // Apply search filter
-      const searchTerm = document.getElementById('searchBox').value.toLowerCase();
-      if (searchTerm) {
-        filtered = filtered.filter(c => {
-          const data = c.json || c;
-          return (data.name && data.name.toLowerCase().includes(searchTerm)) ||
-                 (data.client && data.client.toLowerCase().includes(searchTerm));
-        });
-      }
-      
-      renderCampaigns(filtered);
-    }
-
-    // Setup filter button listeners
-    function setupFilterListeners() {
-      document.querySelectorAll('.filter-tab').forEach(btn => {
-        btn.addEventListener('click', () => {
-          // Update active state
-          document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          
-          // Filter campaigns
-          const filter = btn.dataset.filter;
-          filterCampaigns(filter);
-        });
-      });
-    }
-
-    // Setup search listener
-    function setupSearchListener() {
-      const searchBox = document.getElementById('searchBox');
-      let searchTimeout;
-      
-      searchBox.addEventListener('input', () => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-          filterCampaigns(currentFilter);
-        }, 300);
-      });
-    }
-  </script>
-
-  <!-- Navigation Script -->
-  <script src="nav-component.js"></script>
-  <script>
-    PhoenixNav.init({
-      currentPage: 'campaigns',
-      currentSubPage: 'overview'
     });
+
+    // Toast Notification Function
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      const icon = type === 'success' 
+        ? '<svg class="toast-icon" fill="currentColor" viewBox="0 0 16 16" style="color: #10b981;"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>'
+        : '<svg class="toast-icon" fill="currentColor" viewBox="0 0 16 16" style="color: #dc2626;"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>';
+      
+      toast.innerHTML = `
+        ${icon}
+        <div class="toast-message">${message}</div>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // Auto remove after 3 seconds
+      setTimeout(() => {
+        toast.style.animation = 'slideIn 0.3s ease-out reverse';
+        setTimeout(() => {
+          if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+          }
+        }, 300);
+      }, 3000);
+    }
   </script>
 
 </body>
