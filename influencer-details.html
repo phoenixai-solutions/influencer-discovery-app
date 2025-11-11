@@ -1,754 +1,733 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Influencer Details</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@thefitfoodie - Influencer Profile</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
     }
-    .header {
+    .top-bar {
       background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .back-btn {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .back-btn:hover {
-      background: #0056b3;
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #ef4444;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .user-badge {
+      width: 40px;
+      height: 40px;
+      background: #0066ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .nav-tabs {
+      background: white;
+      padding: 0 24px;
+      display: flex;
+      gap: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-tab {
+      padding: 12px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-tab.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
     }
     .container {
       max-width: 1200px;
       margin: 0 auto;
+      padding: 32px 24px;
     }
+    .back-link {
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+    .back-link:hover {
+      color: #111827;
+    }
+    
+    /* Profile Header */
     .profile-header {
       background: white;
-      padding: 30px;
+      border: 1px solid #e5e7eb;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+      padding: 32px;
+      margin-bottom: 24px;
       display: flex;
-      gap: 30px;
-      align-items: start;
+      gap: 32px;
+      align-items: flex-start;
     }
     .profile-avatar {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #eee;
+      border: 4px solid #f3f4f6;
+      flex-shrink: 0;
     }
-    .profile-info {
+    .profile-main {
       flex: 1;
+    }
+    .profile-name-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
     }
     .profile-name {
       font-size: 28px;
-      font-weight: 600;
-      margin-bottom: 5px;
+      font-weight: 700;
+      margin-bottom: 4px;
     }
-    .profile-username {
-      color: #666;
-      font-size: 18px;
-      margin-bottom: 10px;
+    .profile-handle {
+      font-size: 16px;
+      color: #6b7280;
+      margin-bottom: 8px;
     }
-    .profile-bio {
-      color: #333;
-      margin: 15px 0;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-    .profile-location {
-      color: #666;
+    .profile-badges {
       display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 10px;
-    }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-    .stat-card {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .stat-label {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-    .stat-value {
-      font-size: 24px;
-      font-weight: 600;
-      color: #333;
-    }
-    .section {
-      background: white;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-    .section-title {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #333;
-      border-bottom: 2px solid #f0f0f0;
-      padding-bottom: 10px;
-    }
-    .hashtags-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .hashtag {
-      background: #e3f2fd;
-      color: #1976d2;
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 14px;
-    }
-    .hashtag-count {
-      background: #1976d2;
-      color: white;
-      padding: 2px 8px;
-      border-radius: 10px;
-      margin-left: 5px;
-      font-size: 12px;
-    }
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-    }
-    .info-item {
-      padding: 10px 0;
-    }
-    .info-label {
-      color: #666;
-      font-size: 13px;
-      margin-bottom: 5px;
-    }
-    .info-value {
-      color: #333;
-      font-weight: 500;
-      font-size: 15px;
-    }
-    .link-item {
-      color: #1976d2;
-      text-decoration: none;
-      word-break: break-all;
-    }
-    .link-item:hover {
-      text-decoration: underline;
+      gap: 8px;
+      margin-bottom: 16px;
     }
     .badge {
-      display: inline-block;
       padding: 4px 12px;
       border-radius: 12px;
       font-size: 12px;
+      font-weight: 500;
+    }
+    .badge-verified {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .badge-tier {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .profile-bio {
+      color: #374151;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .profile-meta {
+      display: flex;
+      gap: 24px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .profile-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: #0066ff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0052cc;
+    }
+    .btn-secondary {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+    .btn-secondary:hover {
+      background: #f9fafb;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .stat-change {
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .stat-change.positive {
+      color: #10b981;
+    }
+    .stat-change.negative {
+      color: #ef4444;
+    }
+
+    /* Content Sections */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 18px;
       font-weight: 600;
-      margin-right: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f3f4f6;
     }
-    .badge-blue {
-      background: #e3f2fd;
-      color: #1976d2;
+    
+    /* Topics/Hashtags */
+    .topics-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .badge-green {
-      background: #e8f5e9;
-      color: #4caf50;
+    .topic-pill {
+      background: #eff6ff;
+      color: #1e40af;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 500;
     }
-    .badge-orange {
-      background: #fff3e0;
-      color: #ff9800;
+    .topic-count {
+      background: #1e40af;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 8px;
+      margin-left: 6px;
+      font-size: 11px;
     }
+
+    /* Info Grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .info-item {
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .info-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .info-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    .info-value {
+      color: #111827;
+      font-weight: 500;
+    }
+    .link-value {
+      color: #0066ff;
+      text-decoration: none;
+    }
+    .link-value:hover {
+      text-decoration: underline;
+    }
+
+    /* Recent Posts */
     .posts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
     .post-card {
-      border: 1px solid #e0e0e0;
+      border: 1px solid #e5e7eb;
       border-radius: 8px;
       overflow: hidden;
+      transition: box-shadow 0.2s;
     }
-    .post-media {
+    .post-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .post-image {
       width: 100%;
-      height: 300px;
-      object-fit: cover;
-    }
-    .post-content {
-      padding: 15px;
-    }
-    .post-caption {
-      font-size: 14px;
-      color: #333;
-      margin-bottom: 10px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 48px;
     }
     .post-stats {
+      padding: 12px;
       display: flex;
-      gap: 15px;
-      color: #666;
+      justify-content: space-around;
       font-size: 13px;
-      margin-top: 10px;
+      color: #6b7280;
+      background: #f9fafb;
     }
-    .growth-chart {
+    .post-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Audience Demographics */
+    .demo-bar {
+      margin-bottom: 16px;
+    }
+    .demo-label {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .growth-item {
-      flex: 1;
-      text-align: center;
-      padding: 15px;
-      background: #f5f5f5;
-      border-radius: 8px;
-    }
-    .growth-label {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 5px;
-    }
-    .growth-value {
-      font-size: 20px;
-      font-weight: 600;
-      color: #4caf50;
-    }
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: #666;
-    }
-    .error {
-      background: #ffebee;
-      color: #c62828;
-      padding: 20px;
-      border-radius: 8px;
-      margin: 20px 0;
-    }
-    .chart-container {
-      position: relative;
-      height: 300px;
-      margin-top: 20px;
-    }
-    .chart-bars {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-around;
-      height: 250px;
-      padding: 20px 0;
-      border-bottom: 2px solid #e0e0e0;
-      gap: 5px;
-    }
-    .chart-bar-group {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-    .chart-bar {
-      width: 100%;
-      max-width: 25px;
-      min-width: 15px;
-      border-radius: 4px 4px 0 0;
-      transition: opacity 0.2s;
-      cursor: pointer;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .chart-bar:hover {
-      opacity: 0.8;
-    }
-    .chart-bar-likes {
-      background: #ec4899;
-    }
-    .chart-bar-comments {
-      background: #8b5cf6;
-    }
-    .chart-label {
-      font-size: 11px;
-      color: #666;
-      margin-top: 8px;
-      text-align: center;
-    }
-    .chart-legend {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin-top: 15px;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      margin-bottom: 6px;
       font-size: 14px;
     }
-    .legend-color {
-      width: 16px;
-      height: 16px;
-      border-radius: 3px;
+    .demo-bar-track {
+      width: 100%;
+      height: 24px;
+      background: #f3f4f6;
+      border-radius: 4px;
+      overflow: hidden;
     }
-    .top-stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
-      padding: 25px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      margin-bottom: 20px;
+    .demo-bar-fill {
+      height: 100%;
+      background: #0066ff;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
     }
-    .top-stat {
-      text-align: center;
-    }
-    .top-stat-value {
-      font-size: 32px;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 5px;
-    }
-    .top-stat-label {
-      font-size: 13px;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      .posts-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
 <body>
-<!-- ✅ Global Header Navigation -->
-<header style="background:#ffffff; border-bottom:1px solid #e5e7eb; padding:12px 24px; font-family: Inter, sans-serif;">
-  <nav style="display:flex; align-items:center; justify-content:space-between; max-width:1200px; margin:0 auto;">
-    
-    <!-- Logo / Brand -->
-    <div style="font-weight:600; font-size:18px; color:#2563EB;">
-      Creator Discovery
+
+  <!-- Top Navigation -->
+  <div class="top-bar">
+    <div class="logo-area">
+      <div class="logo-icon">P</div>
+      <span class="logo-text">Influencer Management</span>
     </div>
-
-    <!-- Menu -->
-    <ul style="display:flex; gap:24px; list-style:none; margin:0; padding:0; font-size:14px; font-weight:500;">
-      <li><a href="index.html" style="text-decoration:none; color:#111827;">Find Influencers</a></li>
-      <li><a href="#" style="text-decoration:none; color:#6B7280;">Manage Influencers</a></li>
-      <li><a href="#" style="text-decoration:none; color:#6B7280;">Campaigns</a></li>
-      <li><a href="#" style="text-decoration:none; color:#6B7280;">Share of Voice</a></li>
-    </ul>
-
-  </nav>
-</header>
-
-
-  <div class="container">
-    <div id="loading" class="loading">Loading profile...</div>
-    <div id="error" class="error" style="display:none;"></div>
-    <div id="content" style="display:none;"></div>
+    <div class="user-badge">JD</div>
   </div>
 
-  <script>
-    const MAKE_DETAILS_WEBHOOK = "https://hook.eu2.make.com/xuaaoh6ikispwj6lwirfw4zgi32hdsr1";
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <a href="#" class="nav-tab active">Find Influencers</a>
+    <a href="#" class="nav-tab">Manage Campaigns</a>
+    <a href="#" class="nav-tab">Performance</a>
+    <a href="#" class="nav-tab">Share of Voice</a>
+  </div>
 
-    // ========== FORMAT NUMBERS ==========
-    function formatNumber(num) {
-      if (!num && num !== 0) return "N/A";
-      if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-      if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-      return num.toString();
-    }
+  <!-- Main Content -->
+  <div class="container">
+    
+    <a href="#" class="back-link">← Back to Search Results</a>
 
-    function formatPercent(num) {
-      if (!num && num !== 0) return "N/A";
-      return num.toFixed(2) + "%";
-    }
-
-    // ========== LOAD DETAILS ==========
-    async function loadDetails() {
-      const params = new URLSearchParams(location.search);
-      const platform = params.get("platform") || "instagram";
-      const handle = (params.get("handle") || "").replace(/^@/, "");
-
-      if (!handle) {
-        showError("No handle provided");
-        return;
-      }
-
-      try {
-        const resp = await fetch(MAKE_DETAILS_WEBHOOK, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ platform, handle })
-        });
-
-        if (!resp.ok) throw new Error("Failed to fetch data");
-
-        const data = await resp.json();
-        console.log("API Response:", data);
-
-        // Extract the result
-        const result = data?.result || data;
-        if (!result) throw new Error("No data returned");
-
-        renderProfile(result, platform, handle);
-      } catch (error) {
-        console.error("Error:", error);
-        showError("Failed to load profile: " + error.message);
-      }
-    }
-
-    // ========== RENDER PROFILE ==========
-    function renderProfile(result, platform, handle) {
-      const instagram = result.instagram || {};
-      const rootData = result;
-
-      // Build HTML
-      const html = `
-        <div class="profile-header">
-          <img 
-            src="${instagram.profile_picture || instagram.profile_picture_hd || ''}" 
-            alt="Profile" 
-            class="profile-avatar"
-            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'"
-          />
-          <div class="profile-info">
-            <div class="profile-name">
-              ${instagram.full_name || rootData.first_name || handle}
-              ${instagram.is_verified ? '<span style="color: #1976d2;">✓</span>' : ''}
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <img src="data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='60' r='60' fill='%23667eea'/%3E%3C/svg%3E" class="profile-avatar" alt="Profile" />
+      
+      <div class="profile-main">
+        <div class="profile-name-section">
+          <div>
+            <h1 class="profile-name">Samantha Lee</h1>
+            <div class="profile-handle">@thefitfoodie</div>
+            <div class="profile-badges">
+              <span class="badge badge-verified">✓ Verified</span>
+              <span class="badge badge-tier">Micro Influencer</span>
             </div>
-            <div class="profile-username">@${instagram.username || handle} • ${platform}</div>
-            
-            <div style="margin: 10px 0;">
-              ${instagram.is_business_account ? '<span class="badge badge-blue">Business</span>' : ''}
-              ${rootData.is_creator ? '<span class="badge badge-green">Creator</span>' : ''}
-              ${instagram.video_content_creator ? '<span class="badge badge-orange">Video Creator</span>' : ''}
-            </div>
-
-            ${instagram.biography ? `<div class="profile-bio">${instagram.biography}</div>` : ''}
-            
-            ${rootData.location ? `<div class="profile-location">📍 ${rootData.location}</div>` : ''}
-            ${rootData.email ? `<div class="profile-location">✉️ <a href="mailto:${rootData.email}">${rootData.email}</a></div>` : ''}
-            ${instagram.contact_phone_number ? `<div class="profile-location">📞 ${instagram.contact_phone_number}</div>` : ''}
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-primary">Add to Campaign</button>
+            <button class="btn btn-secondary">Save</button>
           </div>
         </div>
-
-        <div class="top-stats-row">
-          <div class="top-stat">
-            <div class="top-stat-value">${formatNumber(instagram.follower_count)}</div>
-            <div class="top-stat-label">Followers</div>
+        
+        <p class="profile-bio">
+          Health & wellness advocate 🥗 | Sharing my fitness journey and nutritious recipes | 
+          California-based | Partner inquiries: samantha@fitfoodie.com
+        </p>
+        
+        <div class="profile-meta">
+          <div class="profile-meta-item">
+            <span>📍</span>
+            <span>Los Angeles, CA</span>
           </div>
-          <div class="top-stat">
-            <div class="top-stat-value">${Math.round(instagram.avg_likes || 0)}</div>
-            <div class="top-stat-label">Likes</div>
+          <div class="profile-meta-item">
+            <span>🔗</span>
+            <a href="#" class="link-value">fitfoodie.com</a>
           </div>
-          <div class="top-stat">
-            <div class="top-stat-value">${formatPercent(instagram.engagement_percent)}</div>
-            <div class="top-stat-label">Eng. Rate</div>
-          </div>
-          <div class="top-stat">
-            <div class="top-stat-value">${formatNumber(Math.round((instagram.follower_count || 0) * (instagram.engagement_percent || 0) / 100))}</div>
-            <div class="top-stat-label">Reach</div>
+          <div class="profile-meta-item">
+            <span>📧</span>
+            <span>samantha@fitfoodie.com</span>
           </div>
         </div>
+      </div>
+    </div>
 
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Followers</div>
+        <div class="stat-value">128K</div>
+        <div class="stat-change positive">↑ 5.2% (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Engagement Rate</div>
+        <div class="stat-value">3.20%</div>
+        <div class="stat-change positive">↑ 0.3% (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg. Likes</div>
+        <div class="stat-value">4,100</div>
+        <div class="stat-change positive">↑ 8.5% (30d)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg. Comments</div>
+        <div class="stat-value">220</div>
+        <div class="stat-change positive">↑ 12% (30d)</div>
+      </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      
+      <!-- Left Column -->
+      <div>
+        
+        <!-- Top Topics -->
         <div class="section">
-          <div class="section-title">Account Metrics</div>
+          <h2 class="section-title">Top Topics & Hashtags</h2>
+          <div class="topics-grid">
+            <div class="topic-pill">
+              #healthyeating
+              <span class="topic-count">42</span>
+            </div>
+            <div class="topic-pill">
+              #wellness
+              <span class="topic-count">38</span>
+            </div>
+            <div class="topic-pill">
+              #fitnessmotivation
+              <span class="topic-count">35</span>
+            </div>
+            <div class="topic-pill">
+              #cleaneating
+              <span class="topic-count">28</span>
+            </div>
+            <div class="topic-pill">
+              #mealprep
+              <span class="topic-count">24</span>
+            </div>
+            <div class="topic-pill">
+              #nutrition
+              <span class="topic-count">22</span>
+            </div>
+            <div class="topic-pill">
+              #healthylifestyle
+              <span class="topic-count">20</span>
+            </div>
+            <div class="topic-pill">
+              #plantbased
+              <span class="topic-count">18</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Posts -->
+        <div class="section">
+          <h2 class="section-title">Recent Posts</h2>
+          <div class="posts-grid">
+            <div class="post-card">
+              <div class="post-image">📸</div>
+              <div class="post-stats">
+                <div class="post-stat">
+                  <span>❤️</span>
+                  <span>4.2K</span>
+                </div>
+                <div class="post-stat">
+                  <span>💬</span>
+                  <span>230</span>
+                </div>
+                <div class="post-stat">
+                  <span>🔄</span>
+                  <span>85</span>
+                </div>
+              </div>
+            </div>
+            <div class="post-card">
+              <div class="post-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📸</div>
+              <div class="post-stats">
+                <div class="post-stat">
+                  <span>❤️</span>
+                  <span>3.8K</span>
+                </div>
+                <div class="post-stat">
+                  <span>💬</span>
+                  <span>195</span>
+                </div>
+                <div class="post-stat">
+                  <span>🔄</span>
+                  <span>72</span>
+                </div>
+              </div>
+            </div>
+            <div class="post-card">
+              <div class="post-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">📸</div>
+              <div class="post-stats">
+                <div class="post-stat">
+                  <span>❤️</span>
+                  <span>5.1K</span>
+                </div>
+                <div class="post-stat">
+                  <span>💬</span>
+                  <span>280</span>
+                </div>
+                <div class="post-stat">
+                  <span>🔄</span>
+                  <span>120</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audience Demographics -->
+        <div class="section">
+          <h2 class="section-title">Audience Demographics</h2>
+          
+          <div style="margin-bottom: 24px;">
+            <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #374151;">Age Distribution</h3>
+            <div class="demo-bar">
+              <div class="demo-label">
+                <span>18-24</span>
+                <span style="font-weight: 600;">22%</span>
+              </div>
+              <div class="demo-bar-track">
+                <div class="demo-bar-fill" style="width: 22%;">22%</div>
+              </div>
+            </div>
+            <div class="demo-bar">
+              <div class="demo-label">
+                <span>25-34</span>
+                <span style="font-weight: 600;">48%</span>
+              </div>
+              <div class="demo-bar-track">
+                <div class="demo-bar-fill" style="width: 48%;">48%</div>
+              </div>
+            </div>
+            <div class="demo-bar">
+              <div class="demo-label">
+                <span>35-44</span>
+                <span style="font-weight: 600;">20%</span>
+              </div>
+              <div class="demo-bar-track">
+                <div class="demo-bar-fill" style="width: 20%;">20%</div>
+              </div>
+            </div>
+            <div class="demo-bar">
+              <div class="demo-label">
+                <span>45+</span>
+                <span style="font-weight: 600;">10%</span>
+              </div>
+              <div class="demo-bar-track">
+                <div class="demo-bar-fill" style="width: 10%;">10%</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #374151;">Gender Split</h3>
+            <div class="demo-bar">
+              <div class="demo-label">
+                <span>Female</span>
+                <span style="font-weight: 600;">68%</span>
+              </div>
+              <div class="demo-bar-track">
+                <div class="demo-bar-fill" style="width: 68%; background: #ec4899;">68%</div>
+              </div>
+            </div>
+            <div class="demo-bar">
+              <div class="demo-label">
+                <span>Male</span>
+                <span style="font-weight: 600;">32%</span>
+              </div>
+              <div class="demo-bar-track">
+                <div class="demo-bar-fill" style="width: 32%; background: #3b82f6;">32%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        
+        <!-- Account Details -->
+        <div class="section">
+          <h2 class="section-title">Account Details</h2>
           <div class="info-grid">
             <div class="info-item">
-              <div class="info-label">Following</div>
-              <div class="info-value">${formatNumber(instagram.following_count)}</div>
-            </div>
-            <div class="info-item">
-              <div class="info-label">Total Posts</div>
-              <div class="info-value">${formatNumber(instagram.media_count)}</div>
-            </div>
-            <div class="info-item">
-              <div class="info-label">Avg Comments</div>
-              <div class="info-value">${formatNumber(instagram.avg_comments)}</div>
+              <div class="info-label">Platform</div>
+              <div class="info-value">Instagram</div>
             </div>
             <div class="info-item">
               <div class="info-label">Account Type</div>
-              <div class="info-value">${instagram.is_private ? 'Private' : 'Public'}</div>
+              <div class="info-value">Business</div>
             </div>
-          </div>
-        </div>
-
-        ${renderGrowthSection(instagram.creator_follower_growth)}
-        ${renderEngagementSection(instagram)}
-        ${renderAnalyticsChart(instagram.post_data)}
-        ${renderContentSection(instagram)}
-        ${renderHashtagsSection(instagram.hashtags_count)}
-        ${renderLinksSection(instagram.links_in_bio)}
-        ${renderRecentPostsSection(instagram.post_data)}
-      `;
-
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("content").innerHTML = html;
-      document.getElementById("content").style.display = "block";
-    }
-
-    // ========== RENDER SECTIONS ==========
-    function renderGrowthSection(growth) {
-      if (!growth) return '';
-      
-      return `
-        <div class="section">
-          <div class="section-title">Follower Growth</div>
-          <div class="growth-chart">
-            <div class="growth-item">
-              <div class="growth-label">3 Months Ago</div>
-              <div class="growth-value">+${growth['3_months_ago']}%</div>
+            <div class="info-item">
+              <div class="info-label">Verified</div>
+              <div class="info-value" style="color: #10b981;">✓ Yes</div>
             </div>
-            <div class="growth-item">
-              <div class="growth-label">6 Months Ago</div>
-              <div class="growth-value">+${growth['6_months_ago']}%</div>
+            <div class="info-item">
+              <div class="info-label">Account Created</div>
+              <div class="info-value">March 2019</div>
             </div>
-            <div class="growth-item">
-              <div class="growth-label">9 Months Ago</div>
-              <div class="growth-value">+${growth['9_months_ago']}%</div>
+            <div class="info-item">
+              <div class="info-label">Total Posts</div>
+              <div class="info-value">1,247</div>
             </div>
-            <div class="growth-item">
-              <div class="growth-label">12 Months Ago</div>
-              <div class="growth-value">+${growth['12_months_ago']}%</div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderAnalyticsChart(posts) {
-      if (!posts || !posts.length) return '';
-      
-      // Get last 12 posts (they're already newest first)
-      const recentPosts = posts.slice(0, 12);
-      
-      // Find max value for scaling
-      const maxLikes = Math.max(...recentPosts.map(p => p.engagement?.likes || 0), 1);
-      const maxComments = Math.max(...recentPosts.map(p => p.engagement?.comments || 0), 1);
-      const maxValue = Math.max(maxLikes, maxComments, 10); // At least 10 for scale
-      
-      // Create bars HTML (reverse to show oldest to newest left to right)
-      const barsHtml = recentPosts.reverse().map((post, index) => {
-        const likes = post.engagement?.likes || 0;
-        const comments = post.engagement?.comments || 0;
-        const date = new Date(post.created_at);
-        const dateLabel = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        
-        // Ensure minimum height for visibility
-        const likesHeight = Math.max((likes / maxValue * 100), 3);
-        const commentsHeight = Math.max((comments / maxValue * 100), 2);
-        
-        return `
-          <div class="chart-bar-group" style="min-height: 250px; justify-content: flex-end;">
-            <div 
-              class="chart-bar chart-bar-likes" 
-              style="height: ${likesHeight}%; min-height: 5px;"
-              title="Likes: ${likes}"
-            ></div>
-            <div 
-              class="chart-bar chart-bar-comments" 
-              style="height: ${commentsHeight}%; min-height: 3px;"
-              title="Comments: ${comments}"
-            ></div>
-            <div class="chart-label">${dateLabel}</div>
-          </div>
-        `;
-      }).join('');
-      
-      return `
-        <div class="section">
-          <div class="section-title">Recent Post Engagements (Last ${recentPosts.length} Posts)</div>
-          <div class="chart-container">
-            <div class="chart-bars">
-              ${barsHtml}
-            </div>
-          </div>
-          <div class="chart-legend">
-            <div class="legend-item">
-              <div class="legend-color" style="background: #ec4899;"></div>
-              <span>Likes</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color" style="background: #8b5cf6;"></div>
-              <span>Comments</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderEngagementSection(instagram) {
-      return `
-        <div class="section">
-          <div class="section-title">Content Metrics</div>
-          <div class="info-grid">
             <div class="info-item">
               <div class="info-label">Posting Frequency</div>
-              <div class="info-value">${instagram.posting_frequency_recent_months || 0} posts/month</div>
+              <div class="info-value">4.2 posts/week</div>
             </div>
             <div class="info-item">
-              <div class="info-label">Most Recent Post</div>
-              <div class="info-value">${instagram.most_recent_post_date || 'N/A'}</div>
+              <div class="info-label">Last Post</div>
+              <div class="info-value">2 days ago</div>
             </div>
-            <div class="info-item">
-              <div class="info-label">Reels Percentage</div>
-              <div class="info-value">${instagram.reels_percentage_last_12_posts || 0}%</div>
-            </div>
-            ${instagram.niche_class && instagram.niche_class.length > 0 ? `
-            <div class="info-item">
-              <div class="info-label">Niche</div>
-              <div class="info-value">${instagram.niche_class.join(', ')}</div>
-            </div>
-            ` : ''}
-            ${instagram.language_code && instagram.language_code.length > 0 ? `
-            <div class="info-item">
-              <div class="info-label">Language</div>
-              <div class="info-value">${instagram.language_code[0].toUpperCase()} (${instagram.language_confidence[0]}% confidence)</div>
-            </div>
-            ` : ''}
-            ${instagram.country ? `
-            <div class="info-item">
-              <div class="info-label">Country</div>
-              <div class="info-value">${instagram.country}</div>
-            </div>
-            ` : ''}
           </div>
         </div>
-      `;
-    }
 
-    function renderContentSection(instagram) {
-      if (!instagram.reels) return '';
-      
-      return `
+        <!-- Contact Information -->
         <div class="section">
-          <div class="section-title">Reels Performance</div>
+          <h2 class="section-title">Contact Information</h2>
           <div class="info-grid">
             <div class="info-item">
-              <div class="info-label">Avg Views</div>
-              <div class="info-value">${formatNumber(instagram.reels.avg_view_count)}</div>
-            </div>
-            <div class="info-item">
-              <div class="info-label">Median Views</div>
-              <div class="info-value">${formatNumber(instagram.reels.median_view_count)}</div>
-            </div>
-            <div class="info-item">
-              <div class="info-label">Avg Likes</div>
-              <div class="info-value">${formatNumber(instagram.reels.avg_like_count)}</div>
-            </div>
-            <div class="info-item">
-              <div class="info-label">Median Likes</div>
-              <div class="info-value">${formatNumber(instagram.reels.median_like_count)}</div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderHashtagsSection(hashtags) {
-      if (!hashtags || !hashtags.length) return '';
-      
-      return `
-        <div class="section">
-          <div class="section-title">Frequently Used Hashtags</div>
-          <div class="hashtags-grid">
-            ${hashtags.map(h => `
-              <div class="hashtag">
-                #${h.name}
-                <span class="hashtag-count">${h.count}</span>
+              <div class="info-label">Email</div>
+              <div class="info-value">
+                <a href="mailto:samantha@fitfoodie.com" class="link-value">samantha@fitfoodie.com</a>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderLinksSection(links) {
-      if (!links || !links.length) return '';
-      
-      return `
-        <div class="section">
-          <div class="section-title">Links in Bio</div>
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            ${links.map(link => `
-              <a href="${link}" target="_blank" class="link-item">🔗 ${link}</a>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderRecentPostsSection(posts) {
-      if (!posts || !posts.length) return '';
-      
-      return `
-        <div class="section">
-          <div class="section-title">Recent Posts</div>
-          <div class="posts-grid">
-            ${posts.slice(0, 12).map(post => `
-              <div class="post-card">
-                ${post.media && post.media[0] ? `
-                  ${post.media[0].type === 'video' ? `
-                    <video class="post-media" controls>
-                      <source src="${post.media[0].url}" type="video/mp4">
-                    </video>
-                  ` : `
-                    <img src="${post.media[0].url}" alt="Post" class="post-media" />
-                  `}
-                ` : ''}
-                <div class="post-content">
-                  ${post.caption ? `<div class="post-caption">${post.caption}</div>` : ''}
-                  <div class="post-stats">
-                    <span>❤️ ${formatNumber(post.engagement?.likes || 0)}</span>
-                    <span>💬 ${formatNumber(post.engagement?.comments || 0)}</span>
-                    ${post.engagement?.view_count ? `<span>👁️ ${formatNumber(post.engagement.view_count)}</span>` : ''}
-                  </div>
-                  ${post.post_url ? `
-                    <a href="${post.post_url}" target="_blank" style="display: inline-block; margin-top: 10px; color: #1976d2; text-decoration: none; font-size: 13px;">View on Instagram →</a>
-                  ` : ''}
-                </div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Website</div>
+              <div class="info-value">
+                <a href="#" class="link-value">fitfoodie.com</a>
               </div>
-            `).join('')}
+            </div>
+            <div class="info-item">
+              <div class="info-label">Location</div>
+              <div class="info-value">Los Angeles, CA</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Timezone</div>
+              <div class="info-value">PST (UTC-8)</div>
+            </div>
           </div>
         </div>
-      `;
-    }
 
-    // ========== ERROR HANDLING ==========
-    function showError(message) {
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("error").textContent = message;
-      document.getElementById("error").style.display = "block";
-    }
+        <!-- Brand Partnerships -->
+        <div class="section">
+          <h2 class="section-title">Brand Experience</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Previous Collaborations</div>
+              <div class="info-value">15+ brands</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Sponsored Posts</div>
+              <div class="info-value">~8% of content</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Typical Rate</div>
+              <div class="info-value">$800 - $1,200 per post</div>
+            </div>
+          </div>
+        </div>
 
-    // ========== INIT ==========
-    loadDetails();
-  </script>
+      </div>
+
+    </div>
+
+  </div>
+
 </body>
 </html>

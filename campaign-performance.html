@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campaign Performance - Phoenix</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
+    }
+    
+    /* Main Navigation - Horizontal at top */
+    .main-nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 24px;
+    }
+    .main-nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .brand {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+      padding: 16px 0;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      flex: 1;
+    }
+    .nav-link {
+      padding: 16px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-link.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .nav-link:hover {
+      color: #111827;
+    }
+    .user-badge {
+      width: 40px;
+      height: 40px;
+      background: #0066ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    /* Page Title Section */
+    .page-title-section {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 20px 24px 0;
+    }
+    .page-title-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+    
+    /* Sub Navigation */
+    .sub-nav {
+      display: flex;
+      gap: 24px;
+    }
+    .sub-nav-tab {
+      padding: 12px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+    }
+    .sub-nav-tab.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .sub-nav-tab:hover {
+      color: #111827;
+    }
+    
+    .top-bar {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-bar {
+      display: none; /* Remove old navigation */
+    }
+    .logo-area {
+      display: none;
+    }
+    .logo-icon {
+      display: none;
+    }
+    .logo-text {
+      display: none;
+    }
+    .nav-tabs {
+      display: none; /* Remove old navigation */
+    }
+    .nav-tab {
+      display: none;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    
+    /* Campaign Header */
+    .campaign-header {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .campaign-title-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .campaign-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .campaign-selector {
+      padding: 6px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      background: white;
+    }
+    .campaign-meta {
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+    .btn-secondary:hover {
+      background: #f9fafb;
+    }
+    .btn-primary {
+      background: #0066ff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0052cc;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .filter-left {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .filter-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b7280;
+      margin-right: 8px;
+    }
+    .filter-select {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .stat-change {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .stat-change.positive {
+      color: #10b981;
+    }
+    .stat-help {
+      position: relative;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: #fef3c7;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+      font-size: 11px;
+      color: #92400e;
+      cursor: help;
+      margin-left: 6px;
+    }
+
+    /* Influencer Cards */
+    .influencer-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .influencer-header {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    .influencer-profile {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .influencer-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .influencer-info {
+      flex: 1;
+    }
+    .influencer-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 2px;
+    }
+    .influencer-handle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .platform-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #eff6ff;
+      color: #1e40af;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .influencer-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .mini-stat {
+      text-align: center;
+    }
+    .mini-stat-label {
+      font-size: 11px;
+      color: #6b7280;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .mini-stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    /* Content Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .content-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .content-item:hover {
+      transform: scale(1.02);
+    }
+    .content-thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .content-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      padding: 12px;
+      color: white;
+      font-size: 12px;
+    }
+    .content-stats {
+      display: flex;
+      gap: 12px;
+    }
+    .content-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .video-indicator {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .expand-btn {
+      width: 100%;
+      padding: 10px;
+      background: #eff6ff;
+      color: #0066ff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+    .expand-btn:hover {
+      background: #dbeafe;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: #6b7280;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+    .modal-close:hover {
+      background: #f3f4f6;
+    }
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+    }
+    .modal-content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .modal-image {
+      width: 100%;
+      border-radius: 8px;
+      background: #f3f4f6;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+    .modal-details {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .modal-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .modal-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+    .modal-username {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .modal-caption {
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .modal-metrics {
+      background: #f9fafb;
+      padding: 16px;
+      border-radius: 8px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .modal-metric {
+      text-align: center;
+    }
+    .modal-metric-label {
+      font-size: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .modal-metric-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .modal-date {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .influencer-header {
+        grid-template-columns: 1fr;
+      }
+      .modal-content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Navigation -->
+  <div class="main-nav">
+    <div class="main-nav-container">
+      <div class="brand">Influencer Marketing</div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Find Influencers</a>
+        <a href="campaigns.html" class="nav-link active">Campaigns</a>
+        <a href="#" class="nav-link">Emails</a>
+        <a href="#" class="nav-link">Snippets</a>
+      </div>
+      <div class="user-badge">JD</div>
+    </div>
+  </div>
+
+  <!-- Page Title + Sub Navigation -->
+  <div class="page-title-section">
+    <div class="page-title-container">
+      <h1 class="page-title">Campaign Performance</h1>
+      <div class="sub-nav">
+        <a href="campaigns.html" class="sub-nav-tab">Overview</a>
+        <a href="create-campaign.html" class="sub-nav-tab">Create</a>
+        <a href="campaign-performance.html" class="sub-nav-tab active">Performance</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <!-- Campaign Header -->
+    <div class="campaign-header">
+      <div class="campaign-title-section">
+        <div>
+          <div class="campaign-title">Spring Launch 2025</div>
+          <div class="campaign-meta">Feb 28 - May 14, 2025 • Active • 5 Influencers</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary">⚙️ Settings</button>
+        <button class="btn btn-secondary">📥 Export</button>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-left">
+        <div>
+          <span class="filter-label">Date Range:</span>
+          <select class="filter-select" id="dateRange">
+            <option value="campaign">Campaign to Date</option>
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="custom">Custom Range...</option>
+          </select>
+        </div>
+        <div>
+          <span class="filter-label">Sort by:</span>
+          <select class="filter-select" id="sortBy">
+            <option value="reach">Most Reach</option>
+            <option value="engagement">Most Engagements</option>
+            <option value="recent">Most Recent Post</option>
+            <option value="posts">Most Posts</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Posts</div>
+        <div class="stat-value">62</div>
+        <div class="stat-change positive">↑ 12 this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Engagements</div>
+        <div class="stat-value">105.1K</div>
+        <div class="stat-change positive">↑ 5.2%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Reach</div>
+        <div class="stat-value">2.4M</div>
+        <div class="stat-change positive">↑ 8.3%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          EMV
+          <span class="stat-help" title="Earned Media Value calculation needs workshop">?</span>
+        </div>
+        <div class="stat-value">$2.2M</div>
+        <div class="stat-change">TBD</div>
+      </div>
+    </div>
+
+    <!-- Influencer Performance Cards -->
+    
+    <!-- Influencer 1 -->
+    <div class="influencer-card">
+      <div class="influencer-header">
+        <div class="influencer-profile">
+          <img src="data:image/svg+xml,%3Csvg width='72' height='72' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='36' cy='36' r='36' fill='%23667eea'/%3E%3C/svg%3E" class="influencer-avatar" alt="Avatar" />
+          <div class="influencer-info">
+            <div class="influencer-name">Samantha Lee</div>
+            <div class="influencer-handle">@thefitfoodie</div>
+            <span class="platform-badge">📷 Instagram</span>
+          </div>
+        </div>
+        <div class="influencer-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Posts</div>
+            <div class="mini-stat-value">14</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Engagements</div>
+            <div class="mini-stat-value">32.4K</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Reach</div>
+            <div class="mini-stat-value">890K</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="content-grid">
+        <div class="content-item" onclick="openModal(1)">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='200' fill='%23667eea'/%3E%3C/svg%3E" class="content-thumbnail" alt="Post" />
+          <div class="video-indicator">🎥 Video</div>
+          <div class="content-overlay">
+            <div class="content-stats">
+              <div class="content-stat">❤️ 4.2K</div>
+              <div class="content-stat">💬 230</div>
+              <div class="content-stat">👁️ 68K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-item" onclick="openModal(2)">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='200' fill='%23f093fb'/%3E%3C/svg%3E" class="content-thumbnail" alt="Post" />
+          <div class="content-overlay">
+            <div class="content-stats">
+              <div class="content-stat">❤️ 3.8K</div>
+              <div class="content-stat">💬 195</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-item" onclick="openModal(3)">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='200' fill='%234facfe'/%3E%3C/svg%3E" class="content-thumbnail" alt="Post" />
+          <div class="video-indicator">🎥 Video</div>
+          <div class="content-overlay">
+            <div class="content-stats">
+              <div class="content-stat">❤️ 5.1K</div>
+              <div class="content-stat">💬 280</div>
+              <div class="content-stat">👁️ 92K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-item" onclick="openModal(4)">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='200' fill='%2343e97b'/%3E%3C/svg%3E" class="content-thumbnail" alt="Post" />
+          <div class="content-overlay">
+            <div class="content-stats">
+              <div class="content-stat">❤️ 2.9K</div>
+              <div class="content-stat">💬 142</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="expand-btn" onclick="toggleExpand(this)">Show all 14 posts ▼</button>
+    </div>
+
+    <!-- Influencer 2 -->
+    <div class="influencer-card">
+      <div class="influencer-header">
+        <div class="influencer-profile">
+          <img src="data:image/svg+xml,%3Csvg width='72' height='72' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='36' cy='36' r='36' fill='%23f093fb'/%3E%3C/svg%3E" class="influencer-avatar" alt="Avatar" />
+          <div class="influencer-info">
+            <div class="influencer-name">Marcus Johnson</div>
+            <div class="influencer-handle">@chefmarcus</div>
+            <span class="platform-badge">📷 Instagram</span>
+          </div>
+        </div>
+        <div class="influencer-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Posts</div>
+            <div class="mini-stat-value">18</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Engagements</div>
+            <div class="mini-stat-value">28.9K</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Reach</div>
+            <div class="mini-stat-value">645K</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="content-item">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='200' fill='%23a8edea'/%3E%3C/svg%3E" class="content-thumbnail" alt="Post" />
+          <div class="video-indicator">🎥 Video</div>
+          <div class="content-overlay">
+            <div class="content-stats">
+              <div class="content-stat">❤️ 3.2K</div>
+              <div class="content-stat">💬 187</div>
+              <div class="content-stat">👁️ 54K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-item">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='200' fill='%23fbc2eb'/%3E%3C/svg%3E" class="content-thumbnail" alt="Post" />
+          <div class="content-overlay">
+            <div class="content-stats">
+              <div class="content-stat">❤️ 2.7K</div>
+              <div class="content-stat">💬 156</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-item">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='200' fill='%23fa709a'/%3E%3C/svg%3E" class="content-thumbnail" alt="Post" />
+          <div class="content-overlay">
+            <div class="content-stats">
+              <div class="content-stat">❤️ 4.1K</div>
+              <div class="content-stat">💬 203</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-item">
+          <img src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='200' fill='%2330cfd0'/%3E%3C/svg%3E" class="content-thumbnail" alt="Post" />
+          <div class="video-indicator">🎥 Video</div>
+          <div class="content-overlay">
+            <div class="content-stats">
+              <div class="content-stat">❤️ 3.8K</div>
+              <div class="content-stat">💬 178</div>
+              <div class="content-stat">👁️ 61K</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="expand-btn" onclick="toggleExpand(this)">Show all 18 posts ▼</button>
+    </div>
+
+  </div>
+
+  <!-- Post Detail Modal -->
+  <div class="modal-overlay" id="postModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Post Details</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-content-grid">
+          <div>
+            <img src="data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='400' height='400' fill='%23667eea'/%3E%3C/svg%3E" class="modal-image" alt="Post" />
+          </div>
+          <div class="modal-details">
+            <div class="modal-user">
+              <img src="data:image/svg+xml,%3Csvg width='48' height='48' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23667eea'/%3E%3C/svg%3E" class="modal-avatar" alt="Avatar" />
+              <div>
+                <div class="modal-username">@thefitfoodie</div>
+                <div class="modal-date">Posted 3 days ago</div>
+              </div>
+            </div>
+
+            <div class="modal-caption">
+              Amazing day exploring healthy meal prep ideas! 🥗 Using #SpringLaunch2025 campaign hashtag. Check out these nutritious recipes that anyone can make at home. What's your favorite healthy meal?
+            </div>
+
+            <div class="modal-metrics">
+              <div class="modal-metric">
+                <div class="modal-metric-label">Likes</div>
+                <div class="modal-metric-value">4,213</div>
+              </div>
+              <div class="modal-metric">
+                <div class="modal-metric-label">Comments</div>
+                <div class="modal-metric-value">230</div>
+              </div>
+              <div class="modal-metric">
+                <div class="modal-metric-label">Views</div>
+                <div class="modal-metric-value">68.2K</div>
+              </div>
+              <div class="modal-metric">
+                <div class="modal-metric-label">Shares</div>
+                <div class="modal-metric-value">142</div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%;" onclick="window.open('https://instagram.com/p/example', '_blank')">
+              View on Instagram →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modal functions
+    function openModal(postId) {
+      document.getElementById('postModal').classList.add('show');
+      // In real implementation, load post data here
+    }
+
+    function closeModal() {
+      document.getElementById('postModal').classList.remove('show');
+    }
+
+    // Close modal on outside click
+    document.getElementById('postModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    // Expand/collapse posts
+    function toggleExpand(btn) {
+      const expanded = btn.textContent.includes('Show less');
+      if (expanded) {
+        btn.textContent = btn.textContent.replace('Show less ▲', 'Show all').replace('▲', '▼');
+      } else {
+        const match = btn.textContent.match(/\d+/);
+        const count = match ? match[0] : '';
+        btn.textContent = `Show less ▲`;
+      }
+      // In real implementation, toggle additional posts visibility
+    }
+
+    // Campaign tracking logic
+    // When setting up a campaign, you define:
+    // 1. Campaign-specific hashtags (e.g., #SpringLaunch2025)
+    // 2. Required phrases in captions
+    // 3. Date range for the campaign
+    
+    // To identify campaign posts:
+    // 1. Call Raw Handle API for each influencer
+    // 2. Filter post_data[] by:
+    //    - created_at within campaign date range
+    //    - caption or hashtags[] contains campaign hashtags/phrases
+    // 3. Aggregate metrics from matched posts
+    
+    // Example filter logic:
+    /*
+    const campaignHashtags = ['#SpringLaunch2025', '#BrandName'];
+    const campaignStart = '2025-02-28';
+    const campaignEnd = '2025-05-14';
+    
+    const campaignPosts = postData.filter(post => {
+      const postDate = new Date(post.created_at);
+      const inDateRange = postDate >= new Date(campaignStart) && 
+                         postDate <= new Date(campaignEnd);
+      
+      const hasHashtag = post.hashtags.some(tag => 
+        campaignHashtags.some(campaignTag => 
+          campaignTag.toLowerCase().includes(tag.toLowerCase())
+        )
+      );
+      
+      const hasPhrase = campaignHashtags.some(phrase => 
+        post.caption.toLowerCase().includes(phrase.toLowerCase())
+      );
+      
+      return inDateRange && (hasHashtag || hasPhrase);
+    });
+    
+    // Then aggregate:
+    const totalPosts = campaignPosts.length;
+    const totalEngagements = campaignPosts.reduce((sum, post) => 
+      sum + post.engagement.likes + post.engagement.comments, 0
+    );
+    const totalReach = campaignPosts.reduce((sum, post) => 
+      sum + (post.engagement.view_count || 0), 0
+    );
+    */
+  </script>
+
+</body>
+</html>

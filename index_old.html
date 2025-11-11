@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creator Discovery | Aruba Tourism</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <style>
+    body { background:#f9fafb; font-family:'Inter',sans-serif; }
+    .input { border:1px solid #e5e7eb; border-radius:12px; padding:10px 12px; font-size:14px; width:100%; }
+    .label { font-size:12px; color:#6b7280; margin-bottom:6px; display:block; }
+    .field { display:flex; flex-direction:column; }
+    .filters-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .btn { border-radius:12px; padding:8px 16px; font-size:14px; font-weight:500; cursor:pointer; }
+    .btn-primary { background:#0f172a; color:#fff; }
+    .btn-outline { border:1px solid #e5e7eb; background:#fff; color:#111827; }
+    .btn-outline:hover { background:#f9fafb; }
+    .advanced.hidden { display:none; }
+    .advanced { margin-top:16px; border-top:1px solid #e5e7eb; padding-top:16px; display:grid; gap:14px; }
+    .group { background:#f8fafc; border:1px solid #e5e7eb; border-radius:12px; padding:12px; }
+    .group-title { font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600; margin-bottom:8px; }
+    .group-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    @media(max-width:1024px){ .filters-row{grid-template-columns:1fr 1fr;} .group-grid{grid-template-columns:1fr 1fr;} }
+    .platform-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+    .platform-btn { display:flex; align-items:center; gap:6px; padding:8px 14px; border-radius:9999px; border:1px solid #e5e7eb; background:#fff; color:#111827; font-size:14px; font-weight:500; cursor:pointer; }
+    .platform-btn.active { background:#0f172a; color:#fff; border-color:#0f172a; }
+    .platform-btn svg { width:16px; height:16px; }
+    .auto-wrap { position:relative; }
+    .auto-list { position:absolute; top:105%; left:0; right:0; background:#fff; border:1px solid #e5e7eb; border-radius:8px; max-height:180px; overflow:auto; z-index:20; }
+    .auto-list div { padding:8px 12px; cursor:pointer; font-size:14px; }
+    .auto-list div:hover { background:#f3f4f6; }
+
+    /* Results */
+    .results { margin-top:30px; background:white; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden; }
+    .results table { width:100%; border-collapse:collapse; }
+    .results th, .results td { padding:10px 14px; font-size:14px; border-bottom:1px solid #e5e7eb; text-align:left; }
+    .results th { background:#f9fafb; text-transform:uppercase; font-size:12px; color:#6b7280; }
+    .avatar { width:36px; height:36px; border-radius:50%; object-fit:cover; margin-right:8px; }
+    
+    /* Debug panel */
+    .debug-panel { 
+      margin-top:20px; 
+      background:#1f2937; 
+      color:#fff; 
+      padding:15px; 
+      border-radius:8px; 
+      font-family:monospace; 
+      font-size:12px;
+      max-height:300px;
+      overflow:auto;
+    }
+    .debug-panel pre { white-space:pre-wrap; word-wrap:break-word; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-lg font-semibold text-gray-800">Creator Discovery</h1>
+      <nav class="space-x-4 text-sm text-gray-600">
+        <a class="font-semibold text-gray-900" href="#">Find Influencers</a>
+        <a href="#">Manage Influencers</a>
+        <a href="#">Campaigns</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+
+      <!-- Inline SVG icon defs (platform icons) -->
+      <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+        <symbol id="ig" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5m5 5a5 5 0 1 0 0 10a5 5 0 0 0 0-10m0 2.5A2.5 2.5 0 1 1 9.5 12A2.5 2.5 0 0 1 12 9.5M18 5.5a1 1 0 1 0 0 2a1 1 0 0 0 0-2"/></symbol>
+        <symbol id="tt" viewBox="0 0 256 256"><path fill="currentColor" d="M168.9 32c8.4 12.9 20.7 23.3 36.5 28.9c4.3 1.5 8.9 2.6 13.6 3.1v38.1c-16.7-.6-32.7-5.4-46.4-13.5v63.6c0 45.7-37.2 82.9-82.9 82.9S6.8 198 6.8 152.3c0-41.4 30.7-76 70.6-82.1v40.4c-16 5.3-27.5 20.3-27.5 38.1c0 22 17.8 39.7 39.7 39.7s39.7-17.8 39.7-39.7V32h39.9z"/></symbol>
+        <symbol id="yt" viewBox="0 0 24 24"><path fill="currentColor" d="M23 7s-.2-1.6-.8-2.3c-.8-.8-1.7-.8-2.1-.9C17.7 3.5 12 3.5 12 3.5h0s-5.7 0-8.1.3c-.4 0-1.3.1-2.1.9C1.2 5.4 1 7 1 7S.8 8.8.8 10.6v1.8C.8 14.2 1 16 1 16s.2 1.6.8 2.3c.8.8 1.9.8 2.4.9c1.7.2 7.8.3 7.8.3s5.7 0 8.1-.3c.4 0 1.3-.1 2.1-.9c.6-.7.8-2.3.8-2.3s.2-1.8.2-3.6v-1.8C23.2 8.8 23 7 23 7zM9.8 14.3V8.7l6 2.8z"/></symbol>
+        <symbol id="tw" viewBox="0 0 24 24"><path fill="currentColor" d="M20.7 7.2c.9-.6 1.6-1.4 2.2-2.3c-.8.4-1.7.7-2.6.8C19.6 5 18.5 4.5 17.3 4.5c-2.3 0-4.2 1.9-4.2 4.2c0 .3 0 .6.1.8c-3.5-.2-6.7-1.9-8.8-4.6c-.4.7-.6 1.5-.6 2.3c0 1.5.8 2.9 2.1 3.6c-.7 0-1.3-.2-1.9-.5v.1c0 2.1 1.5 3.9 3.5 4.3c-.4.1-.8.2-1.2.2c-.3 0-.6 0-.8-.1c.6 1.8 2.3 3.2 4.4 3.2c-1.6 1.3-3.6 2.1-5.8 2.1c-.4 0-.8 0-1.2-.1c2.1 1.3 4.6 2.1 7.3 2.1c8.7 0 13.4-7.2 13.4-13.4v-.6c.9-.6 1.6-1.3 2.2-2.2c-.8.4-1.6.6-2.5.7z"/></symbol>
+        <symbol id="twch" viewBox="0 0 24 24"><path fill="currentColor" d="M4 3L2 6v13h5v2h2l2-2h3l4-4V3H4m15 10l-3 3h-4l-2 2v-2H5V5h14v8M9 6H7v6h2V6m8 0h-2v4h2V6z"/></symbol>
+      </svg>
+
+      <!-- Platform bar (icons preserved) -->
+      <div id="platformBar" class="platform-bar"></div>
+
+      <!-- Core filters -->
+      <div class="filters-row">
+        <div class="field">
+          <label class="label">Topic / Keywords</label>
+          <input id="kw" class="input" placeholder="e.g. gastronomía, #foodie, chef" />
+        </div>
+        <div class="field">
+          <label class="label">Location</label>
+          <div class="auto-wrap" id="locBox">
+            <input id="location" class="input" placeholder="e.g. Argentina, United States" autocomplete="off" />
+            <div id="locList" class="auto-list hidden"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Audience language</label>
+          <div class="auto-wrap" id="langBox">
+            <input id="lang" class="input" placeholder="e.g. English, Spanish" autocomplete="off" />
+            <div id="langList" class="auto-list hidden"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Gender</label>
+          <select id="gender" class="input">
+            <option value="">Any</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Advanced filters toggle -->
+      <div class="flex justify-start mt-3">
+        <button id="btnAdvanced" class="btn btn-outline">Advanced filters ▾</button>
+      </div>
+
+      <!-- Advanced filters -->
+      <div id="advancedPanel" class="advanced hidden">
+        <div class="group">
+          <div class="group-title">Audience Metrics</div>
+          <div class="group-grid">
+            <div class="field"><label class="label">Followers (min)</label><input id="followersMin" class="input" placeholder="Min" /></div>
+            <div class="field"><label class="label">Followers (max)</label><input id="followersMax" class="input" placeholder="Max" /></div>
+            <div class="field"><label class="label">Engagement % (min)</label><input id="erMin" class="input" placeholder="Min" /></div>
+            <div class="field"><label class="label">Engagement % (max)</label><input id="erMax" class="input" placeholder="Max" /></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">Activity & Recency</div>
+          <div class="group-grid">
+            <div class="field"><label class="label">Last Post</label>
+              <select id="lastPost" class="input">
+                <option value="7d">Last 7 days</option>
+                <option value="14d">Last 14 days</option>
+                <option value="30d" selected>Last 30 days</option>
+                <option value="60d">Last 60 days</option>
+                <option value="90d">Last 90 days</option>
+              </select>
+            </div>
+            <div class="field"><label class="label">Posting Frequency</label><input id="postingFrequency" class="input" placeholder="posts/mo" /></div>
+            <div class="field"><label class="label">Growth %</label><input id="growthPct" class="input" placeholder="%" /></div>
+            <div class="field"><label class="label">Months</label><input id="growthMonths" class="input" placeholder="3" /></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">Creator Quality</div>
+          <div class="flex flex-wrap gap-4">
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="verified" type="checkbox"> Verified</label>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="excludePrivate" type="checkbox" checked> Exclude Private</label>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="hasEmail" type="checkbox"> Has Email</label>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-title">Brand Fit</div>
+          <div class="group-grid">
+            <div class="field"><label class="label">Keywords in Bio</label><input id="bioKeywords" class="input" placeholder="e.g. Aruba, Caribbean" /></div>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="brandDeals" type="checkbox"> Has Done Brand Deals</label>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="affiliateLinks" type="checkbox"> Promotes Affiliate Links</label>
+            <label class="flex items-center gap-2 text-sm text-gray-700"><input id="linkInBio" type="checkbox"> Has Link in Bio</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search button -->
+      <div class="flex justify-center mt-4">
+        <button id="btnSearch" class="btn btn-primary">Search Creators</button>
+      </div>
+    </div>
+
+    <!-- Results table -->
+    <div id="resultsContainer" class="results hidden">
+      <div id="loading" class="p-8 text-center text-gray-500">Searching...</div>
+      <div id="noResults" class="p-8 text-center text-gray-500 hidden">No creators found. Try adjusting your filters.</div>
+      <table id="resultsTable" class="hidden">
+        <thead>
+          <tr>
+            <th>Creator</th>
+            <th>Platform</th>
+            <th>Followers</th>
+            <th>Engagement</th>
+            <th>Location</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- DEBUG PANEL -->
+    <div id="debugPanel" class="debug-panel hidden">
+      <strong>🐛 Debug Info:</strong>
+      <pre id="debugContent"></pre>
+    </div>
+    <div class="flex justify-center mt-3">
+      <button id="btnToggleDebug" class="btn btn-outline text-xs">Toggle Debug Panel</button>
+    </div>
+  </main>
+
+  <script>
+    const resultsContainer = document.getElementById("resultsContainer");
+    const loading = document.getElementById("loading");
+    const noResults = document.getElementById("noResults");
+    const resultsTable = document.getElementById("resultsTable");
+    const tbody = document.getElementById("tbody");
+    const debugPanel = document.getElementById("debugPanel");
+    const debugContent = document.getElementById("debugContent");
+
+    // Toggle debug panel
+    document.getElementById("btnToggleDebug").addEventListener("click", () => {
+      debugPanel.classList.toggle("hidden");
+    });
+
+    function show(el){ el.classList.remove("hidden"); }
+    function hide(el){ el.classList.add("hidden"); }
+    function n(v){ return v===""||v==null ? 0 : Number(v); }
+    function splitCsv(s){ return s.split(",").map(x=>x.trim()).filter(x=>x); }
+
+    /* --- Platform selection --- */
+    let platform = "instagram";
+    const pData = [
+      {id:"instagram", label:"Instagram", icon:"ig"},
+      {id:"tiktok",    label:"TikTok",    icon:"tt"},
+      {id:"youtube",   label:"YouTube",   icon:"yt"},
+      {id:"twitter",   label:"Twitter",   icon:"tw"},
+      {id:"twitch",    label:"Twitch",    icon:"twch"}
+    ];
+    const platformBar = document.getElementById("platformBar");
+    pData.forEach(p=>{
+      const btn = document.createElement("button");
+      btn.className = "platform-btn"+(p.id===platform?" active":"");
+      btn.innerHTML = `<svg><use href="#${p.icon}"/></svg>${p.label}`;
+      btn.addEventListener("click",()=>{
+        platform = p.id;
+        document.querySelectorAll(".platform-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+      platformBar.appendChild(btn);
+    });
+
+    /* --- Advanced filters toggle --- */
+    document.getElementById("btnAdvanced").addEventListener("click",()=>{
+      document.getElementById("advancedPanel").classList.toggle("hidden");
+    });
+
+    /* --- Autocomplete (locations & languages) --- */
+    const locationsData = ["United States","Canada","United Kingdom","Australia","Germany","France","Spain","Italy","Brazil","Mexico","Argentina","Netherlands","Sweden","Switzerland","Belgium","Austria","Portugal","Ireland","Norway","Denmark","Poland","Russia","Japan","China","India","South Korea","Singapore","Malaysia","Thailand","Indonesia","Philippines","Vietnam","New Zealand","South Africa","Chile","Colombia","Peru","Venezuela","Ecuador","Bolivia","Uruguay","Costa Rica","Panama","Dominican Republic","Puerto Rico","Cuba","Jamaica","Trinidad and Tobago","Aruba","Bahamas","Barbados","United Arab Emirates","Saudi Arabia","Qatar","Egypt","Morocco","Tunisia","Nigeria","Kenya","Ghana"];
+    const languagesData = ["English","Spanish","French","German","Italian","Portuguese","Dutch","Swedish","Norwegian","Danish","Polish","Russian","Japanese","Mandarin","Korean","Hindi","Arabic","Turkish","Indonesian","Thai","Vietnamese","Tagalog","Greek","Hebrew","Czech","Hungarian","Romanian","Ukrainian","Finnish"];
+    
+    const locInput = document.getElementById("location");
+    const locList = document.getElementById("locList");
+    const langInput = document.getElementById("lang");
+    const langList = document.getElementById("langList");
+
+    function attachAuto(input, list, data){
+      input.addEventListener("input",()=>{
+        const val = input.value.toLowerCase();
+        if(!val){ hide(list); return; }
+        const filtered = data.filter(d=>d.toLowerCase().includes(val));
+        if(filtered.length){
+          list.innerHTML = filtered.map(d=>`<div>${d}</div>`).join("");
+          show(list);
+          list.querySelectorAll("div").forEach(div=>{
+            div.addEventListener("click",()=>{ input.value=div.textContent; hide(list); });
+          });
+        } else {
+          hide(list);
+        }
+      });
+      input.addEventListener("blur",()=>setTimeout(()=>hide(list),200));
+    }
+    attachAuto(locInput, locList, locationsData);
+    attachAuto(langInput, langList, languagesData);
+
+    /* --- Render rows (FIXED FIELD MAPPINGS) --- */
+    function renderRows(list, platformFallback){
+      hide(loading);
+      show(resultsTable);
+      tbody.innerHTML = "";
+      
+      list.forEach(item=>{
+        const tr=document.createElement("tr");
+        
+        // FIXED: Access nested profile object
+        const profile = item.profile || {};
+        const avatar = profile.picture || "";
+        const name = profile.full_name || "—";
+        const handle = profile.username ? `@${profile.username}` : "—";
+        const followers = (profile.followers != null) ? Number(profile.followers).toLocaleString() : "—";
+        const er = (profile.engagement_percent != null) ? Number(profile.engagement_percent).toFixed(2)+"%" : "—";
+        const country = item.country || "—";
+        const email = (item.email || item.has_email) ? "✅" : "❌";
+        const pf = item.platform || platformFallback || "—";
+        const id = item.user_id || item.id || "";
+
+        tr.innerHTML = `
+          <td>
+            <div class="flex items-center">
+              ${avatar ? `<img src="${avatar}" class="avatar" alt="">` : `<div class="avatar" style="background:#e5e7eb"></div>`}
+              <div>
+                <div class="font-medium">${name}</div>
+                <div class="text-sm text-gray-500">${handle}</div>
+              </div>
+            </div>
+          </td>
+          <td>${pf}</td>
+          <td>${followers}</td>
+          <td>${er}</td>
+          <td>${country}</td>
+          <td>${email}</td>
+          <td><a href="influencer-details.html?id=${encodeURIComponent(id)}" class="text-blue-600 hover:underline">View Details</a></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function mockResults(pf){
+      // 5 mock rows for UI continuity on error
+      const base = [
+        { profile: { full_name:"Ava Hernandez",  username:"avatravels",   picture:"", followers:84200, engagement_percent:3.2 }, country:"Aruba", has_email:true },
+        { profile: { full_name:"Kai Thompson",   username:"kaieats",      picture:"", followers:120300, engagement_percent:2.4 }, country:"USA", has_email:false },
+        { profile: { full_name:"Maya Singh",     username:"maya.explore", picture:"", followers:56300, engagement_percent:4.1 }, country:"UK", has_email:true },
+        { profile: { full_name:"Lucas Pereira",  username:"lucasgoes",    picture:"", followers:90500, engagement_percent:1.9 }, country:"Brazil", has_email:false },
+        { profile: { full_name:"Noa Dubois",     username:"noa.food",     picture:"", followers:47300, engagement_percent:3.7 }, country:"France", has_email:true }
+      ];
+      base.forEach(b => b.platform = pf);
+      return base;
+    }
+
+    /* --- SEARCH (n8n webhook) --- */
+    const WEBHOOK_URL = "https://phoenixaisolutions.app.n8n.cloud/webhook-test/influencer-discovery";
+
+    document.getElementById("btnSearch").addEventListener("click", async ()=>{
+      // Always show results area with loading
+      show(resultsContainer);
+      hide(noResults);
+      show(loading);
+      tbody.innerHTML = "";
+
+      // Build payload with ALL fields included (even if empty)
+      const payload = {
+        platform,
+        paging: { limit: 5, page: 1 },
+        sort: { sort_by: "relevancy", sort_order: "desc" },
+        filters: {
+          location: [ document.getElementById("location").value || "" ],
+          type: "", 
+          gender: document.getElementById("gender").value || "",
+          profile_language: [ document.getElementById("lang").value || "" ],
+          ai_search: document.getElementById("kw").value || "",
+          number_of_followers: {
+            min: n(document.getElementById("followersMin").value),
+            max: n(document.getElementById("followersMax").value)
+          },
+          engagement_percent: {
+            min: n(document.getElementById("erMin").value),
+            max: n(document.getElementById("erMax").value)
+          },
+          posting_frequency: n(document.getElementById("postingFrequency").value),
+          follower_growth: {
+            growth_percentage: n(document.getElementById("growthPct").value),
+            time_range_months: n(document.getElementById("growthMonths").value)
+          },
+          keywords_in_bio: (()=>{
+            const raw = document.getElementById("bioKeywords").value || "";
+            const arr = splitCsv(raw);
+            return arr.length ? arr : [""];
+          })(),
+          has_done_brand_deals: document.getElementById("brandDeals").checked,
+          promotes_affiliate_links: document.getElementById("affiliateLinks").checked,
+          has_link_in_bio: document.getElementById("linkInBio").checked,
+          exclude_private_profile: document.getElementById("excludePrivate").checked,
+          is_verified: document.getElementById("verified").checked,
+          has_email: document.getElementById("hasEmail").checked
+        },
+        last_post: document.getElementById("lastPost").value || ""
+      };
+
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        let rows = [];
+        
+        // DEBUG: Log raw response
+        console.log("📥 Raw Response Text:", text);
+        debugContent.textContent = "Status: " + res.status + "\n\n" + 
+                                    "Raw Response:\n" + text + "\n\n";
+        
+        try {
+          if (text && text.trim().length) {
+            let payload = JSON.parse(text);
+            
+            // DEBUG: Log parsed payload
+            console.log("📦 Parsed Payload:", payload);
+            debugContent.textContent += "Parsed Payload:\n" + JSON.stringify(payload, null, 2) + "\n\n";
+
+            // If wrapped as array, unwrap first item
+            if (Array.isArray(payload)) {
+              console.log("🔄 Unwrapping array...");
+              payload = payload[0] || {};
+              debugContent.textContent += "After unwrap:\n" + JSON.stringify(payload, null, 2) + "\n\n";
+            }
+
+            // n8n sometimes wraps in {"=": {...}}
+            if (payload && typeof payload["="] === 'object') {
+              console.log("🔧 Found n8n '=' wrapper, unwrapping...");
+              payload = payload["="];
+              debugContent.textContent += "After unwrapping '=':\n" + JSON.stringify(payload, null, 2) + "\n\n";
+            }
+
+            // Some setups return { data: {...} }
+            if (payload && typeof payload.data === 'object') {
+              console.log("📂 Found nested .data property");
+              payload = payload.data;
+            }
+
+            // Normalise common shapes
+            rows =
+              Array.isArray(payload.results)  ? payload.results  :
+              Array.isArray(payload.accounts) ? payload.accounts :
+              Array.isArray(payload)          ? payload          :
+              [];
+            
+            console.log("✅ Final rows array:", rows);
+            debugContent.textContent += "Final rows count: " + rows.length + "\n" +
+                                        "First row:\n" + JSON.stringify(rows[0], null, 2);
+          }
+        } catch (e) {
+          console.error("❌ JSON Parse Error:", e);
+          debugContent.textContent += "Parse Error: " + e.message;
+        }
+
+        // Decide what to render
+        if (!rows.length && !res.ok) {
+          console.log("⚠️ No rows and bad status, showing mock data");
+          renderRows(mockResults(platform), platform);
+        } else if (!rows.length) {
+          console.log("⚠️ No rows found");
+          hide(loading);
+          show(noResults);
+        } else {
+          console.log("🎉 Rendering", rows.length, "rows");
+          renderRows(rows, platform);
+        }
+
+      } catch (error) {
+        console.error("💥 Fetch Error:", error);
+        debugContent.textContent = "Fetch Error: " + error.message;
+        renderRows(mockResults(platform), platform);
+      }
+    });
+  </script>
+</body>
+</html>

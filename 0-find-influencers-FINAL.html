@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Influencers - Phoenix</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
+    }
+    .top-bar {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #ef4444;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .user-badge {
+      width: 40px;
+      height: 40px;
+      background: #0066ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .nav-tabs {
+      background: white;
+      padding: 0 24px;
+      display: flex;
+      gap: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-tab {
+      padding: 12px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-tab.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .page-header {
+      margin-bottom: 24px;
+    }
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .page-subtitle {
+      color: #6b7280;
+      font-size: 15px;
+    }
+    .filter-section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .platform-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 24px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      color: #374151;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .platform-btn:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+    }
+    .platform-btn.active {
+      background: #0f172a;
+      color: white;
+      border-color: #0f172a;
+    }
+    .filter-row {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .form-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .form-input, .form-select {
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: #0066ff;
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    }
+    .advanced-toggle {
+      padding: 8px 0;
+      color: #0066ff;
+      background: none;
+      border: none;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .advanced-toggle:hover {
+      color: #0052cc;
+    }
+    .advanced-filters {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e7eb;
+    }
+    .advanced-filters.show {
+      display: block;
+    }
+    .filter-group {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .filter-group-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+    .filter-group-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #0066ff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0052cc;
+    }
+    .btn-secondary {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+    .search-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .results-section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .results-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9fafb;
+    }
+    .results-count {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .bulk-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .selected-count {
+      font-size: 14px;
+      color: #6b7280;
+      margin-right: 8px;
+    }
+    .btn-bulk {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-bulk-save {
+      background: #eff6ff;
+      color: #0066ff;
+    }
+    .btn-bulk-save:hover {
+      background: #dbeafe;
+    }
+    .btn-bulk-campaign {
+      background: #0066ff;
+      color: white;
+    }
+    .btn-bulk-campaign:hover {
+      background: #0052cc;
+    }
+    .btn-bulk:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .checkbox-cell {
+      width: 40px;
+      text-align: center;
+    }
+    .checkbox-cell input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead {
+      background: #f9fafb;
+    }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    td {
+      padding: 16px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 14px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover {
+      background: #f9fafb;
+    }
+    .creator-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .creator-info .name {
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 2px;
+    }
+    .creator-info .handle {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .btn-link {
+      color: #0066ff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .btn-link:hover {
+      color: #0052cc;
+      text-decoration: underline;
+    }
+    .metric-good {
+      color: #10b981;
+      font-weight: 600;
+    }
+    .metric-average {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+    
+    /* Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #6b7280;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+    .modal-close:hover {
+      background: #f3f4f6;
+    }
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+    }
+    .campaign-option {
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .campaign-option:hover {
+      background: #f9fafb;
+      border-color: #0066ff;
+    }
+    .campaign-option.selected {
+      background: #eff6ff;
+      border-color: #0066ff;
+    }
+    .campaign-name {
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .campaign-meta {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    @media (max-width: 1024px) {
+      .filter-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .filter-group-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <div class="top-bar">
+    <div class="logo-area">
+      <div class="logo-icon">P</div>
+      <span class="logo-text">Influencer Management</span>
+    </div>
+    <div class="user-badge">JD</div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <a href="#" class="nav-tab active">Find Influencers</a>
+    <a href="#" class="nav-tab">Manage Campaigns</a>
+    <a href="#" class="nav-tab">Performance</a>
+    <a href="#" class="nav-tab">Share of Voice</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">Find Influencers</h1>
+      <p class="page-subtitle">Discover the perfect influencers for your campaign</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+      
+      <!-- Platform Selection -->
+      <div style="margin-bottom: 20px;">
+        <label class="form-label" style="margin-bottom: 12px;">Platform</label>
+        <div id="platformBar" style="display: flex; flex-wrap: wrap; gap: 12px;"></div>
+      </div>
+
+      <!-- Basic Filters -->
+      <div class="filter-row">
+        <div class="form-group">
+          <label class="form-label">Topic / Keywords</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            value="food, travel"
+            id="keywords"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            value="United States"
+            id="location"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Audience Language</label>
+          <select class="form-select" id="language">
+            <option value="">Any</option>
+            <option value="en" selected>English</option>
+            <option value="es">Spanish</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Gender</label>
+          <select class="form-select" id="gender">
+            <option value="" selected>Any</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Advanced Filters Toggle -->
+      <button class="advanced-toggle" onclick="toggleAdvanced()">
+        <span id="toggleText">Advanced filters</span>
+        <span id="toggleIcon">▼</span>
+      </button>
+
+      <!-- Advanced Filters -->
+      <div class="advanced-filters" id="advancedFilters">
+        
+        <!-- Audience Metrics -->
+        <div class="filter-group">
+          <div class="filter-group-title">Audience Metrics</div>
+          <div class="filter-group-grid">
+            <div class="form-group">
+              <label class="form-label">Followers (min)</label>
+              <input type="number" class="form-input" placeholder="Min" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Followers (max)</label>
+              <input type="number" class="form-input" placeholder="Max" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Engagement % (min)</label>
+              <input type="number" class="form-input" placeholder="Min" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Engagement % (max)</label>
+              <input type="number" class="form-input" placeholder="Max" step="0.1" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity & Recency -->
+        <div class="filter-group">
+          <div class="filter-group-title">Activity & Recency</div>
+          <div class="filter-group-grid">
+            <div class="form-group">
+              <label class="form-label">Last Post</label>
+              <select class="form-select">
+                <option value="7d">Last 7 days</option>
+                <option value="14d">Last 14 days</option>
+                <option value="30d" selected>Last 30 days</option>
+                <option value="60d">Last 60 days</option>
+                <option value="90d">Last 90 days</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Posting Frequency</label>
+              <input type="number" class="form-input" placeholder="posts/mo" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Growth %</label>
+              <input type="number" class="form-input" placeholder="%" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Months</label>
+              <input type="number" class="form-input" placeholder="3" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Creator Quality -->
+        <div class="filter-group">
+          <div class="filter-group-title">Creator Quality</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 4px 0;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #374151;">
+              <input type="checkbox" style="width: 16px; height: 16px;" />
+              Verified
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #374151;">
+              <input type="checkbox" checked style="width: 16px; height: 16px;" />
+              Exclude Private
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #374151;">
+              <input type="checkbox" style="width: 16px; height: 16px;" />
+              Has Email
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="search-actions">
+        <button class="btn btn-primary">
+          <span>Update Search</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section">
+      <div class="results-header">
+        <div class="results-count">Found 5 creators on Instagram</div>
+        <div class="bulk-actions">
+          <span class="selected-count" id="selectedCount">0 selected</span>
+          <button class="btn-bulk btn-bulk-save" id="btnBulkSave" disabled>Save</button>
+          <button class="btn-bulk btn-bulk-campaign" id="btnAddToCampaign" disabled>Add to Campaign</button>
+        </div>
+      </div>
+
+      <!-- Results Table - Only API data: Profile pic, Name, Username, Followers, Engagement -->
+      <table>
+        <thead>
+          <tr>
+            <th class="checkbox-cell">
+              <input type="checkbox" id="selectAll" title="Select all">
+            </th>
+            <th>Creator</th>
+            <th style="text-align: center;">Followers</th>
+            <th style="text-align: center;">Engagement</th>
+            <th style="text-align: right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td class="checkbox-cell">
+              <input type="checkbox" class="row-checkbox" data-id="1" data-name="@thefitfoodie">
+            </td>
+            <td>
+              <div class="creator-cell">
+                <img src="data:image/svg+xml,%3Csvg width='44' height='44' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='44' height='44' fill='%23667eea'/%3E%3C/svg%3E" class="avatar" alt="Avatar" />
+                <div class="creator-info">
+                  <div class="name">Samantha Lee</div>
+                  <div class="handle">@thefitfoodie</div>
+                </div>
+              </div>
+            </td>
+            <td style="text-align: center;">128K</td>
+            <td style="text-align: center;">
+              <span class="metric-good">3.20%</span>
+            </td>
+            <td style="text-align: right;">
+              <a href="4-influencer-detail.html?id=1" class="btn-link">View Details</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="checkbox-cell">
+              <input type="checkbox" class="row-checkbox" data-id="2" data-name="@chefmarcus">
+            </td>
+            <td>
+              <div class="creator-cell">
+                <img src="data:image/svg+xml,%3Csvg width='44' height='44' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='44' height='44' fill='%23f093fb'/%3E%3C/svg%3E" class="avatar" alt="Avatar" />
+                <div class="creator-info">
+                  <div class="name">Marcus Johnson</div>
+                  <div class="handle">@chefmarcus</div>
+                </div>
+              </div>
+            </td>
+            <td style="text-align: center;">245K</td>
+            <td style="text-align: center;">
+              <span class="metric-average">2.1%</span>
+            </td>
+            <td style="text-align: right;">
+              <a href="4-influencer-detail.html?id=2" class="btn-link">View Details</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="checkbox-cell">
+              <input type="checkbox" class="row-checkbox" data-id="3" data-name="@wanderlust_emma">
+            </td>
+            <td>
+              <div class="creator-cell">
+                <img src="data:image/svg+xml,%3Csvg width='44' height='44' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='44' height='44' fill='%234facfe'/%3E%3C/svg%3E" class="avatar" alt="Avatar" />
+                <div class="creator-info">
+                  <div class="name">Emma Rodriguez</div>
+                  <div class="handle">@wanderlust_emma</div>
+                </div>
+              </div>
+            </td>
+            <td style="text-align: center;">89.5K</td>
+            <td style="text-align: center;">
+              <span class="metric-good">4.5%</span>
+            </td>
+            <td style="text-align: right;">
+              <a href="4-influencer-detail.html?id=3" class="btn-link">View Details</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="checkbox-cell">
+              <input type="checkbox" class="row-checkbox" data-id="4" data-name="@foodie_alex">
+            </td>
+            <td>
+              <div class="creator-cell">
+                <img src="data:image/svg+xml,%3Csvg width='44' height='44' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='44' height='44' fill='%23fbc2eb'/%3E%3C/svg%3E" class="avatar" alt="Avatar" />
+                <div class="creator-info">
+                  <div class="name">Alex Chen</div>
+                  <div class="handle">@foodie_alex</div>
+                </div>
+              </div>
+            </td>
+            <td style="text-align: center;">156K</td>
+            <td style="text-align: center;">
+              <span class="metric-good">5.8%</span>
+            </td>
+            <td style="text-align: right;">
+              <a href="4-influencer-detail.html?id=4" class="btn-link">View Details</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="checkbox-cell">
+              <input type="checkbox" class="row-checkbox" data-id="5" data-name="@jessicatravels">
+            </td>
+            <td>
+              <div class="creator-cell">
+                <img src="data:image/svg+xml,%3Csvg width='44' height='44' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='44' height='44' fill='%23a8edea'/%3E%3C/svg%3E" class="avatar" alt="Avatar" />
+                <div class="creator-info">
+                  <div class="name">Jessica Taylor</div>
+                  <div class="handle">@jessicatravels</div>
+                </div>
+              </div>
+            </td>
+            <td style="text-align: center;">72.3K</td>
+            <td style="text-align: center;">
+              <span class="metric-good">3.9%</span>
+            </td>
+            <td style="text-align: right;">
+              <a href="4-influencer-detail.html?id=5" class="btn-link">View Details</a>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+  <!-- Campaign Selection Modal -->
+  <div class="modal-overlay" id="campaignModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Add to Campaign</h3>
+        <button class="modal-close" onclick="closeCampaignModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 16px; color: #6b7280; font-size: 14px;">
+          Select a campaign to add <span id="selectedInfluencersText">the selected influencers</span> to:
+        </p>
+        
+        <div class="campaign-option" onclick="selectCampaign(this, 1)">
+          <div class="campaign-name">Spring Launch 2025</div>
+          <div class="campaign-meta">Active • Budget: $50,000 • 1 influencer</div>
+        </div>
+        
+        <div class="campaign-option" onclick="selectCampaign(this, 2)">
+          <div class="campaign-name">Q4 Growth Blitz</div>
+          <div class="campaign-meta">Active • Budget: $75,000 • 1 influencer</div>
+        </div>
+        
+        <div class="campaign-option" onclick="selectCampaign(this, 3)">
+          <div class="campaign-name">Summer Creator Series</div>
+          <div class="campaign-meta">Completed • Budget: $30,000 • 1 influencer</div>
+        </div>
+        
+        <div class="campaign-option" onclick="selectCampaign(this, 4)">
+          <div class="campaign-name">AI for Good Campaign</div>
+          <div class="campaign-meta">Planning • Budget: $20,000 • 0 influencers</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeCampaignModal()">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmAdd" disabled>Add to Campaign</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedCampaignId = null;
+    let platform = "instagram"; // Default platform
+    
+    // Platform data
+    const platforms = [
+      { id: "instagram", label: "Instagram", icon: "📷" },
+      { id: "tiktok", label: "TikTok", icon: "🎵" },
+      { id: "youtube", label: "YouTube", icon: "▶️" },
+      { id: "twitter", label: "Twitter", icon: "🐦" },
+      { id: "twitch", label: "Twitch", icon: "🎮" }
+    ];
+    
+    // Render platform buttons
+    const platformBar = document.getElementById("platformBar");
+    platforms.forEach(p => {
+      const btn = document.createElement("button");
+      btn.className = "platform-btn" + (p.id === platform ? " active" : "");
+      btn.innerHTML = `<span>${p.icon}</span><span>${p.label}</span>`;
+      btn.onclick = () => {
+        platform = p.id;
+        document.querySelectorAll(".platform-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        // Update results count
+        document.querySelector('.results-count').textContent = `Found 5 creators on ${p.label}`;
+      };
+      platformBar.appendChild(btn);
+    });
+    
+    // Toggle advanced filters
+    function toggleAdvanced() {
+      const filters = document.getElementById('advancedFilters');
+      const icon = document.getElementById('toggleIcon');
+      const text = document.getElementById('toggleText');
+      
+      if (filters.classList.contains('show')) {
+        filters.classList.remove('show');
+        icon.textContent = '▼';
+        text.textContent = 'Advanced filters';
+      } else {
+        filters.classList.add('show');
+        icon.textContent = '▲';
+        text.textContent = 'Hide advanced filters';
+      }
+    }
+    
+    // Track checkbox changes
+    function updateSelectionCount() {
+      const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+      const count = checkboxes.length;
+      const selectedCount = document.getElementById('selectedCount');
+      const btnSave = document.getElementById('btnBulkSave');
+      const btnCampaign = document.getElementById('btnAddToCampaign');
+      
+      selectedCount.textContent = `${count} selected`;
+      btnSave.disabled = count === 0;
+      btnCampaign.disabled = count === 0;
+    }
+    
+    // Select all checkbox
+    document.getElementById('selectAll').addEventListener('change', function() {
+      const checkboxes = document.querySelectorAll('.row-checkbox');
+      checkboxes.forEach(cb => cb.checked = this.checked);
+      updateSelectionCount();
+    });
+    
+    // Individual checkboxes
+    document.querySelectorAll('.row-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', updateSelectionCount);
+    });
+    
+    // Bulk save button
+    document.getElementById('btnBulkSave').addEventListener('click', function() {
+      const selected = Array.from(document.querySelectorAll('.row-checkbox:checked'))
+        .map(cb => cb.dataset.name);
+      alert(`Saved ${selected.length} influencers: ${selected.join(', ')}`);
+    });
+    
+    // Add to campaign button
+    document.getElementById('btnAddToCampaign').addEventListener('click', function() {
+      const selected = Array.from(document.querySelectorAll('.row-checkbox:checked'));
+      const names = selected.map(cb => cb.dataset.name);
+      
+      const text = names.length === 1 
+        ? names[0] 
+        : `${names.length} influencers (${names.join(', ')})`;
+      
+      document.getElementById('selectedInfluencersText').textContent = text;
+      document.getElementById('campaignModal').classList.add('show');
+    });
+    
+    // Close modal
+    function closeCampaignModal() {
+      document.getElementById('campaignModal').classList.remove('show');
+      selectedCampaignId = null;
+      document.querySelectorAll('.campaign-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      document.getElementById('btnConfirmAdd').disabled = true;
+    }
+    
+    // Select campaign
+    function selectCampaign(element, campaignId) {
+      document.querySelectorAll('.campaign-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      selectedCampaignId = campaignId;
+      document.getElementById('btnConfirmAdd').disabled = false;
+    }
+    
+    // Confirm add to campaign
+    document.getElementById('btnConfirmAdd').addEventListener('click', function() {
+      const selected = Array.from(document.querySelectorAll('.row-checkbox:checked'))
+        .map(cb => cb.dataset.name);
+      const campaignName = document.querySelector('.campaign-option.selected .campaign-name').textContent;
+      
+      alert(`Added ${selected.length} influencers to "${campaignName}":\n${selected.join(', ')}`);
+      closeCampaignModal();
+      
+      // Uncheck all after adding
+      document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+      document.getElementById('selectAll').checked = false;
+      updateSelectionCount();
+    });
+    
+    // Close modal when clicking outside
+    document.getElementById('campaignModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCampaignModal();
+      }
+    });
+  </script>
+
+</body>
+</html>

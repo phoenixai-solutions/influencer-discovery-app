@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Launch 2025 - Campaign Detail</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
+    }
+    .top-bar {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #ef4444;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .user-badge {
+      width: 40px;
+      height: 40px;
+      background: #0066ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .nav-tabs {
+      background: white;
+      padding: 0 24px;
+      display: flex;
+      gap: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-tab {
+      padding: 12px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-tab.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .back-link {
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+    .back-link:hover {
+      color: #111827;
+    }
+    .campaign-header {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .title-area h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .status-badge {
+      padding: 6px 16px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 500;
+      background: #dbeafe;
+      color: #0066ff;
+    }
+    .action-btns {
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #e5e7eb;
+      background: white;
+    }
+    .btn:hover {
+      background: #f9fafb;
+    }
+    .btn-danger {
+      border-color: #fecaca;
+      color: #dc2626;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    .stat-box h3 {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .stat-box .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .stat-box .sub {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    .progress-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #0066ff;
+      border-radius: 5px;
+    }
+    .tab-container {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .tab-nav {
+      display: flex;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 24px;
+    }
+    .tab-btn {
+      padding: 16px 24px;
+      background: none;
+      border: none;
+      color: #6b7280;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+    .tab-btn.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .tab-content {
+      padding: 24px;
+    }
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    .section {
+      margin-bottom: 24px;
+    }
+    .section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+    .section p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    .timeline {
+      margin-top: 16px;
+      padding: 16px;
+      background: #f9fafb;
+      border-radius: 8px;
+    }
+    .timeline-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 8px;
+      color: #6b7280;
+    }
+    .timeline-track {
+      width: 100%;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      position: relative;
+    }
+    .timeline-progress {
+      height: 100%;
+      background: #0066ff;
+      border-radius: 4px;
+    }
+    .btn-primary {
+      background: #0066ff;
+      color: white;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #0052cc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    thead {
+      background: #f9fafb;
+    }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 16px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 14px;
+    }
+    .influencer-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .influencer-info .name {
+      font-weight: 600;
+      color: #111827;
+    }
+    .influencer-info .handle {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .badge-green {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .badge-yellow {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      padding: 16px;
+      border-radius: 8px;
+    }
+    .metric-card.blue {
+      background: #eff6ff;
+    }
+    .metric-card.green {
+      background: #d1fae5;
+    }
+    .metric-card.purple {
+      background: #f3e8ff;
+    }
+    .metric-card h4 {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    .metric-card .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <div class="top-bar">
+    <div class="logo-area">
+      <div class="logo-icon">P</div>
+      <span class="logo-text">Influencer Management</span>
+    </div>
+    <div class="user-badge">JD</div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <a href="#" class="nav-tab">Find Influencers</a>
+    <a href="#" class="nav-tab active">Manage Campaigns</a>
+    <a href="#" class="nav-tab">Performance</a>
+    <a href="#" class="nav-tab">Share of Voice</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <a href="#" class="back-link">← Back to Campaigns</a>
+
+    <!-- Campaign Header -->
+    <div class="campaign-header">
+      <div class="header-top">
+        <div class="title-area">
+          <h1>Spring Launch 2025</h1>
+          <span class="status-badge">● Active</span>
+        </div>
+        <div class="action-btns">
+          <button class="btn">Edit</button>
+          <button class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <h3>Campaign Budget</h3>
+          <div class="value">$50,000</div>
+        </div>
+        <div class="stat-box">
+          <h3>Spend to Date</h3>
+          <div class="value">$1,200</div>
+          <div class="sub">2.4% of budget</div>
+        </div>
+        <div class="stat-box">
+          <h3>Influencers</h3>
+          <div class="value">1</div>
+        </div>
+        <div class="stat-box">
+          <h3>Timeline</h3>
+          <div class="value" style="font-size: 18px;">Feb 28 - May 14</div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-header">
+          <span>Campaign Progress</span>
+          <span>2.4% Complete</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 2.4%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-container">
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="showTab('influencers')">Influencers</button>
+        <button class="tab-btn" onclick="showTab('deliverables')">Deliverables</button>
+        <button class="tab-btn" onclick="showTab('performance')">Performance</button>
+        <button class="tab-btn" onclick="showTab('budget')">Budget</button>
+      </div>
+
+      <div class="tab-content">
+        
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-panel active">
+          <div class="section">
+            <h3>Campaign Objective</h3>
+            <p>Drive awareness and sales for the new AI-powered analytics tool among mid-sized tech companies in the US.</p>
+          </div>
+          <div class="section">
+            <h3>Target Audience</h3>
+            <p>Tech professionals, decision-makers in mid-sized US tech firms, ages 28-45, interested in AI and analytics.</p>
+          </div>
+          <div class="section">
+            <h3>Deliverable Requirements</h3>
+            <p>10 Instagram Reels, 5 LinkedIn posts, 3 YouTube videos highlighting product features and case studies.</p>
+          </div>
+          <div class="section">
+            <h3>Timeline</h3>
+            <div class="timeline">
+              <div class="timeline-bar">
+                <span>Feb 28, 2025</span>
+                <span>Today</span>
+                <span>May 14, 2025</span>
+              </div>
+              <div class="timeline-track">
+                <div class="timeline-progress" style="width: 15%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Influencers Tab -->
+        <div id="influencers" class="tab-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h3>Assigned Influencers (1)</h3>
+            <button class="btn btn-primary">+ Add Influencer</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Platform</th>
+                <th>Followers</th>
+                <th>Eng. Rate</th>
+                <th>Status</th>
+                <th>Fee</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="influencer-cell">
+                    <div class="avatar"></div>
+                    <div class="influencer-info">
+                      <div class="name">Samantha Lee</div>
+                      <div class="handle">@thefitfoodie</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Instagram</td>
+                <td>128K</td>
+                <td>3.20%</td>
+                <td><span class="badge badge-green">Accepted</span></td>
+                <td>$1,200</td>
+                <td><a href="#" style="color: #0066ff;">View</a></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="metrics-grid">
+            <div class="metric-card blue">
+              <h4>Total Reach</h4>
+              <div class="value">6,200</div>
+            </div>
+            <div class="metric-card green">
+              <h4>Total Engagement</h4>
+              <div class="value">2,564</div>
+            </div>
+            <div class="metric-card purple">
+              <h4>Campaign ROI</h4>
+              <div class="value">24%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Deliverables Tab -->
+        <div id="deliverables" class="tab-panel">
+          <h3 style="margin-bottom: 16px;">Content Deliverables</h3>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Influencer</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Instagram Reel</strong></td>
+                <td>@thefitfoodie</td>
+                <td><span class="badge badge-yellow">Submitted</span></td>
+                <td>Nov 11, 2025</td>
+                <td><button class="btn btn-primary" style="padding: 6px 12px;">Review</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top: 16px; padding: 16px; background: #eff6ff; border-radius: 8px; color: #1e40af;">
+            📱 Preview available - Click "Review" to see submitted content
+          </div>
+        </div>
+
+        <!-- Performance Tab -->
+        <div id="performance" class="tab-panel">
+          <h3 style="margin-bottom: 24px;">Campaign Performance</h3>
+          
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+              <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Total Reach</div>
+              <div style="font-size: 32px; font-weight: 700;">6.2K</div>
+              <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 12% vs target</div>
+            </div>
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+              <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Impressions</div>
+              <div style="font-size: 32px; font-weight: 700;">15K</div>
+              <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 8% vs target</div>
+            </div>
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+              <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Engagement</div>
+              <div style="font-size: 32px; font-weight: 700;">2.6K</div>
+              <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 15% vs target</div>
+            </div>
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+              <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">ROI</div>
+              <div style="font-size: 32px; font-weight: 700;">24%</div>
+              <div style="font-size: 12px; color: #10b981; margin-top: 4px;">Above target</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 32px; padding: 48px; background: #f9fafb; border-radius: 8px; text-align: center; color: #6b7280;">
+            📊 Performance charts and detailed analytics will appear here
+          </div>
+        </div>
+
+        <!-- Budget Tab -->
+        <div id="budget" class="tab-panel">
+          <h3 style="margin-bottom: 24px;">Budget Overview</h3>
+          
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 24px;">
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px;">
+              <div style="font-size: 13px; color: #6b7280; margin-bottom: 8px;">Total Budget</div>
+              <div style="font-size: 40px; font-weight: 700;">$50,000</div>
+            </div>
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px;">
+              <div style="font-size: 13px; color: #6b7280; margin-bottom: 8px;">Remaining Budget</div>
+              <div style="font-size: 40px; font-weight: 700; color: #10b981;">$48,800</div>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Allocated</th>
+                <th>Spent</th>
+                <th>Remaining</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Influencer Fees</strong></td>
+                <td>$40,000</td>
+                <td>$1,200</td>
+                <td style="color: #10b981;">$38,800</td>
+              </tr>
+              <tr>
+                <td><strong>Production</strong></td>
+                <td>$8,000</td>
+                <td>$0</td>
+                <td style="color: #10b981;">$8,000</td>
+              </tr>
+              <tr>
+                <td><strong>Miscellaneous</strong></td>
+                <td>$2,000</td>
+                <td>$0</td>
+                <td style="color: #10b981;">$2,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function showTab(tabName) {
+      // Hide all panels
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      
+      // Remove active from all buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Show selected panel
+      document.getElementById(tabName).classList.add('active');
+      
+      // Add active to clicked button
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New Campaign - Phoenix</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
+    }
+    
+    /* Main Navigation - Horizontal at top */
+    .main-nav {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 24px;
+    }
+    .main-nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .brand {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+      padding: 16px 0;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      flex: 1;
+    }
+    .nav-link {
+      padding: 16px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-link.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .nav-link:hover {
+      color: #111827;
+    }
+    .user-badge {
+      width: 40px;
+      height: 40px;
+      background: #0066ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    /* Page Title Section */
+    .page-title-section {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 20px 24px 0;
+    }
+    .page-title-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+    
+    /* Sub Navigation */
+    .sub-nav {
+      display: flex;
+      gap: 24px;
+    }
+    .sub-nav-tab {
+      padding: 12px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+    }
+    .sub-nav-tab.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .sub-nav-tab:hover {
+      color: #111827;
+    }
+    
+    .top-bar, .logo-area, .logo-icon, .logo-text, .nav-tabs, .nav-tab {
+      display: none !important;
+    }
+    .container {
+      width: 32px;
+      height: 32px;
+      background: #ef4444;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .user-badge {
+      width: 40px;
+      height: 40px;
+      background: #0066ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-center: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .nav-tabs {
+      background: white;
+      padding: 0 24px;
+      display: flex;
+      gap: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-tab {
+      padding: 12px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-tab.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    
+    /* Sub Navigation */
+    .sub-nav {
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 24px;
+    }
+    .sub-nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      gap: 24px;
+    }
+    .sub-nav-tab {
+      padding: 12px 16px;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+    }
+    .sub-nav-tab.active {
+      color: #0066ff;
+      background: white;
+      border-bottom-color: #0066ff;
+    }
+    .sub-nav-tab:hover {
+      color: #111827;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .back-link {
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+    .back-link:hover {
+      color: #111827;
+    }
+    .page-header {
+      margin-bottom: 32px;
+    }
+    .page-header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .page-header p {
+      color: #6b7280;
+      font-size: 15px;
+    }
+    .form-container {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 32px;
+    }
+    .form-section {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .form-section:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: #111827;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    .required {
+      color: #dc2626;
+      margin-left: 4px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #0066ff;
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .form-help {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .input-prefix {
+      position: relative;
+    }
+    .input-prefix .prefix {
+      position: absolute;
+      left: 12px;
+      top: 11px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .input-prefix input {
+      padding-left: 28px;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+    }
+    .btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-secondary {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+    .btn-secondary:hover {
+      background: #f9fafb;
+    }
+    .btn-primary {
+      background: #0066ff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0052cc;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <div class="top-bar">
+    <div class="logo-area">
+      <div class="logo-icon">P</div>
+      <span class="logo-text">Influencer Management</span>
+    </div>
+    <div class="user-badge">JD</div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <a href="#" class="nav-tab">Find Influencers</a>
+    <a href="#" class="nav-tab active">Manage Campaigns</a>
+    <a href="#" class="nav-tab">Performance</a>
+    <a href="#" class="nav-tab">Share of Voice</a>
+  </div>
+
+  <!-- Sub Navigation for Campaign Management -->
+  <div class="sub-nav">
+    <div class="sub-nav-container">
+      <a href="campaigns.html" class="sub-nav-tab">All Campaigns</a>
+      <a href="create-campaign.html" class="sub-nav-tab active">Create Campaign</a>
+      <a href="campaign-performance.html" class="sub-nav-tab">Performance</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <a href="#" class="back-link">â† Back to Campaigns</a>
+
+    <div class="page-header">
+      <h1>Create New Campaign</h1>
+      <p>Fill in the details below to create your influencer marketing campaign</p>
+    </div>
+
+    <form class="form-container">
+      
+      <!-- Campaign Details Section -->
+      <div class="form-section">
+        <h2 class="section-title">Campaign Details</h2>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Campaign Name <span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="e.g., Spring Product Launch 2025"
+            required 
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Client <span class="required">*</span>
+          </label>
+          <select class="form-select" required>
+            <option value="">Select a client...</option>
+            <option value="1">Acme Beverage Co.</option>
+            <option value="2">GlowUp Cosmetics</option>
+            <option value="3">UrbanFit Apparel</option>
+            <option value="4">GreenLeaf Foods</option>
+            <option value="5">TechNest Gadgets</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Campaign Objective <span class="required">*</span>
+          </label>
+          <textarea 
+            class="form-textarea" 
+            placeholder="What are the goals of this campaign?"
+            required
+          ></textarea>
+          <div class="form-help">Describe what you want to achieve with this campaign</div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              Campaign Budget <span class="required">*</span>
+            </label>
+            <div class="input-prefix">
+              <span class="prefix">$</span>
+              <input 
+                type="number" 
+                class="form-input" 
+                placeholder="50000"
+                required 
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Start Date <span class="required">*</span>
+            </label>
+            <input 
+              type="date" 
+              class="form-input" 
+              required 
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              End Date <span class="required">*</span>
+            </label>
+            <input 
+              type="date" 
+              class="form-input" 
+              required 
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Campaign Status <span class="required">*</span>
+          </label>
+          <select class="form-select" required>
+            <option value="planning" selected>Planning</option>
+            <option value="active">Active</option>
+            <option value="paused">Paused</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Target Audience Section -->
+      <div class="form-section">
+        <h2 class="section-title">Target Audience</h2>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Target Audience Description
+          </label>
+          <textarea 
+            class="form-textarea" 
+            placeholder="Describe your target audience demographics, interests, and behaviors..."
+          ></textarea>
+          <div class="form-help">This helps influencers create more relevant content</div>
+        </div>
+      </div>
+
+      <!-- Deliverables Section -->
+      <div class="form-section">
+        <h2 class="section-title">Deliverable Requirements</h2>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Deliverables Description
+          </label>
+          <textarea 
+            class="form-textarea" 
+            style="min-height: 100px;"
+            placeholder="e.g., 10 Instagram Reels, 5 LinkedIn posts, 3 YouTube videos..."
+          ></textarea>
+          <div class="form-help">List the types and quantities of content you need</div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Campaign</button>
+      </div>
+
+    </form>
+
+  </div>
+
+</body>
+</html>
