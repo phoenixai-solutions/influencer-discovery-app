@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create New Campaign - Phoenix</title>
-  <link rel="stylesheet" href="nav-styles.css">
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -48,7 +46,7 @@
       border-radius: 50%;
       display: flex;
       align-items: center;
-      justify-center: center;
+      justify-content: center;
       color: white;
       font-weight: 600;
       font-size: 14px;
@@ -188,6 +186,7 @@
       font-size: 14px;
       cursor: pointer;
       border: none;
+      transition: all 0.2s;
     }
     .btn-secondary {
       background: white;
@@ -204,24 +203,76 @@
     .btn-primary:hover {
       background: #0052cc;
     }
+    .btn-primary:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    /* Loading and Error States */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .alert-error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+    }
+    .alert-success {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #16a34a;
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Navigation will be injected here -->
-  <div id="app-navigation"></div>
+  <!-- Top Navigation -->
+  <div class="top-bar">
+    <div class="logo-area">
+      <div class="logo-icon">P</div>
+      <span class="logo-text">Influencer Management</span>
+    </div>
+    <div class="user-badge">JD</div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <a href="index.html" class="nav-tab">Find Influencers</a>
+    <a href="campaigns.html" class="nav-tab active">Manage Campaigns</a>
+    <a href="#" class="nav-tab">Performance</a>
+    <a href="#" class="nav-tab">Share of Voice</a>
+  </div>
 
   <!-- Main Content -->
   <div class="container">
     
-    <a href="#" class="back-link">← Back to Campaigns</a>
+    <a href="campaigns.html" class="back-link">← Back to Campaigns</a>
 
     <div class="page-header">
       <h1>Create New Campaign</h1>
       <p>Fill in the details below to create your influencer marketing campaign</p>
     </div>
 
-    <form class="form-container">
+    <!-- Alert Messages -->
+    <div id="alertContainer"></div>
+
+    <form id="campaignForm" class="form-container">
       
       <!-- Campaign Details Section -->
       <div class="form-section">
@@ -233,6 +284,8 @@
           </label>
           <input 
             type="text" 
+            id="campaignName"
+            name="campaignName"
             class="form-input" 
             placeholder="e.g., Spring Product Launch 2025"
             required 
@@ -241,15 +294,13 @@
 
         <div class="form-group">
           <label class="form-label">
-            Client <span class="required">*</span>
+            Campaign Status <span class="required">*</span>
           </label>
-          <select class="form-select" required>
-            <option value="">Select a client...</option>
-            <option value="1">Acme Beverage Co.</option>
-            <option value="2">GlowUp Cosmetics</option>
-            <option value="3">UrbanFit Apparel</option>
-            <option value="4">GreenLeaf Foods</option>
-            <option value="5">TechNest Gadgets</option>
+          <select id="status" name="status" class="form-select" required>
+            <option value="Planning" selected>Planning</option>
+            <option value="Active">Active</option>
+            <option value="Paused">Paused</option>
+            <option value="Completed">Completed</option>
           </select>
         </div>
 
@@ -258,6 +309,8 @@
             Campaign Objective <span class="required">*</span>
           </label>
           <textarea 
+            id="objective"
+            name="objective"
             class="form-textarea" 
             placeholder="What are the goals of this campaign?"
             required
@@ -274,8 +327,12 @@
               <span class="prefix">$</span>
               <input 
                 type="number" 
+                id="budget"
+                name="budget"
                 class="form-input" 
                 placeholder="50000"
+                min="0"
+                step="100"
                 required 
               />
             </div>
@@ -287,6 +344,8 @@
             </label>
             <input 
               type="date" 
+              id="startDate"
+              name="startDate"
               class="form-input" 
               required 
             />
@@ -298,22 +357,12 @@
             </label>
             <input 
               type="date" 
+              id="endDate"
+              name="endDate"
               class="form-input" 
               required 
             />
           </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Campaign Status <span class="required">*</span>
-          </label>
-          <select class="form-select" required>
-            <option value="planning" selected>Planning</option>
-            <option value="active">Active</option>
-            <option value="paused">Paused</option>
-            <option value="completed">Completed</option>
-          </select>
         </div>
       </div>
 
@@ -326,6 +375,8 @@
             Target Audience Description
           </label>
           <textarea 
+            id="targetAudience"
+            name="targetAudience"
             class="form-textarea" 
             placeholder="Describe your target audience demographics, interests, and behaviors..."
           ></textarea>
@@ -342,6 +393,8 @@
             Deliverables Description
           </label>
           <textarea 
+            id="deliverables"
+            name="deliverables"
             class="form-textarea" 
             style="min-height: 100px;"
             placeholder="e.g., 10 Instagram Reels, 5 LinkedIn posts, 3 YouTube videos..."
@@ -350,15 +403,281 @@
         </div>
       </div>
 
+      <!-- Campaign Tracking Section -->
+      <div class="form-section">
+        <h2 class="section-title">Campaign Tracking</h2>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Campaign Hashtags
+          </label>
+          <input 
+            type="text" 
+            id="hashtags"
+            name="hashtags"
+            class="form-input" 
+            placeholder="e.g., #summersale, #brandname, #campaign2025"
+          />
+          <div class="form-help">Comma-separated hashtags for tracking campaign posts</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Required Phrases
+          </label>
+          <input 
+            type="text" 
+            id="requiredPhrases"
+            name="requiredPhrases"
+            class="form-input" 
+            placeholder="e.g., Brand name, Product features, Call to action"
+          />
+          <div class="form-help">Key phrases or terms that must appear in influencer content</div>
+        </div>
+      </div>
+
       <!-- Form Actions -->
       <div class="form-actions">
-        <button type="button" class="btn btn-secondary">Cancel</button>
-        <button type="submit" class="btn btn-primary">Create Campaign</button>
+        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+        <button type="submit" id="submitBtn" class="btn btn-primary">
+          <span id="submitText">Create Campaign</span>
+        </button>
       </div>
 
     </form>
 
   </div>
+
+  <script>
+    // ================================================
+    // API Configuration
+    // ================================================
+    const API_CONFIG = {
+      createCampaign: 'https://phoenixaisolutions.app.n8n.cloud/webhook/create-campaign'
+    };
+
+    // ================================================
+    // DOM Elements
+    // ================================================
+    const form = document.getElementById('campaignForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const alertContainer = document.getElementById('alertContainer');
+
+    // ================================================
+    // Helper Functions
+    // ================================================
+
+    function showAlert(message, type = 'error') {
+      alertContainer.innerHTML = `
+        <div class="alert alert-${type}">
+          ${message}
+        </div>
+      `;
+      // Scroll to top to show alert
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Auto-dismiss success messages after 3 seconds
+      if (type === 'success') {
+        setTimeout(() => {
+          alertContainer.innerHTML = '';
+        }, 3000);
+      }
+    }
+
+    function clearAlert() {
+      alertContainer.innerHTML = '';
+    }
+
+    function setLoading(isLoading) {
+      submitBtn.disabled = isLoading;
+      if (isLoading) {
+        submitText.innerHTML = '<span class="loading-spinner"></span>Creating...';
+      } else {
+        submitText.textContent = 'Create Campaign';
+      }
+    }
+
+    // ================================================
+    // Form Submission Handler
+    // ================================================
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlert();
+      
+      // Get form data
+      const formData = new FormData(form);
+      
+      // Build payload object with correct field names
+      const payload = {
+        campaignName: formData.get('campaignName').trim(),
+        status: formData.get('status'),
+        budget: parseFloat(formData.get('budget')),
+        startDate: formData.get('startDate'),
+        endDate: formData.get('endDate'),
+        objective: formData.get('objective').trim(),
+        deliverables: formData.get('deliverables').trim(),
+        targetAudience: formData.get('targetAudience').trim(),
+        hashtags: formData.get('hashtags').trim(),
+        requiredPhrases: formData.get('requiredPhrases').trim()
+      };
+
+      // Client-side validation
+      if (!payload.campaignName) {
+        showAlert('Campaign name is required');
+        return;
+      }
+
+      if (!payload.budget || payload.budget < 0) {
+        showAlert('Please enter a valid budget');
+        return;
+      }
+
+      if (!payload.startDate || !payload.endDate) {
+        showAlert('Start and end dates are required');
+        return;
+      }
+
+      // Check that end date is after start date
+      const startDate = new Date(payload.startDate);
+      const endDate = new Date(payload.endDate);
+      
+      if (endDate < startDate) {
+        showAlert('End date must be after start date');
+        return;
+      }
+
+      if (!payload.objective) {
+        showAlert('Campaign objective is required');
+        return;
+      }
+
+      // Log payload for debugging
+      console.log('📤 Sending payload:', payload);
+
+      // Set loading state
+      setLoading(true);
+
+      try {
+        // Send to n8n webhook
+        const response = await fetch(API_CONFIG.createCampaign, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        console.log('📥 Response status:', response.status);
+
+        // Parse response
+        const result = await response.json();
+        console.log('📥 Response data:', result);
+
+        // Check if successful
+        if (response.ok && result.success) {
+          showAlert('Campaign created successfully! Redirecting...', 'success');
+          
+          // Redirect to campaigns page after short delay
+          setTimeout(() => {
+            window.location.href = 'campaigns.html';
+          }, 1500);
+          
+        } else {
+          // Handle error response
+          const errorMessage = result.error || result.message || 'Failed to create campaign';
+          showAlert(errorMessage);
+          setLoading(false);
+        }
+
+      } catch (error) {
+        console.error('❌ Error creating campaign:', error);
+        showAlert('Network error: Could not connect to server. Please try again.');
+        setLoading(false);
+      }
+    });
+
+    // ================================================
+    // Cancel Button Handler
+    // ================================================
+
+    cancelBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+        window.location.href = 'campaigns.html';
+      }
+    });
+
+    // ================================================
+    // Date Validation
+    // ================================================
+
+    // Set minimum date to today for start date
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    
+    const today = new Date().toISOString().split('T')[0];
+    startDateInput.setAttribute('min', today);
+
+    // Update end date minimum when start date changes
+    startDateInput.addEventListener('change', () => {
+      endDateInput.setAttribute('min', startDateInput.value);
+      
+      // If end date is now before start date, clear it
+      if (endDateInput.value && endDateInput.value < startDateInput.value) {
+        endDateInput.value = '';
+      }
+    });
+
+    // ================================================
+    // Form Auto-save (Optional)
+    // ================================================
+
+    // Save form data to localStorage on input
+    let saveTimeout;
+    const formInputs = form.querySelectorAll('input, select, textarea');
+    
+    formInputs.forEach(input => {
+      input.addEventListener('input', () => {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+          localStorage.setItem('campaignDraft', JSON.stringify(data));
+          console.log('💾 Draft saved');
+        }, 1000);
+      });
+    });
+
+    // Restore draft on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = localStorage.getItem('campaignDraft');
+      if (draft) {
+        try {
+          const data = JSON.parse(draft);
+          Object.keys(data).forEach(key => {
+            const input = form.querySelector(`[name="${key}"]`);
+            if (input && data[key]) {
+              input.value = data[key];
+            }
+          });
+          console.log('📝 Draft restored');
+        } catch (e) {
+          console.error('Error restoring draft:', e);
+        }
+      }
+    });
+
+    // Clear draft after successful submission
+    window.addEventListener('beforeunload', (e) => {
+      if (!form.checkValidity()) {
+        // Keep draft if form is incomplete
+        return;
+      }
+    });
+
+  </script>
 
 </body>
 </html>
