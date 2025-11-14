@@ -7,7 +7,7 @@ const PhoenixNav = {
     brand: 'Influencer Marketing',
     userInitials: 'JD',
     mainPages: [
-      { id: 'discovery', label: 'Find Influencers', url: 'index.html' },
+      { id: 'discovery', label: 'Discover Influencers', url: 'index.html' },
       { id: 'campaigns', label: 'Campaigns', url: 'campaigns.html' },
       { id: 'settings', label: 'Settings', url: '#' },
     ],
