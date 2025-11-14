@@ -5,7 +5,7 @@ const PhoenixNav = {
   // Configuration
   config: {
     brand: 'Influencer Marketing',
-    userInitials: 'JD',
+    userInitials: 'DC',
     mainPages: [
       { id: 'discovery', label: 'Discover Influencers', url: 'index.html' },
       { id: 'campaigns', label: 'Campaigns', url: 'campaigns.html' },
@@ -13,7 +13,7 @@ const PhoenixNav = {
     ],
     subPages: {
       discovery: [
-        { id: 'discovery', label: 'Find Influencers', url: 'index.html' },
+        { id: 'discovery', label: 'Search', url: 'index.html' },
         { id: 'myinfluencers', label: 'My Influencers', url: 'influencer_list.html' },
       ],
       campaigns: [
