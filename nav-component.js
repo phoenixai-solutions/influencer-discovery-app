@@ -9,16 +9,18 @@ const PhoenixNav = {
     mainPages: [
       { id: 'discovery', label: 'Find Influencers', url: 'index.html' },
       { id: 'campaigns', label: 'Campaigns', url: 'campaigns.html' },
-      { id: 'emails', label: 'Emails', url: '#' },
-      { id: 'snippets', label: 'Snippets', url: '#' }
+      { id: 'settings', label: 'Settings', url: '#' },
     ],
     subPages: {
+      discovery: [
+        { id: 'discovery', label: 'Find Influencers', url: 'index.html' },
+        { id: 'myinfluencers', label: 'My Influencers', url: 'influencer_list.html' },
+      ],
       campaigns: [
         { id: 'overview', label: 'Overview', url: 'campaigns.html' },
         { id: 'create', label: 'Create', url: 'create-campaign.html' },
         { id: 'performance', label: 'Performance', url: 'campaign-performance.html' }
-      ],
-      discovery: [] // No sub-navigation for discovery page
+      ]
     }
   },
   
