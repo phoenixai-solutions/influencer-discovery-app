@@ -179,6 +179,29 @@
       animation: spin 0.6s linear infinite;
       margin-right: 8px;
     }
+    .nav-tabs {
+  background: white;
+  padding: 0 24px;
+  display: flex;
+  gap: 32px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.nav-tab {
+  padding: 12px 0;
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.nav-tab.active {
+  color: #0066ff;
+  border-bottom-color: #0066ff;
+}
+.nav-tab:hover {
+  color: #111827;
+}
+
     @keyframes spin { to { transform: rotate(360deg); } }
 
     @media (max-width: 640px) {
