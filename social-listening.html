@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Listening - Phoenix</title>
+  
+  <!-- Import Navigation Styles -->
+  <link rel="stylesheet" href="nav-styles.css">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    
+    /* Header Section */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .page-subtitle {
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    /* Filter Bar */
+    .filter-bar {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .filter-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+    }
+    .filter-select {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+      min-width: 150px;
+    }
+    .refresh-info {
+      margin-left: auto;
+      font-size: 13px;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .refresh-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Stats Overview */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .stat-change {
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stat-change.positive {
+      color: #10b981;
+    }
+    .stat-change.negative {
+      color: #ef4444;
+    }
+    
+    /* Main Grid Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    
+    /* Card Styles */
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .card-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    
+    /* Mentions Timeline */
+    .timeline-chart {
+      height: 300px;
+      background: #f9fafb;
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      gap: 8px;
+    }
+    .timeline-bar {
+      flex: 1;
+      background: linear-gradient(180deg, #0066ff 0%, #0052cc 100%);
+      border-radius: 4px 4px 0 0;
+      position: relative;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .timeline-bar:hover {
+      opacity: 0.8;
+    }
+    .timeline-label {
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: #6b7280;
+      white-space: nowrap;
+    }
+    
+    /* Sentiment Breakdown */
+    .sentiment-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .sentiment-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sentiment-label {
+      font-size: 14px;
+      font-weight: 500;
+      width: 80px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sentiment-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .sentiment-icon.positive {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .sentiment-icon.neutral {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+    .sentiment-icon.negative {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .sentiment-bar-container {
+      flex: 1;
+      height: 32px;
+      background: #f3f4f6;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .sentiment-bar {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      transition: width 0.3s;
+    }
+    .sentiment-bar.positive {
+      background: #10b981;
+    }
+    .sentiment-bar.neutral {
+      background: #6366f1;
+    }
+    .sentiment-bar.negative {
+      background: #ef4444;
+    }
+    
+    /* Platform Breakdown */
+    .platform-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .platform-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      background: #f9fafb;
+      border-radius: 6px;
+    }
+    .platform-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .platform-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .platform-icon.instagram {
+      background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+      color: white;
+    }
+    .platform-icon.tiktok {
+      background: #000000;
+      color: white;
+    }
+    .platform-icon.twitter {
+      background: #1da1f2;
+      color: white;
+    }
+    .platform-icon.facebook {
+      background: #1877f2;
+      color: white;
+    }
+    .platform-icon.youtube {
+      background: #ff0000;
+      color: white;
+    }
+    .platform-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .platform-mentions {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .platform-metric {
+      text-align: right;
+    }
+    .platform-count {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .platform-change {
+      font-size: 12px;
+      color: #10b981;
+    }
+    
+    /* Competitor Tracking */
+    .competitor-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .competitor-table th {
+      text-align: left;
+      padding: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .competitor-table td {
+      padding: 12px;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 14px;
+    }
+    .competitor-table tr:hover {
+      background: #f9fafb;
+    }
+    .competitor-name {
+      font-weight: 600;
+      color: #111827;
+    }
+    .competitor-rank {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .competitor-rank.first {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .competitor-rank.second {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+    .competitor-rank.third {
+      background: #fecaca;
+      color: #991b1b;
+    }
+    .trend-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .trend-indicator.up {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .trend-indicator.down {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .trend-indicator.same {
+      background: #e5e7eb;
+      color: #6b7280;
+    }
+    
+    /* Top Mentions Feed */
+    .mentions-feed {
+      display: grid;
+      gap: 12px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .mention-card {
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      transition: box-shadow 0.2s;
+    }
+    .mention-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .mention-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .mention-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .mention-user {
+      flex: 1;
+    }
+    .mention-username {
+      font-weight: 600;
+      font-size: 14px;
+      color: #111827;
+    }
+    .mention-handle {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .mention-sentiment {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    .mention-sentiment.positive {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .mention-sentiment.neutral {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+    .mention-sentiment.negative {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .mention-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+    .mention-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .mention-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: #0066ff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0052cc;
+    }
+    .btn-secondary {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+    .btn-secondary:hover {
+      background: #f9fafb;
+    }
+    
+    @media (max-width: 1200px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation will be injected here -->
+  <div id="app-navigation"></div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Social Listening</h1>
+        <p class="page-subtitle">Real-time brand and competitor monitoring across social platforms</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary">
+          <span>⚙️</span>
+          <span>Configure</span>
+        </button>
+        <button class="btn btn-primary">
+          <span>📊</span>
+          <span>Export Report</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">Date Range:</span>
+        <select class="filter-select">
+          <option>Last 7 Days</option>
+          <option>Last 30 Days</option>
+          <option>Last 90 Days</option>
+          <option>Custom Range...</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <span class="filter-label">Platform:</span>
+        <select class="filter-select">
+          <option>All Platforms</option>
+          <option>Instagram</option>
+          <option>TikTok</option>
+          <option>Twitter</option>
+          <option>Facebook</option>
+          <option>YouTube</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <span class="filter-label">Brand:</span>
+        <select class="filter-select">
+          <option>Aruba</option>
+          <option>All Competitors</option>
+          <option>Jamaica</option>
+          <option>Bahamas</option>
+          <option>Barbados</option>
+          <option>Turks & Caicos</option>
+        </select>
+      </div>
+      
+      <div class="refresh-info">
+        <div class="refresh-dot"></div>
+        <span>Updates daily at 6:00 AM</span>
+      </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Mentions</div>
+        <div class="stat-value">12,847</div>
+        <div class="stat-change positive">
+          <span>↑ 18%</span>
+          <span>vs last week</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Reach</div>
+        <div class="stat-value">8.4M</div>
+        <div class="stat-change positive">
+          <span>↑ 24%</span>
+          <span>vs last week</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Engagements</div>
+        <div class="stat-value">342K</div>
+        <div class="stat-change positive">
+          <span>↑ 15%</span>
+          <span>vs last week</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Sentiment</div>
+        <div class="stat-value">94%</div>
+        <div class="stat-change positive">
+          <span>Positive/Neutral</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-label">Partner Tags</div>
+        <div class="stat-value">1,284</div>
+        <div class="stat-change positive">
+          <span>↑ 22%</span>
+          <span>vs last week</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Column -->
+      <div style="display: grid; gap: 24px;">
+        
+        <!-- Mentions Timeline -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Mentions Over Time</div>
+              <div class="card-subtitle">Daily mention volume for last 7 days</div>
+            </div>
+          </div>
+          <div class="timeline-chart">
+            <div class="timeline-bar" style="height: 65%;">
+              <div class="timeline-label">Mon</div>
+            </div>
+            <div class="timeline-bar" style="height: 72%;">
+              <div class="timeline-label">Tue</div>
+            </div>
+            <div class="timeline-bar" style="height: 58%;">
+              <div class="timeline-label">Wed</div>
+            </div>
+            <div class="timeline-bar" style="height: 85%;">
+              <div class="timeline-label">Thu</div>
+            </div>
+            <div class="timeline-bar" style="height: 78%;">
+              <div class="timeline-label">Fri</div>
+            </div>
+            <div class="timeline-bar" style="height: 92%;">
+              <div class="timeline-label">Sat</div>
+            </div>
+            <div class="timeline-bar" style="height: 100%;">
+              <div class="timeline-label">Sun</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Competitor Tracking -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Competitor Mention Volume</div>
+              <div class="card-subtitle">Last 7 days comparison</div>
+            </div>
+          </div>
+          <table class="competitor-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Destination</th>
+                <th>Mentions</th>
+                <th>Reach</th>
+                <th>Trend</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="competitor-rank first">1</div>
+                </td>
+                <td>
+                  <div class="competitor-name">Jamaica</div>
+                </td>
+                <td>18,942</td>
+                <td>14.2M</td>
+                <td>
+                  <div class="trend-indicator up">
+                    <span>↑</span>
+                    <span>+32%</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="competitor-rank second">2</div>
+                </td>
+                <td>
+                  <div class="competitor-name">Aruba</div>
+                </td>
+                <td>12,847</td>
+                <td>8.4M</td>
+                <td>
+                  <div class="trend-indicator up">
+                    <span>↑</span>
+                    <span>+18%</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="competitor-rank third">3</div>
+                </td>
+                <td>
+                  <div class="competitor-name">Bahamas</div>
+                </td>
+                <td>11,203</td>
+                <td>7.1M</td>
+                <td>
+                  <div class="trend-indicator up">
+                    <span>↑</span>
+                    <span>+12%</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="competitor-rank">4</div>
+                </td>
+                <td>
+                  <div class="competitor-name">Barbados</div>
+                </td>
+                <td>8,547</td>
+                <td>5.3M</td>
+                <td>
+                  <div class="trend-indicator same">
+                    <span>→</span>
+                    <span>+2%</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="competitor-rank">5</div>
+                </td>
+                <td>
+                  <div class="competitor-name">Turks & Caicos</div>
+                </td>
+                <td>6,892</td>
+                <td>4.8M</td>
+                <td>
+                  <div class="trend-indicator down">
+                    <span>↓</span>
+                    <span>-8%</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Top Mentions -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Recent High-Impact Mentions</div>
+              <div class="card-subtitle">Top mentions by reach</div>
+            </div>
+          </div>
+          <div class="mentions-feed">
+            
+            <div class="mention-card">
+              <div class="mention-header">
+                <div class="mention-avatar"></div>
+                <div class="mention-user">
+                  <div class="mention-username">Travel With Sarah</div>
+                  <div class="mention-handle">@travelwithsarah • Instagram</div>
+                </div>
+                <div class="mention-sentiment positive">Positive</div>
+              </div>
+              <div class="mention-text">
+                "Just returned from the most incredible week in Aruba! 🌴 The beaches are pristine, the people are amazing, and @thepalmbeacharuba exceeded all expectations. Already planning my next trip! #VisitAruba #CaribbeanTravel"
+              </div>
+              <div class="mention-meta">
+                <div class="mention-meta-item">
+                  <span>👁️</span>
+                  <span>284K reach</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>❤️</span>
+                  <span>12.4K likes</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>💬</span>
+                  <span>342 comments</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>🕐</span>
+                  <span>2 hours ago</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mention-card">
+              <div class="mention-header">
+                <div class="mention-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                <div class="mention-user">
+                  <div class="mention-username">Luxury Travel Magazine</div>
+                  <div class="mention-handle">@luxtravel • Twitter</div>
+                </div>
+                <div class="mention-sentiment neutral">Neutral</div>
+              </div>
+              <div class="mention-text">
+                "Top 10 Caribbean destinations for 2025: Aruba ranks #2 for best beaches and weather consistency. Full list in our latest issue 📰 #CaribbeanTravel #Aruba"
+              </div>
+              <div class="mention-meta">
+                <div class="mention-meta-item">
+                  <span>👁️</span>
+                  <span>156K reach</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>❤️</span>
+                  <span>3.2K likes</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>💬</span>
+                  <span>187 comments</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>🕐</span>
+                  <span>5 hours ago</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mention-card">
+              <div class="mention-header">
+                <div class="mention-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                <div class="mention-user">
+                  <div class="mention-username">FoodieAdventures</div>
+                  <div class="mention-handle">@foodieadventures • TikTok</div>
+                </div>
+                <div class="mention-sentiment positive">Positive</div>
+              </div>
+              <div class="mention-text">
+                "Best restaurants in Aruba 🍽️ Part 3! Thanks to @arubaresto and @papiamentoresort for an unforgettable culinary experience. The local seafood is 🔥🔥 #ArubaEats #CaribbeanFood"
+              </div>
+              <div class="mention-meta">
+                <div class="mention-meta-item">
+                  <span>👁️</span>
+                  <span>421K reach</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>❤️</span>
+                  <span>18.7K likes</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>💬</span>
+                  <span>512 comments</span>
+                </div>
+                <div class="mention-meta-item">
+                  <span>🕐</span>
+                  <span>1 day ago</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column -->
+      <div style="display: grid; gap: 24px;">
+        
+        <!-- Sentiment Breakdown -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Sentiment Analysis</div>
+              <div class="card-subtitle">Last 7 days</div>
+            </div>
+          </div>
+          <div class="sentiment-grid">
+            <div class="sentiment-row">
+              <div class="sentiment-label">
+                <div class="sentiment-icon positive">😊</div>
+                <span>Positive</span>
+              </div>
+              <div class="sentiment-bar-container">
+                <div class="sentiment-bar positive" style="width: 78%;">
+                  78%
+                </div>
+              </div>
+            </div>
+            
+            <div class="sentiment-row">
+              <div class="sentiment-label">
+                <div class="sentiment-icon neutral">😐</div>
+                <span>Neutral</span>
+              </div>
+              <div class="sentiment-bar-container">
+                <div class="sentiment-bar neutral" style="width: 16%;">
+                  16%
+                </div>
+              </div>
+            </div>
+            
+            <div class="sentiment-row">
+              <div class="sentiment-label">
+                <div class="sentiment-icon negative">😞</div>
+                <span>Negative</span>
+              </div>
+              <div class="sentiment-bar-container">
+                <div class="sentiment-bar negative" style="width: 6%;">
+                  6%
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #f3f4f6;">
+            <div style="font-size: 13px; color: #6b7280; margin-bottom: 8px;">Key Positive Themes:</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <span style="padding: 6px 12px; background: #d1fae5; color: #065f46; border-radius: 16px; font-size: 12px; font-weight: 500;">Beautiful beaches</span>
+              <span style="padding: 6px 12px; background: #d1fae5; color: #065f46; border-radius: 16px; font-size: 12px; font-weight: 500;">Friendly locals</span>
+              <span style="padding: 6px 12px; background: #d1fae5; color: #065f46; border-radius: 16px; font-size: 12px; font-weight: 500;">Perfect weather</span>
+              <span style="padding: 6px 12px; background: #d1fae5; color: #065f46; border-radius: 16px; font-size: 12px; font-weight: 500;">Great food</span>
+              <span style="padding: 6px 12px; background: #d1fae5; color: #065f46; border-radius: 16px; font-size: 12px; font-weight: 500;">Safe destination</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Breakdown -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Platform Breakdown</div>
+              <div class="card-subtitle">Mentions by platform</div>
+            </div>
+          </div>
+          <div class="platform-grid">
+            
+            <div class="platform-row">
+              <div class="platform-info">
+                <div class="platform-icon instagram">📷</div>
+                <div>
+                  <div class="platform-name">Instagram</div>
+                  <div class="platform-mentions">Most active platform</div>
+                </div>
+              </div>
+              <div class="platform-metric">
+                <div class="platform-count">5,842</div>
+                <div class="platform-change">+24%</div>
+              </div>
+            </div>
+
+            <div class="platform-row">
+              <div class="platform-info">
+                <div class="platform-icon tiktok">🎵</div>
+                <div>
+                  <div class="platform-name">TikTok</div>
+                  <div class="platform-mentions">Highest engagement</div>
+                </div>
+              </div>
+              <div class="platform-metric">
+                <div class="platform-count">3,621</div>
+                <div class="platform-change">+38%</div>
+              </div>
+            </div>
+
+            <div class="platform-row">
+              <div class="platform-info">
+                <div class="platform-icon twitter">🐦</div>
+                <div>
+                  <div class="platform-name">Twitter</div>
+                  <div class="platform-mentions">News & updates</div>
+                </div>
+              </div>
+              <div class="platform-metric">
+                <div class="platform-count">1,847</div>
+                <div class="platform-change">+12%</div>
+              </div>
+            </div>
+
+            <div class="platform-row">
+              <div class="platform-info">
+                <div class="platform-icon facebook">f</div>
+                <div>
+                  <div class="platform-name">Facebook</div>
+                  <div class="platform-mentions">Community groups</div>
+                </div>
+              </div>
+              <div class="platform-metric">
+                <div class="platform-count">1,024</div>
+                <div class="platform-change">+8%</div>
+              </div>
+            </div>
+
+            <div class="platform-row">
+              <div class="platform-info">
+                <div class="platform-icon youtube">▶️</div>
+                <div>
+                  <div class="platform-name">YouTube</div>
+                  <div class="platform-mentions">Travel vlogs</div>
+                </div>
+              </div>
+              <div class="platform-metric">
+                <div class="platform-count">513</div>
+                <div class="platform-change">+15%</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Top Partner Mentions -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Top Partner Mentions</div>
+              <div class="card-subtitle">Hotels & attractions tagged</div>
+            </div>
+          </div>
+          <div style="display: grid; gap: 12px;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f9fafb; border-radius: 6px;">
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Ritz-Carlton Aruba</div>
+                <div style="font-size: 13px; color: #6b7280;">@ritzcarltonaruba</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 18px; font-weight: 700;">342</div>
+                <div style="font-size: 12px; color: #10b981;">+18%</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f9fafb; border-radius: 6px;">
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Eagle Beach</div>
+                <div style="font-size: 13px; color: #6b7280;">#EagleBeach</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 18px; font-weight: 700;">287</div>
+                <div style="font-size: 12px; color: #10b981;">+24%</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f9fafb; border-radius: 6px;">
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Palm Beach</div>
+                <div style="font-size: 13px; color: #6b7280;">@palmbeacharuba</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 18px; font-weight: 700;">213</div>
+                <div style="font-size: 12px; color: #10b981;">+15%</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f9fafb; border-radius: 6px;">
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Red Sail Sports</div>
+                <div style="font-size: 13px; color: #6b7280;">@redsailaruba</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 18px; font-weight: 700;">189</div>
+                <div style="font-size: 12px; color: #10b981;">+22%</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f9fafb; border-radius: 6px;">
+              <div>
+                <div style="font-weight: 600; font-size: 14px;">Papiamento Restaurant</div>
+                <div style="font-size: 13px; color: #6b7280;">@papiamentoresort</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 18px; font-weight: 700;">156</div>
+                <div style="font-size: 12px; color: #10b981;">+31%</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Load Navigation Script -->
+  <script src="nav-component.js"></script>
+  <script>
+    PhoenixNav.init({
+      currentPage: 'social-listening',
+      currentSubPage: ''
+    });
+  </script>
+
+</body>
+</html>

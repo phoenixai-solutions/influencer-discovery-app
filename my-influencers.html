@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Influencers - Phoenix</title>
+
+  <!-- Import Navigation Styles & Script -->
+  <link rel="stylesheet" href="nav-styles.css">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .page-header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .influencer-count {
+      background: #e5e7eb;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b7280;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: #0066ff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0052cc;
+    }
+    .btn-primary:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    /* Filter Bar */
+    .filter-bar {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .filter-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .search-box {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      width: 300px;
+      font-size: 14px;
+    }
+    .filter-select {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .view-toggle {
+      display: flex;
+      gap: 8px;
+    }
+    .view-btn {
+      padding: 8px;
+      border: none;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b7280;
+    }
+    .view-btn:hover {
+      background: #f3f4f6;
+    }
+    .view-btn.active {
+      background: #eff6ff;
+      color: #0066ff;
+    }
+    
+    /* Selection Bar */
+    .selection-bar {
+      background: #1e40af;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .selection-bar.show {
+      display: flex;
+    }
+    .selection-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .selection-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-secondary {
+      background: white;
+      color: #1e40af;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: #f0f9ff;
+    }
+    
+    /* List View */
+    .list-view {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .list-header {
+      display: grid;
+      grid-template-columns: 40px 300px 120px 100px 100px 100px 120px 50px;
+      padding: 12px 16px;
+      background: #f9fafb;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .list-row {
+      display: grid;
+      grid-template-columns: 40px 300px 120px 100px 100px 100px 120px 50px;
+      padding: 16px;
+      border-bottom: 1px solid #e5e7eb;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    .list-row:hover {
+      background: #f9fafb;
+    }
+    .list-row.selected {
+      background: #eff6ff;
+    }
+    .checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    .influencer-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      flex-shrink: 0;
+    }
+    .influencer-info .name {
+      font-weight: 600;
+      color: #111827;
+      font-size: 14px;
+    }
+    .influencer-info .handle {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .platform-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #eff6ff;
+      color: #1e40af;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .stat-value {
+      color: #111827;
+      font-weight: 500;
+    }
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      padding: 2px 8px;
+      background: #f3f4f6;
+      border-radius: 12px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+    .action-menu {
+      position: relative;
+    }
+    .action-btn {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      border-radius: 4px;
+      color: #6b7280;
+    }
+    .action-btn:hover {
+      background: #f3f4f6;
+    }
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      min-width: 180px;
+      display: none;
+      margin-top: 4px;
+    }
+    .dropdown-menu.show {
+      display: block;
+    }
+    .dropdown-item {
+      padding: 10px 16px;
+      font-size: 14px;
+      color: #374151;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dropdown-item:hover {
+      background: #f9fafb;
+    }
+    .dropdown-divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 4px 0;
+    }
+    .dropdown-item.danger {
+      color: #dc2626;
+    }
+    
+    /* Cards View */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .influencer-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .influencer-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .influencer-card.selected {
+      border-color: #0066ff;
+      background: #eff6ff;
+    }
+    .card-checkbox {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .card-profile {
+      display: flex;
+      gap: 16px;
+      flex: 1;
+    }
+    .card-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .card-info {
+      flex: 1;
+    }
+    .card-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 2px;
+    }
+    .card-handle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .card-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .card-stat {
+      text-align: center;
+    }
+    .card-stat-label {
+      font-size: 11px;
+      color: #6b7280;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card-stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6b7280;
+    }
+    .empty-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 16px;
+      color: #d1d5db;
+    }
+    .empty-state h3 {
+      font-size: 18px;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+    .empty-state p {
+      margin-bottom: 20px;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .modal-header {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .modal-body {
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: #0066ff;
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    }
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    .btn-cancel {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-cancel:hover {
+      background: #f9fafb;
+    }
+    
+    @media (max-width: 1024px) {
+      .list-header, .list-row {
+        grid-template-columns: 40px 1fr 100px 80px 50px;
+      }
+      .list-header > *:nth-child(4),
+      .list-header > *:nth-child(5),
+      .list-header > *:nth-child(6),
+      .list-row > *:nth-child(4),
+      .list-row > *:nth-child(5),
+      .list-row > *:nth-child(6) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation will be injected here -->
+  <div id="app-navigation"></div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <h1 class="page-title">My Influencers</h1>
+        <span class="influencer-count">12 saved</span>
+      </div>
+      <button class="btn btn-primary" id="bulkAddToCampaign" disabled>
+        <span>Add to Campaign</span>
+      </button>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-left">
+        <input type="text" id="searchBox" class="search-box" placeholder="🔍 Search influencers..." />
+        <select class="filter-select" id="platformFilter">
+          <option value="">All Platforms</option>
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="youtube">YouTube</option>
+          <option value="twitter">Twitter</option>
+        </select>
+        <select class="filter-select" id="tagFilter">
+          <option value="">All Tags</option>
+          <option value="fitness">Fitness</option>
+          <option value="food">Food</option>
+          <option value="travel">Travel</option>
+          <option value="fashion">Fashion</option>
+          <option value="tech">Tech</option>
+        </select>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="listViewBtn" title="List View">☰</button>
+        <button class="view-btn" id="cardViewBtn" title="Card View">⊞</button>
+      </div>
+    </div>
+
+    <!-- Selection Bar -->
+    <div class="selection-bar" id="selectionBar">
+      <div class="selection-info">
+        <span><span id="selectedCount">0</span> influencers selected</span>
+        <a href="#" style="color: white; text-decoration: underline;" onclick="clearSelection()">Clear selection</a>
+      </div>
+      <div class="selection-actions">
+        <button class="btn-secondary" onclick="bulkAddTags()">Add Tags</button>
+        <button class="btn-secondary" onclick="bulkDelete()">Delete Selected</button>
+      </div>
+    </div>
+
+    <!-- Influencers Container -->
+    <div id="influencersContainer">
+      
+      <!-- List View (default) -->
+      <div class="list-view" id="listView">
+        <div class="list-header">
+          <div><input type="checkbox" id="selectAll" class="checkbox" /></div>
+          <div>Influencer</div>
+          <div>Platform</div>
+          <div>Followers</div>
+          <div>Engagement</div>
+          <div>Avg. Reach</div>
+          <div>Tags</div>
+          <div></div>
+        </div>
+        
+        <!-- Sample Rows -->
+        <div class="list-row" data-id="1">
+          <div><input type="checkbox" class="checkbox row-checkbox" /></div>
+          <div class="influencer-cell">
+            <img src="data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23667eea'/%3E%3C/svg%3E" class="avatar" alt="Avatar" />
+            <div class="influencer-info">
+              <div class="name">Samantha Lee</div>
+              <div class="handle">@thefitfoodie</div>
+            </div>
+          </div>
+          <div><span class="platform-badge">Instagram</span></div>
+          <div class="stat-value">128K</div>
+          <div class="stat-value">3.20%</div>
+          <div class="stat-value">15.2K</div>
+          <div class="tags">
+            <span class="tag">Fitness</span>
+            <span class="tag">Food</span>
+          </div>
+          <div class="action-menu">
+            <button class="action-btn" onclick="toggleMenu(event, 1)">⋮</button>
+            <div class="dropdown-menu" id="menu-1">
+              <div class="dropdown-item" onclick="viewProfile(1)">👁️ View Profile</div>
+              <div class="dropdown-item" onclick="addToCampaign(1)">➕ Add to Campaign</div>
+              <div class="dropdown-item" onclick="manageTags(1)">🏷️ Manage Tags</div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item danger" onclick="removeInfluencer(1)">🗑️ Remove</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-row" data-id="2">
+          <div><input type="checkbox" class="checkbox row-checkbox" /></div>
+          <div class="influencer-cell">
+            <img src="data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23f093fb'/%3E%3C/svg%3E" class="avatar" alt="Avatar" />
+            <div class="influencer-info">
+              <div class="name">Marcus Chen</div>
+              <div class="handle">@techlifemarcus</div>
+            </div>
+          </div>
+          <div><span class="platform-badge">YouTube</span></div>
+          <div class="stat-value">245K</div>
+          <div class="stat-value">4.15%</div>
+          <div class="stat-value">28.5K</div>
+          <div class="tags">
+            <span class="tag">Tech</span>
+            <span class="tag">Lifestyle</span>
+          </div>
+          <div class="action-menu">
+            <button class="action-btn" onclick="toggleMenu(event, 2)">⋮</button>
+            <div class="dropdown-menu" id="menu-2">
+              <div class="dropdown-item" onclick="viewProfile(2)">👁️ View Profile</div>
+              <div class="dropdown-item" onclick="addToCampaign(2)">➕ Add to Campaign</div>
+              <div class="dropdown-item" onclick="manageTags(2)">🏷️ Manage Tags</div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item danger" onclick="removeInfluencer(2)">🗑️ Remove</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-row" data-id="3">
+          <div><input type="checkbox" class="checkbox row-checkbox" /></div>
+          <div class="influencer-cell">
+            <img src="data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='20' fill='%234facfe'/%3E%3C/svg%3E" class="avatar" alt="Avatar" />
+            <div class="influencer-info">
+              <div class="name">Elena Rodriguez</div>
+              <div class="handle">@wanderlust.elena</div>
+            </div>
+          </div>
+          <div><span class="platform-badge">TikTok</span></div>
+          <div class="stat-value">89.5K</div>
+          <div class="stat-value">5.8%</div>
+          <div class="stat-value">45K</div>
+          <div class="tags">
+            <span class="tag">Travel</span>
+            <span class="tag">Photography</span>
+          </div>
+          <div class="action-menu">
+            <button class="action-btn" onclick="toggleMenu(event, 3)">⋮</button>
+            <div class="dropdown-menu" id="menu-3">
+              <div class="dropdown-item" onclick="viewProfile(3)">👁️ View Profile</div>
+              <div class="dropdown-item" onclick="addToCampaign(3)">➕ Add to Campaign</div>
+              <div class="dropdown-item" onclick="manageTags(3)">🏷️ Manage Tags</div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item danger" onclick="removeInfluencer(3)">🗑️ Remove</div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- Card View (hidden by default) -->
+      <div class="cards-grid" id="cardView" style="display: none;">
+        
+        <!-- Card 1 -->
+        <div class="influencer-card" data-id="1">
+          <input type="checkbox" class="checkbox card-checkbox" />
+          <div class="card-header">
+            <div class="card-profile">
+              <img src="data:image/svg+xml,%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23667eea'/%3E%3C/svg%3E" class="card-avatar" alt="Avatar" />
+              <div class="card-info">
+                <div class="card-name">Samantha Lee</div>
+                <div class="card-handle">@thefitfoodie</div>
+                <span class="platform-badge">Instagram</span>
+              </div>
+            </div>
+            <div class="action-menu">
+              <button class="action-btn" onclick="toggleMenu(event, 'c1')">⋮</button>
+              <div class="dropdown-menu" id="menu-c1">
+                <div class="dropdown-item" onclick="viewProfile(1)">👁️ View Profile</div>
+                <div class="dropdown-item" onclick="addToCampaign(1)">➕ Add to Campaign</div>
+                <div class="dropdown-item" onclick="manageTags(1)">🏷️ Manage Tags</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item danger" onclick="removeInfluencer(1)">🗑️ Remove</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-stats">
+            <div class="card-stat">
+              <div class="card-stat-label">Followers</div>
+              <div class="card-stat-value">128K</div>
+            </div>
+            <div class="card-stat">
+              <div class="card-stat-label">Engagement</div>
+              <div class="card-stat-value">3.2%</div>
+            </div>
+            <div class="card-stat">
+              <div class="card-stat-label">Avg Reach</div>
+              <div class="card-stat-value">15.2K</div>
+            </div>
+          </div>
+          
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag">Fitness</span>
+              <span class="tag">Food</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="influencer-card" data-id="2">
+          <input type="checkbox" class="checkbox card-checkbox" />
+          <div class="card-header">
+            <div class="card-profile">
+              <img src="data:image/svg+xml,%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23f093fb'/%3E%3C/svg%3E" class="card-avatar" alt="Avatar" />
+              <div class="card-info">
+                <div class="card-name">Marcus Chen</div>
+                <div class="card-handle">@techlifemarcus</div>
+                <span class="platform-badge">YouTube</span>
+              </div>
+            </div>
+            <div class="action-menu">
+              <button class="action-btn" onclick="toggleMenu(event, 'c2')">⋮</button>
+              <div class="dropdown-menu" id="menu-c2">
+                <div class="dropdown-item" onclick="viewProfile(2)">👁️ View Profile</div>
+                <div class="dropdown-item" onclick="addToCampaign(2)">➕ Add to Campaign</div>
+                <div class="dropdown-item" onclick="manageTags(2)">🏷️ Manage Tags</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item danger" onclick="removeInfluencer(2)">🗑️ Remove</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-stats">
+            <div class="card-stat">
+              <div class="card-stat-label">Followers</div>
+              <div class="card-stat-value">245K</div>
+            </div>
+            <div class="card-stat">
+              <div class="card-stat-label">Engagement</div>
+              <div class="card-stat-value">4.15%</div>
+            </div>
+            <div class="card-stat">
+              <div class="card-stat-label">Avg Reach</div>
+              <div class="card-stat-value">28.5K</div>
+            </div>
+          </div>
+          
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag">Tech</span>
+              <span class="tag">Lifestyle</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="influencer-card" data-id="3">
+          <input type="checkbox" class="checkbox card-checkbox" />
+          <div class="card-header">
+            <div class="card-profile">
+              <img src="data:image/svg+xml,%3Csvg width='64' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='32' cy='32' r='32' fill='%234facfe'/%3E%3C/svg%3E" class="card-avatar" alt="Avatar" />
+              <div class="card-info">
+                <div class="card-name">Elena Rodriguez</div>
+                <div class="card-handle">@wanderlust.elena</div>
+                <span class="platform-badge">TikTok</span>
+              </div>
+            </div>
+            <div class="action-menu">
+              <button class="action-btn" onclick="toggleMenu(event, 'c3')">⋮</button>
+              <div class="dropdown-menu" id="menu-c3">
+                <div class="dropdown-item" onclick="viewProfile(3)">👁️ View Profile</div>
+                <div class="dropdown-item" onclick="addToCampaign(3)">➕ Add to Campaign</div>
+                <div class="dropdown-item" onclick="manageTags(3)">🏷️ Manage Tags</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item danger" onclick="removeInfluencer(3)">🗑️ Remove</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-stats">
+            <div class="card-stat">
+              <div class="card-stat-label">Followers</div>
+              <div class="card-stat-value">89.5K</div>
+            </div>
+            <div class="card-stat">
+              <div class="card-stat-label">Engagement</div>
+              <div class="card-stat-value">5.8%</div>
+            </div>
+            <div class="card-stat">
+              <div class="card-stat-label">Avg Reach</div>
+              <div class="card-stat-value">45K</div>
+            </div>
+          </div>
+          
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag">Travel</span>
+              <span class="tag">Photography</span>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- Empty State (hidden by default) -->
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+        <h3>No saved influencers yet</h3>
+        <p>Start by searching for influencers and saving the ones you want to work with.</p>
+        <button class="btn btn-primary" onclick="window.location.href='index.html'">
+          Discover Influencers
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Add to Campaign Modal -->
+  <div class="modal-overlay" id="addToCampaignModal">
+    <div class="modal">
+      <div class="modal-header">Add to Campaign</div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Select Campaign</label>
+          <select class="form-select" id="campaignSelect">
+            <option value="">Choose a campaign...</option>
+            <option value="1">Spring Launch 2025</option>
+            <option value="2">Q4 Growth Blitz</option>
+            <option value="3">AI for Good Campaign</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fee (per post)</label>
+          <input type="number" class="form-input" id="feeInput" placeholder="$1,200" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea class="form-input" id="notesInput" rows="3" placeholder="Add any notes about this influencer..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal('addToCampaignModal')">Cancel</button>
+        <button class="btn btn-primary">Add to Campaign</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage Tags Modal -->
+  <div class="modal-overlay" id="manageTagsModal">
+    <div class="modal">
+      <div class="modal-header">Manage Tags</div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Current Tags</label>
+          <div class="tags" style="margin-bottom: 16px;">
+            <span class="tag">Fitness</span>
+            <span class="tag">Food</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Add New Tag</label>
+          <input type="text" class="form-input" id="newTagInput" placeholder="Enter tag name" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal('manageTagsModal')">Cancel</button>
+        <button class="btn btn-primary">Save Tags</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // View Toggle
+    const listViewBtn = document.getElementById('listViewBtn');
+    const cardViewBtn = document.getElementById('cardViewBtn');
+    const listView = document.getElementById('listView');
+    const cardView = document.getElementById('cardView');
+
+    listViewBtn.addEventListener('click', () => {
+      listViewBtn.classList.add('active');
+      cardViewBtn.classList.remove('active');
+      listView.style.display = 'block';
+      cardView.style.display = 'none';
+    });
+
+    cardViewBtn.addEventListener('click', () => {
+      cardViewBtn.classList.add('active');
+      listViewBtn.classList.remove('active');
+      cardView.style.display = 'grid';
+      listView.style.display = 'none';
+    });
+
+    // Checkbox Selection
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const bulkAddBtn = document.getElementById('bulkAddToCampaign');
+    const selectionBar = document.getElementById('selectionBar');
+    const selectedCountEl = document.getElementById('selectedCount');
+
+    selectAllCheckbox.addEventListener('change', (e) => {
+      const checkboxes = document.querySelectorAll('.row-checkbox, .card-checkbox');
+      checkboxes.forEach(cb => cb.checked = e.target.checked);
+      updateSelection();
+    });
+
+    function updateSelection() {
+      const checkedBoxes = document.querySelectorAll('.row-checkbox:checked, .card-checkbox:checked');
+      const count = checkedBoxes.length;
+      
+      selectedCountEl.textContent = count;
+      bulkAddBtn.disabled = count === 0;
+      
+      if (count > 0) {
+        selectionBar.classList.add('show');
+      } else {
+        selectionBar.classList.remove('show');
+      }
+
+      // Update row/card styles
+      document.querySelectorAll('.list-row, .influencer-card').forEach(el => {
+        const checkbox = el.querySelector('.checkbox');
+        if (checkbox && checkbox.checked) {
+          el.classList.add('selected');
+        } else {
+          el.classList.remove('selected');
+        }
+      });
+    }
+
+    // Add event listeners to all checkboxes
+    document.querySelectorAll('.row-checkbox, .card-checkbox').forEach(cb => {
+      cb.addEventListener('change', updateSelection);
+    });
+
+    function clearSelection() {
+      document.querySelectorAll('.checkbox').forEach(cb => cb.checked = false);
+      updateSelection();
+    }
+
+    // Action Menu Toggle
+    function toggleMenu(event, id) {
+      event.stopPropagation();
+      const menu = document.getElementById(`menu-${id}`);
+      
+      // Close all other menus
+      document.querySelectorAll('.dropdown-menu').forEach(m => {
+        if (m !== menu) m.classList.remove('show');
+      });
+      
+      menu.classList.toggle('show');
+    }
+
+    // Close menus on outside click
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.dropdown-menu').forEach(m => {
+        m.classList.remove('show');
+      });
+    });
+
+    // Action Functions
+    function viewProfile(id) {
+      window.location.href = `influencer-profile.html?id=${id}`;
+    }
+
+    function addToCampaign(id) {
+      document.getElementById('addToCampaignModal').classList.add('show');
+    }
+
+    function manageTags(id) {
+      document.getElementById('manageTagsModal').classList.add('show');
+    }
+
+    function removeInfluencer(id) {
+      if (confirm('Are you sure you want to remove this influencer from your saved list?')) {
+        // Remove logic here
+        console.log('Removing influencer:', id);
+      }
+    }
+
+    function bulkAddTags() {
+      document.getElementById('manageTagsModal').classList.add('show');
+    }
+
+    function bulkDelete() {
+      const count = document.querySelectorAll('.row-checkbox:checked, .card-checkbox:checked').length;
+      if (confirm(`Are you sure you want to remove ${count} influencer${count > 1 ? 's' : ''} from your saved list?`)) {
+        // Bulk delete logic here
+        console.log('Bulk deleting:', count);
+      }
+    }
+
+    // Modal Functions
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('show');
+    }
+
+    // Close modals on outside click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('show');
+        }
+      });
+    });
+
+    // Search and Filter
+    const searchBox = document.getElementById('searchBox');
+    const platformFilter = document.getElementById('platformFilter');
+    const tagFilter = document.getElementById('tagFilter');
+
+    function applyFilters() {
+      const searchTerm = searchBox.value.toLowerCase();
+      const platform = platformFilter.value;
+      const tag = tagFilter.value;
+      
+      // Apply filters to both list and card views
+      // This would filter the actual data in a real implementation
+      console.log('Filtering:', { searchTerm, platform, tag });
+    }
+
+    searchBox.addEventListener('input', applyFilters);
+    platformFilter.addEventListener('change', applyFilters);
+    tagFilter.addEventListener('change', applyFilters);
+  </script>
+
+  <!-- Load Navigation Script -->
+  <script src="nav-component.js"></script>
+  <script>
+    // Initialize navigation with current page context
+    PhoenixNav.init({
+      currentPage: 'discovery',
+      currentSubPage: 'myinfluencers'
+    });
+  </script>
+</body>
+</html>
