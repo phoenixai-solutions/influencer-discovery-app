@@ -12,17 +12,22 @@ const PhoenixNav = {
       { id: 'social-listening', label: 'Social Listening', url: 'social-listening.html' },
       { id: 'share-of-voice', label: 'Share of Voice', url: 'sov-reports.html' }
     ],
-    subPages: {
-      discovery: [
-        { id: 'discovery', label: 'Search', url: 'index.html' },
-        { id: 'myinfluencers', label: 'My Influencers', url: 'influencer_list.html' },
-      ],
-      campaigns: [
-        { id: 'overview', label: 'Overview', url: 'campaigns.html' },
-        { id: 'create', label: 'Create', url: 'create-campaign.html' },
-        { id: 'performance', label: 'Performance', url: 'campaign-performance.html' }
-      ]
-    }
+subPages: {
+  discovery: [
+    { id: 'discovery', label: 'Search', url: 'index.html' },
+    { id: 'myinfluencers', label: 'My Influencers', url: 'influencer_list.html' },
+  ],
+  campaigns: [
+    { id: 'overview', label: 'Overview', url: 'campaigns.html' },
+    { id: 'create', label: 'Create', url: 'create-campaign.html' },
+    { id: 'performance', label: 'Performance', url: 'campaign-performance.html' }
+  ],
+  'share-of-voice': [
+    { id: 'reports', label: 'Reports', url: 'sov-reports.html' },
+    { id: 'create',  label: 'Create',  url: 'create-sov-report.html' }
+  ]
+}
+
   },
   
   // Initialize navigation
