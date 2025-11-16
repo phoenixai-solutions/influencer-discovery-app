@@ -1,101 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>@thefitfoodie - Influencer Profile</title>
-   <link rel="stylesheet" href="nav-styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Influencer Details - @fitfoodie</title>
+  <link rel="stylesheet" href="nav-styles.css" />
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #fafafc;
-      color: #1a1a1a;
+      color: #111827;
     }
-    .top-bar {
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: #ef4444;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-    }
-    .logo-text {
-      font-size: 18px;
-      font-weight: 600;
-    }
-    .user-badge {
-      width: 40px;
-      height: 40px;
-      background: #0066ff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .nav-tabs {
-      background: white;
-      padding: 0 24px;
-      display: flex;
-      gap: 32px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    .nav-tab {
-      padding: 12px 0;
-      color: #6b7280;
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 2px solid transparent;
-    }
-    .nav-tab.active {
-      color: #0066ff;
-      border-bottom-color: #0066ff;
-    }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 32px 24px;
+      padding: 24px 24px 40px;
     }
-    .back-link {
-      color: #6b7280;
+
+    a {
+      color: #2563eb;
       text-decoration: none;
-      font-weight: 500;
-      display: inline-block;
-      margin-bottom: 24px;
     }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      font-size: 13px;
+      color: #6b7280;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
     .back-link:hover {
       color: #111827;
     }
-    
-    /* Campaign History with Aruba */
-    .campaign-history {
-      margin-top: 24px;
+
+    /* Profile header */
+
+    .profile-card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 20px 20px 18px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      margin-bottom: 18px;
+    }
+
+    .profile-main {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+      flex-shrink: 0;
+    }
+
+    .profile-text {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .profile-name {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .handle {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge-verified {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .badge-tier {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .bio {
+      font-size: 13px;
+      color: #4b5563;
+      max-width: 620px;
+    }
+
+    .profile-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .profile-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      border-color: #e5e7eb;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #f9fafb;
+    }
+
+    /* KPI row */
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 12px 14px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .kpi-value-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #111827;
+    }
+
+    .kpi-trend {
+      font-size: 11px;
+      color: #16a34a;
+    }
+
+    .kpi-subtext {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    /* Layout grid: main + sidebar */
+
+    .layout-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 14px 16px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    /* Topics */
+
+    .topics-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .topic-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    /* Recent posts */
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .post-card {
+      background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+      border-radius: 10px;
+      height: 120px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .post-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 6px 8px;
+      background: linear-gradient(to top, rgba(15,23,42,0.6), transparent);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #f9fafb;
+    }
+
+    /* Audience demographics */
+
+    .audience-section {
+      margin-top: 12px;
+    }
+
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .audience-block-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 8px;
+    }
+
+    .bar-row {
+      margin-bottom: 6px;
+    }
+
+    .bar-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #4b5563;
+      margin-bottom: 3px;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 8px;
+      border-radius: 999px;
+      background: #2563eb;
+    }
+
+    /* Right column info */
+
+    .info-grid {
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .info-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9ca3af;
+    }
+
+    .info-value {
+      color: #111827;
+      font-weight: 500;
+    }
+
+    /* Campaign history – full width */
+
+    .campaigns-section {
+      margin-top: 10px;
     }
 
     .campaign-history-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      gap: 12px;
     }
 
     .campaign-history-subtitle {
@@ -106,33 +395,28 @@
 
     .campaign-history-link {
       font-size: 13px;
-      color: #0066ff;
-      text-decoration: none;
+      color: #2563eb;
       font-weight: 500;
-    }
-
-    .campaign-history-link:hover {
-      text-decoration: underline;
+      white-space: nowrap;
     }
 
     .campaign-history-summary {
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       font-size: 13px;
-      color: #6b7280;
     }
 
     .summary-item {
+      min-width: 140px;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      min-width: 130px;
     }
 
     .summary-label {
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: #9ca3af;
@@ -148,7 +432,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
-      margin-top: 8px;
+      margin-top: 4px;
     }
 
     .campaign-history-table thead {
@@ -158,8 +442,8 @@
     .campaign-history-table th,
     .campaign-history-table td {
       padding: 8px 6px;
-      text-align: left;
       border-bottom: 1px solid #e5e7eb;
+      text-align: left;
       vertical-align: middle;
     }
 
@@ -176,8 +460,10 @@
     }
 
     .campaign-meta {
-      font-size: 12px;
+      display: block;
+      font-size: 11px;
       color: #6b7280;
+      margin-top: 2px;
     }
 
     .campaign-status-badge {
@@ -190,7 +476,7 @@
     }
 
     .campaign-status-active {
-      background: #0066ff;
+      background: #2563eb;
       color: #ffffff;
     }
 
@@ -204,11 +490,6 @@
       color: #ffffff;
     }
 
-    .campaign-status-paused {
-      background: #f59e0b;
-      color: #ffffff;
-    }
-
     .metric-subtext {
       display: block;
       font-size: 11px;
@@ -216,560 +497,221 @@
       margin-top: 2px;
     }
 
-    @media (max-width: 768px) {
-      .campaign-history-table {
-        font-size: 12px;
-      }
-      .campaign-history-table th,
-      .campaign-history-table td {
-        padding: 6px 4px;
-      }
-    }
-
-
-    /* Profile Header */
-    .profile-header {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 32px;
-      margin-bottom: 24px;
-      display: flex;
-      gap: 32px;
-      align-items: flex-start;
-    }
-    .profile-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 4px solid #f3f4f6;
-      flex-shrink: 0;
-    }
-    .profile-main {
-      flex: 1;
-    }
-    .profile-name-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 16px;
-    }
-    .profile-name {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .profile-handle {
-      font-size: 16px;
-      color: #6b7280;
-      margin-bottom: 8px;
-    }
-    .profile-badges {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .badge {
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-    .badge-verified {
-      background: #dbeafe;
-      color: #1e40af;
-    }
-    .badge-tier {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    .profile-bio {
-      color: #374151;
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .profile-meta {
-      display: flex;
-      gap: 24px;
-      color: #6b7280;
-      font-size: 14px;
-    }
-    .profile-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .action-buttons {
-      display: flex;
-      gap: 12px;
-    }
-    .btn {
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 14px;
-      cursor: pointer;
-      border: none;
-    }
-    .btn-primary {
-      background: #0066ff;
-      color: white;
-    }
-    .btn-primary:hover {
-      background: #0052cc;
-    }
-    .btn-secondary {
-      background: white;
-      border: 1px solid #d1d5db;
-      color: #374151;
-    }
-    .btn-secondary:hover {
-      background: #f9fafb;
-    }
-
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .stat-card {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 20px;
-    }
-    .stat-label {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-    .stat-value {
-      font-size: 28px;
-      font-weight: 700;
-      color: #111827;
-    }
-    .stat-change {
-      font-size: 12px;
-      margin-top: 4px;
-    }
-    .stat-change.positive {
-      color: #10b981;
-    }
-    .stat-change.negative {
-      color: #ef4444;
-    }
-
-    /* Content Sections */
-    .content-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 24px;
-    }
-    .section {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #f3f4f6;
-    }
-    
-    /* Topics/Hashtags */
-    .topics-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .topic-pill {
-      background: #eff6ff;
-      color: #1e40af;
-      padding: 6px 14px;
-      border-radius: 16px;
-      font-size: 13px;
-      font-weight: 500;
-    }
-    .topic-count {
-      background: #1e40af;
-      color: white;
-      padding: 2px 6px;
-      border-radius: 8px;
-      margin-left: 6px;
-      font-size: 11px;
-    }
-
-    /* Info Grid */
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    .info-item {
-      padding-bottom: 16px;
-      border-bottom: 1px solid #f3f4f6;
-    }
-    .info-item:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-    .info-label {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 4px;
-      font-weight: 500;
-    }
-    .info-value {
-      color: #111827;
-      font-weight: 500;
-    }
-    .link-value {
-      color: #0066ff;
-      text-decoration: none;
-    }
-    .link-value:hover {
-      text-decoration: underline;
-    }
-
-    /* Recent Posts */
-    .posts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    .post-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      overflow: hidden;
-      transition: box-shadow 0.2s;
-    }
-    .post-card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .post-image {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 48px;
-    }
-    .post-stats {
-      padding: 12px;
-      display: flex;
-      justify-content: space-around;
-      font-size: 13px;
-      color: #6b7280;
-      background: #f9fafb;
-    }
-    .post-stat {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* Audience Demographics */
-    .demo-bar {
-      margin-bottom: 16px;
-    }
-    .demo-label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-    .demo-bar-track {
-      width: 100%;
-      height: 24px;
-      background: #f3f4f6;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .demo-bar-fill {
-      height: 100%;
-      background: #0066ff;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding-right: 8px;
-      color: white;
-      font-size: 12px;
-      font-weight: 600;
-    }
+    /* Responsive */
 
     @media (max-width: 1024px) {
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .kpi-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .content-grid {
+      .layout-grid {
         grid-template-columns: 1fr;
       }
-      .posts-grid {
-        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 20px 16px 32px;
+      }
+      .profile-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .profile-main {
+        width: 100%;
+      }
+      .profile-actions {
+        justify-content: flex-start;
+      }
+      .kpi-row {
+        grid-template-columns: 1fr;
+      }
+      .audience-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
+  <div id="app-navigation"></div>
 
-<div id="app-navigation"></div>
-  <!-- Main Content -->
-  <div class="container">
-    
-    <a href="#" class="back-link">← Back to Search Results</a>
+  <main class="container">
+    <a href="index.html" class="back-link">← Back to search results</a>
 
-    <!-- Profile Header -->
-    <div class="profile-header">
-      <img src="data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='60' r='60' fill='%23667eea'/%3E%3C/svg%3E" class="profile-avatar" alt="Profile" />
-      
+    <!-- Profile header -->
+    <section class="profile-card">
       <div class="profile-main">
-        <div class="profile-name-section">
-          <div>
-            <h1 class="profile-name">Samantha Lee</h1>
-            <div class="profile-handle">@thefitfoodie</div>
-            <div class="profile-badges">
-              <span class="badge badge-verified">✓ Verified</span>
-              <span class="badge badge-tier">Micro Influencer</span>
-            </div>
+        <div class="avatar"></div>
+        <div class="profile-text">
+          <div class="profile-name">
+            Samantha Lee
+            <span class="handle">@thefitfoodie</span>
           </div>
-          <div class="action-buttons">
-            <button class="btn btn-primary">Add to Campaign</button>
-            <button class="btn btn-secondary">Save</button>
+          <div class="badge-row">
+            <span class="badge badge-verified">Verified</span>
+            <span class="badge badge-tier">Micro Influencer</span>
           </div>
-        </div>
-        
-        <p class="profile-bio">
-          Health & wellness advocate 🥗 | Sharing my fitness journey and nutritious recipes | 
-          California-based | Partner inquiries: samantha@fitfoodie.com
-        </p>
-        
-        <div class="profile-meta">
-          <div class="profile-meta-item">
-            <span>📍</span>
-            <span>Los Angeles, CA</span>
-          </div>
-          <div class="profile-meta-item">
-            <span>🔗</span>
-            <a href="#" class="link-value">fitfoodie.com</a>
-          </div>
-          <div class="profile-meta-item">
-            <span>📧</span>
-            <span>samantha@fitfoodie.com</span>
+          <p class="bio">
+            Health &amp; wellness advocate 🥗 | Sharing my fitness journey and nutritious recipes | California-based |
+            Partner inquiries: samantha@fitfoodie.com
+          </p>
+          <div class="profile-meta">
+            <span class="profile-meta-item">📍 Los Angeles, CA</span>
+            <span class="profile-meta-item"><a href="#">fitfoodie.com</a></span>
+            <span class="profile-meta-item"><a href="mailto:samantha@fitfoodie.com">samantha@fitfoodie.com</a></span>
           </div>
         </div>
       </div>
-    </div>
+      <div class="profile-actions">
+        <button class="btn btn-primary">Add to Campaign</button>
+        <button class="btn btn-secondary">Save</button>
+      </div>
+    </section>
 
-    <!-- Stats Grid -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-label">Followers</div>
-        <div class="stat-value">128K</div>
-        <div class="stat-change positive">↑ 5.2% (30d)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Engagement Rate</div>
-        <div class="stat-value">3.20%</div>
-        <div class="stat-change positive">↑ 0.3% (30d)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Avg. Likes</div>
-        <div class="stat-value">4,100</div>
-        <div class="stat-change positive">↑ 8.5% (30d)</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Avg. Comments</div>
-        <div class="stat-value">220</div>
-        <div class="stat-change positive">↑ 12% (30d)</div>
-      </div>
-    </div>
-
-    <!-- Content Grid -->
-    <div class="content-grid">
-      
-      <!-- Left Column -->
-      <div>
-        
-        <!-- Top Topics -->
-        <div class="section">
-          <h2 class="section-title">Top Topics & Hashtags</h2>
-          <div class="topics-grid">
-            <div class="topic-pill">
-              #healthyeating
-              <span class="topic-count">42</span>
-            </div>
-            <div class="topic-pill">
-              #wellness
-              <span class="topic-count">38</span>
-            </div>
-            <div class="topic-pill">
-              #fitnessmotivation
-              <span class="topic-count">35</span>
-            </div>
-            <div class="topic-pill">
-              #cleaneating
-              <span class="topic-count">28</span>
-            </div>
-            <div class="topic-pill">
-              #mealprep
-              <span class="topic-count">24</span>
-            </div>
-            <div class="topic-pill">
-              #nutrition
-              <span class="topic-count">22</span>
-            </div>
-            <div class="topic-pill">
-              #healthylifestyle
-              <span class="topic-count">20</span>
-            </div>
-            <div class="topic-pill">
-              #plantbased
-              <span class="topic-count">18</span>
-            </div>
-          </div>
+    <!-- KPI row -->
+    <section class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Followers</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">128K</div>
+          <div class="kpi-trend">+5.2% (30d)</div>
         </div>
+        <div class="kpi-subtext">Instagram</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Engagement Rate</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">3.20%</div>
+          <div class="kpi-trend">+0.3% (30d)</div>
+        </div>
+        <div class="kpi-subtext">Avg. across last 30 posts</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Likes</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">4,100</div>
+          <div class="kpi-trend">+1.8% (30d)</div>
+        </div>
+        <div class="kpi-subtext">Per feed post</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Comments</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">220</div>
+          <div class="kpi-trend">+1.2% (30d)</div>
+        </div>
+        <div class="kpi-subtext">Per feed post</div>
+      </div>
+    </section>
 
-        <!-- Recent Posts -->
-        <div class="section">
+    <!-- Main + sidebar -->
+    <div class="layout-grid">
+      <!-- Left column -->
+      <div class="layout-main">
+        <section class="section">
+          <h2 class="section-title">Top Topics &amp; Hashtags</h2>
+          <div class="topics-list">
+            <span class="topic-pill">#healthyeating</span>
+            <span class="topic-pill">#wellness</span>
+            <span class="topic-pill">#fitnessmotivation</span>
+            <span class="topic-pill">#cleaneating</span>
+            <span class="topic-pill">#mealprep</span>
+            <span class="topic-pill">#nutrition</span>
+            <span class="topic-pill">#healthylifestyle</span>
+            <span class="topic-pill">#plantbased</span>
+          </div>
+        </section>
+
+        <section class="section" style="margin-top: 14px;">
           <h2 class="section-title">Recent Posts</h2>
           <div class="posts-grid">
             <div class="post-card">
-              <div class="post-image">📸</div>
-              <div class="post-stats">
-                <div class="post-stat">
-                  <span>❤️</span>
-                  <span>4.2K</span>
-                </div>
-                <div class="post-stat">
-                  <span>💬</span>
-                  <span>230</span>
-                </div>
-                <div class="post-stat">
-                  <span>🔄</span>
-                  <span>85</span>
-                </div>
+              <span>Post preview</span>
+              <div class="post-footer">
+                <span>❤ 4.2K</span>
+                <span>💬 210</span>
               </div>
             </div>
             <div class="post-card">
-              <div class="post-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📸</div>
-              <div class="post-stats">
-                <div class="post-stat">
-                  <span>❤️</span>
-                  <span>3.8K</span>
-                </div>
-                <div class="post-stat">
-                  <span>💬</span>
-                  <span>195</span>
-                </div>
-                <div class="post-stat">
-                  <span>🔄</span>
-                  <span>72</span>
-                </div>
+              <span>Post preview</span>
+              <div class="post-footer">
+                <span>❤ 3.8K</span>
+                <span>💬 172</span>
               </div>
             </div>
             <div class="post-card">
-              <div class="post-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">📸</div>
-              <div class="post-stats">
-                <div class="post-stat">
-                  <span>❤️</span>
-                  <span>5.1K</span>
-                </div>
-                <div class="post-stat">
-                  <span>💬</span>
-                  <span>280</span>
-                </div>
-                <div class="post-stat">
-                  <span>🔄</span>
-                  <span>120</span>
-                </div>
+              <span>Post preview</span>
+              <div class="post-footer">
+                <span>❤ 5.1K</span>
+                <span>💬 220</span>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Audience Demographics -->
-        <div class="section">
+        <section class="section audience-section" style="margin-top: 14px;">
           <h2 class="section-title">Audience Demographics</h2>
-          
-          <div style="margin-bottom: 24px;">
-            <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #374151;">Age Distribution</h3>
-            <div class="demo-bar">
-              <div class="demo-label">
-                <span>18-24</span>
-                <span style="font-weight: 600;">22%</span>
+          <div class="audience-grid">
+            <div>
+              <div class="audience-block-title">Age Distribution</div>
+              <div class="bar-row">
+                <div class="bar-label-row">
+                  <span>18–24</span><span>22%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width: 22%;"></div>
+                </div>
               </div>
-              <div class="demo-bar-track">
-                <div class="demo-bar-fill" style="width: 22%;">22%</div>
+              <div class="bar-row">
+                <div class="bar-label-row">
+                  <span>25–34</span><span>48%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width: 48%;"></div>
+                </div>
               </div>
-            </div>
-            <div class="demo-bar">
-              <div class="demo-label">
-                <span>25-34</span>
-                <span style="font-weight: 600;">48%</span>
+              <div class="bar-row">
+                <div class="bar-label-row">
+                  <span>35–44</span><span>20%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width: 20%;"></div>
+                </div>
               </div>
-              <div class="demo-bar-track">
-                <div class="demo-bar-fill" style="width: 48%;">48%</div>
-              </div>
-            </div>
-            <div class="demo-bar">
-              <div class="demo-label">
-                <span>35-44</span>
-                <span style="font-weight: 600;">20%</span>
-              </div>
-              <div class="demo-bar-track">
-                <div class="demo-bar-fill" style="width: 20%;">20%</div>
-              </div>
-            </div>
-            <div class="demo-bar">
-              <div class="demo-label">
-                <span>45+</span>
-                <span style="font-weight: 600;">10%</span>
-              </div>
-              <div class="demo-bar-track">
-                <div class="demo-bar-fill" style="width: 10%;">10%</div>
+              <div class="bar-row">
+                <div class="bar-label-row">
+                  <span>45+</span><span>10%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width: 10%;"></div>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div>
-            <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #374151;">Gender Split</h3>
-            <div class="demo-bar">
-              <div class="demo-label">
-                <span>Female</span>
-                <span style="font-weight: 600;">68%</span>
+            <div>
+              <div class="audience-block-title">Gender Split</div>
+              <div class="bar-row">
+                <div class="bar-label-row">
+                  <span>Female</span><span>68%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width: 68%;"></div>
+                </div>
               </div>
-              <div class="demo-bar-track">
-                <div class="demo-bar-fill" style="width: 68%; background: #ec4899;">68%</div>
-              </div>
-            </div>
-            <div class="demo-bar">
-              <div class="demo-label">
-                <span>Male</span>
-                <span style="font-weight: 600;">32%</span>
-              </div>
-              <div class="demo-bar-track">
-                <div class="demo-bar-fill" style="width: 32%; background: #3b82f6;">32%</div>
+              <div class="bar-row">
+                <div class="bar-label-row">
+                  <span>Male</span><span>32%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width: 32%;"></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
+        </section>
       </div>
 
-      <!-- Right Column -->
-      <div>
-        
-        <!-- Account Details -->
-        <div class="section">
+      <!-- Right column -->
+      <aside class="layout-sidebar">
+        <section class="section">
           <h2 class="section-title">Account Details</h2>
           <div class="info-grid">
             <div class="info-item">
@@ -782,7 +724,7 @@
             </div>
             <div class="info-item">
               <div class="info-label">Verified</div>
-              <div class="info-value" style="color: #10b981;">✓ Yes</div>
+              <div class="info-value">Yes</div>
             </div>
             <div class="info-item">
               <div class="info-label">Account Created</div>
@@ -794,29 +736,28 @@
             </div>
             <div class="info-item">
               <div class="info-label">Posting Frequency</div>
-              <div class="info-value">4.2 posts/week</div>
+              <div class="info-value">4–5 posts/week</div>
             </div>
             <div class="info-item">
               <div class="info-label">Last Post</div>
               <div class="info-value">2 days ago</div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Contact Information -->
-        <div class="section">
+        <section class="section" style="margin-top: 14px;">
           <h2 class="section-title">Contact Information</h2>
           <div class="info-grid">
             <div class="info-item">
               <div class="info-label">Email</div>
               <div class="info-value">
-                <a href="mailto:samantha@fitfoodie.com" class="link-value">samantha@fitfoodie.com</a>
+                <a href="mailto:samantha@fitfoodie.com">samantha@fitfoodie.com</a>
               </div>
             </div>
             <div class="info-item">
               <div class="info-label">Website</div>
               <div class="info-value">
-                <a href="#" class="link-value">fitfoodie.com</a>
+                <a href="#">fitfoodie.com</a>
               </div>
             </div>
             <div class="info-item">
@@ -828,10 +769,9 @@
               <div class="info-value">PST (UTC-8)</div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Brand Partnerships -->
-        <div class="section">
+        <section class="section" style="margin-top: 14px;">
           <h2 class="section-title">Brand Experience</h2>
           <div class="info-grid">
             <div class="info-item">
@@ -844,133 +784,111 @@
             </div>
             <div class="info-item">
               <div class="info-label">Typical Rate</div>
-              <div class="info-value">$800 - $1,200 per post</div>
+              <div class="info-value">$800–$1,200 per post</div>
             </div>
           </div>
-        </div>
-        <!-- Campaigns with Aruba -->
-        <div class="section">
-          <div class="campaign-history">
-            <div class="campaign-history-header">
-              <div>
-                <h2 class="section-title">Campaigns with Aruba</h2>
-                <p class="campaign-history-subtitle">
-                  Snapshot of this creator&apos;s performance on Aruba Tourism campaigns.
-                </p>
-              </div>
-              <a href="campaign-performance.html" class="campaign-history-link">
-                View full performance →
-              </a>
-            </div>
-
-            <!-- High-level summary (from Airtable / n8n aggregation) -->
-            <div class="campaign-history-summary">
-              <div class="summary-item">
-                <span class="summary-label">Total Aruba campaigns</span>
-                <span class="summary-value" id="arubaCampaignCount">3</span>
-              </div>
-              <div class="summary-item">
-                <span class="summary-label">Total impressions</span>
-                <span class="summary-value" id="arubaTotalImpressions">1.2M</span>
-              </div>
-              <div class="summary-item">
-                <span class="summary-label">Total engagements</span>
-                <span class="summary-value" id="arubaTotalEngagements">84.3K</span>
-              </div>
-              <div class="summary-item">
-                <span class="summary-label">Avg. engagement rate</span>
-                <span class="summary-value" id="arubaAvgEngagementRate">3.8%</span>
-              </div>
-            </div>
-
-            <!-- Per-campaign snapshot – one row per Aruba campaign this creator has been in -->
-            <table class="campaign-history-table">
-              <thead>
-                <tr>
-                  <th>Campaign</th>
-                  <th>Status</th>
-                  <th>Period</th>
-                  <th>Content</th>
-                  <th>Impressions</th>
-                  <th>Engagements</th>
-                </tr>
-              </thead>
-              <tbody id="arubaCampaignHistory">
-                <!-- Example static rows; you’ll replace with dynamic data -->
-                <tr>
-                  <td class="campaign-name-cell">
-                    Aruba Summer Escapes 2024
-                    <span class="campaign-meta">Lead creator</span>
-                  </td>
-                  <td>
-                    <span class="campaign-status-badge campaign-status-completed">
-                      Completed
-                    </span>
-                  </td>
-                  <td>
-                    Jun 1 – Aug 31, 2024
-                  </td>
-                  <td>
-                    6 posts / 8 stories
-                    <span class="metric-subtext">Content by this creator only</span>
-                  </td>
-                  <td>
-                    540K
-                    <span class="metric-subtext">From Aruba-linked posts</span>
-                  </td>
-                  <td>
-                    32.4K
-                    <span class="metric-subtext">Likes + comments + saves</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="campaign-name-cell">
-                    Wellness in Aruba 2023
-                    <span class="campaign-meta">Supporting creator</span>
-                  </td>
-                  <td>
-                    <span class="campaign-status-badge campaign-status-completed">
-                      Completed
-                    </span>
-                  </td>
-                  <td>
-                    Sep 10 – Oct 15, 2023
-                  </td>
-                  <td>
-                    3 posts / 4 stories
-                  </td>
-                  <td>410K</td>
-                  <td>21.9K</td>
-                </tr>
-                <tr>
-                  <td class="campaign-name-cell">
-                    Q1 Evergreen Aruba Content
-                    <span class="campaign-meta">Always-on</span>
-                  </td>
-                  <td>
-                    <span class="campaign-status-badge campaign-status-active">
-                      Active
-                    </span>
-                  </td>
-                  <td>
-                    Jan 1 – Present
-                  </td>
-                  <td>
-                    2 posts / 3 stories
-                  </td>
-                  <td>230K</td>
-                  <td>10.0K</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-
+        </section>
+      </aside>
     </div>
 
-  </div>
+    <!-- Full-width Campaigns with Aruba -->
+    <section class="section campaigns-section">
+      <div class="campaign-history-header">
+        <div>
+          <h2 class="section-title">Campaigns with Aruba</h2>
+          <p class="campaign-history-subtitle">
+            Snapshot of this creator&apos;s performance on Aruba Tourism campaigns.
+          </p>
+        </div>
+        <a href="campaign-performance.html" class="campaign-history-link">
+          View full performance →
+        </a>
+      </div>
 
+      <div class="campaign-history-summary">
+        <div class="summary-item">
+          <span class="summary-label">Total Aruba campaigns</span>
+          <span class="summary-value" id="arubaCampaignCount">3</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total impressions</span>
+          <span class="summary-value" id="arubaTotalImpressions">1.2M</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Total engagements</span>
+          <span class="summary-value" id="arubaTotalEngagements">84.3K</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Avg. engagement rate</span>
+          <span class="summary-value" id="arubaAvgEngagementRate">3.8%</span>
+        </div>
+      </div>
+
+      <table class="campaign-history-table">
+        <thead>
+          <tr>
+            <th>Campaign</th>
+            <th>Status</th>
+            <th>Period</th>
+            <th>Content</th>
+            <th>Impressions</th>
+            <th>Engagements</th>
+          </tr>
+        </thead>
+        <tbody id="arubaCampaignHistory">
+          <tr>
+            <td class="campaign-name-cell">
+              Aruba Summer Escapes 2024
+              <span class="campaign-meta">Lead creator</span>
+            </td>
+            <td>
+              <span class="campaign-status-badge campaign-status-completed">Completed</span>
+            </td>
+            <td>Jun 1 – Aug 31, 2024</td>
+            <td>
+              6 posts / 8 stories
+              <span class="metric-subtext">Content by this creator</span>
+            </td>
+            <td>540K</td>
+            <td>32.4K</td>
+          </tr>
+          <tr>
+            <td class="campaign-name-cell">
+              Wellness in Aruba 2023
+              <span class="campaign-meta">Supporting creator</span>
+            </td>
+            <td>
+              <span class="campaign-status-badge campaign-status-completed">Completed</span>
+            </td>
+            <td>Sep 10 – Oct 15, 2023</td>
+            <td>3 posts / 4 stories</td>
+            <td>410K</td>
+            <td>21.9K</td>
+          </tr>
+          <tr>
+            <td class="campaign-name-cell">
+              Q1 Evergreen Aruba Content
+              <span class="campaign-meta">Always-on</span>
+            </td>
+            <td>
+              <span class="campaign-status-badge campaign-status-active">Active</span>
+            </td>
+            <td>Jan 1 – Present</td>
+            <td>2 posts / 3 stories</td>
+            <td>230K</td>
+            <td>10.0K</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="nav-component.js"></script>
+  <script>
+    PhoenixNav.init({
+      currentPage: 'discovery',
+      currentSubPage: 'discovery'
+    });
+  </script>
 </body>
 </html>
