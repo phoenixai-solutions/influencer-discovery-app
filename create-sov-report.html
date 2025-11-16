@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Share of Voice Report - Phoenix</title>
+  <link rel="stylesheet" href="nav-styles.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #1a1a1a;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .back-link {
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+    .back-link:hover { color: #111827; }
+
+    .page-header {
+      margin-bottom: 32px;
+    }
+    .page-header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .page-header p {
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    .form-container {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 32px;
+    }
+    .form-section {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .form-section:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: #111827;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    .required {
+      color: #dc2626;
+      margin-left: 4px;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: #0066ff;
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .form-help {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .badge-option {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      font-size: 12px;
+      color: #4b5563;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+    }
+    .btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary {
+      background: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+    .btn-secondary:hover { background: #f9fafb; }
+    .btn-primary {
+      background: #0066ff;
+      color: white;
+    }
+    .btn-primary:hover { background: #0052cc; }
+    .btn-primary:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .alert-error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+    }
+    .alert-success {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #16a34a;
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 640px) {
+      .container { padding: 20px 16px; }
+      .form-container { padding: 20px; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-navigation"></div>
+
+  <div class="container">
+    <a href="sov-reports.html" class="back-link">← Back to Share of Voice Reports</a>
+
+    <div class="page-header">
+      <h1>Create Share of Voice Report</h1>
+      <p>Define the destinations, markets, languages and topics for this media visibility report.</p>
+    </div>
+
+    <div id="alertContainer"></div>
+
+    <form id="reportForm" class="form-container">
+      <!-- Report details -->
+      <div class="form-section">
+        <h2 class="section-title">Report Details</h2>
+
+        <div class="form-group">
+          <label class="form-label">
+            Report Name <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-input"
+            placeholder="e.g., Aruba vs competitors – Culinary – Spanish LatAm"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            class="form-textarea"
+            placeholder="Short summary of what this report is for and who it’s for."
+          ></textarea>
+          <div class="form-help">This appears on the report card so your team knows when to use it.</div>
+        </div>
+      </div>
+
+      <!-- Scope -->
+      <div class="form-section">
+        <h2 class="section-title">Scope & Markets</h2>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              Destinations <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="destinations"
+              name="destinations"
+              class="form-input"
+              placeholder="e.g., Aruba, Curaçao, Cancun, Dominican Republic, Jamaica"
+              required
+            />
+            <div class="form-help">Comma-separated list of destinations to compare in this report.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Primary Destination <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="primaryDestination"
+              name="primaryDestination"
+              class="form-input"
+              placeholder="e.g., Aruba"
+              required
+            />
+            <div class="form-help">The destination you care about most in this report (used in KPIs).</div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              Market / Region <span class="required">*</span>
+            </label>
+            <select id="market" name="market" class="form-select" required>
+              <option value="latam-es">Spanish LatAm</option>
+              <option value="br">Brazil (Portuguese)</option>
+              <option value="all">Global</option>
+              <option value="na">North America</option>
+              <option value="eu">Europe</option>
+            </select>
+            <div class="form-help">
+              This controls which source countries you include in the report (e.g. Brazil only vs all markets).
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Languages</label>
+            <input
+              type="text"
+              id="languages"
+              name="languages"
+              class="form-input"
+              placeholder="e.g., es, pt, en"
+            />
+            <div class="form-help">
+              Comma-separated language codes. Leave blank to use the default set for the chosen market.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Topics</label>
+          <input
+            type="text"
+            id="topics"
+            name="topics"
+            class="form-input"
+            placeholder="e.g., culinary, general_tourism"
+          />
+          <div class="form-help">
+            Comma-separated topic slugs. Leave blank for all topics. Common values: <span class="badge-option">culinary</span><span class="badge-option">general_tourism</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Time window -->
+      <div class="form-section">
+        <h2 class="section-title">Time Window</h2>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              Window Type <span class="required">*</span>
+            </label>
+            <select id="windowType" name="windowType" class="form-select" required>
+              <option value="rolling_30">Rolling 30 days</option>
+              <option value="rolling_90" selected>Rolling 90 days</option>
+              <option value="last_month">Last calendar month</option>
+              <option value="custom">Custom fixed dates</option>
+            </select>
+            <div class="form-help">Rolling windows update automatically; custom dates are fixed.</div>
+          </div>
+
+          <div class="form-group" id="customDatesGroup" style="display:none;">
+            <label class="form-label">Custom Start / End</label>
+            <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
+              <input type="date" id="startDate" name="startDate" class="form-input" />
+              <input type="date" id="endDate" name="endDate" class="form-input" />
+            </div>
+            <div class="form-help">Only required if you chose “Custom fixed dates”.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+        <button type="submit" id="submitBtn" class="btn btn-primary">
+          <span id="submitText">Create Report</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script src="nav-component.js"></script>
+  <script>
+    PhoenixNav.init({
+      currentPage: 'share-of-voice',
+      currentSubPage: 'create'
+    });
+
+    const API_CONFIG = {
+      createReport: 'https://phoenixaisolutions.app.n8n.cloud/webhook/create-sov-report'
+    };
+
+    const form = document.getElementById('reportForm');
+    const alertContainer = document.getElementById('alertContainer');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const windowTypeSelect = document.getElementById('windowType');
+    const customDatesGroup = document.getElementById('customDatesGroup');
+
+    windowTypeSelect.addEventListener('change', () => {
+      customDatesGroup.style.display = windowTypeSelect.value === 'custom' ? 'block' : 'none';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      if (confirm('Cancel creating this report? Unsaved changes will be lost.')) {
+        window.location.href = 'sov-reports.html';
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlert();
+
+      const formData = new FormData(form);
+      const payload = {
+        name: formData.get('name').trim(),
+        description: formData.get('description').trim(),
+        destinations: formData.get('destinations').trim(),
+        primaryDestination: formData.get('primaryDestination').trim(),
+        market: formData.get('market'),
+        languages: formData.get('languages').trim(),
+        topics: formData.get('topics').trim(),
+        windowType: formData.get('windowType'),
+        startDate: formData.get('startDate'),
+        endDate: formData.get('endDate')
+      };
+
+      if (!payload.name) return showAlert('Report name is required');
+      if (!payload.destinations) return showAlert('Please specify at least one destination');
+      if (!payload.primaryDestination) return showAlert('Primary destination is required');
+
+      if (payload.windowType === 'custom') {
+        if (!payload.startDate || !payload.endDate) {
+          return showAlert('Please provide both start and end dates for a custom window');
+        }
+        if (new Date(payload.endDate) < new Date(payload.startDate)) {
+          return showAlert('End date must be after start date');
+        }
+      }
+
+      setLoading(true);
+
+      try {
+        const res = await fetch(API_CONFIG.createReport, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        let result;
+        try {
+          result = text ? JSON.parse(text) : {};
+        } catch {
+          result = {};
+        }
+
+        if (res.ok) {
+          showAlert('Report created successfully. Redirecting…', 'success');
+          setTimeout(() => {
+            window.location.href = 'sov-reports.html';
+          }, 1200);
+        } else {
+          showAlert(result.error || result.message || 'Failed to create report');
+        }
+      } catch (err) {
+        console.error('Error creating SOV report', err);
+        showAlert('Network error: could not reach server. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    function showAlert(message, type = 'error') {
+      alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function clearAlert() { alertContainer.innerHTML = ''; }
+    function setLoading(isLoading) {
+      submitBtn.disabled = isLoading;
+      submitText.innerHTML = isLoading ? '<span class="loading-spinner"></span>Creating…' : 'Create Report';
+    }
+  </script>
+</body>
+</html>
