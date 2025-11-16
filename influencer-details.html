@@ -86,6 +86,147 @@
       color: #111827;
     }
     
+    /* Campaign History with Aruba */
+    .campaign-history {
+      margin-top: 24px;
+    }
+
+    .campaign-history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .campaign-history-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .campaign-history-link {
+      font-size: 13px;
+      color: #0066ff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .campaign-history-link:hover {
+      text-decoration: underline;
+    }
+
+    .campaign-history-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 130px;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #9ca3af;
+    }
+
+    .summary-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .campaign-history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .campaign-history-table thead {
+      background: #f9fafb;
+    }
+
+    .campaign-history-table th,
+    .campaign-history-table td {
+      padding: 8px 6px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: middle;
+    }
+
+    .campaign-history-table th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+    }
+
+    .campaign-name-cell {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .campaign-meta {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .campaign-status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .campaign-status-active {
+      background: #0066ff;
+      color: #ffffff;
+    }
+
+    .campaign-status-completed {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .campaign-status-planning {
+      background: #6b7280;
+      color: #ffffff;
+    }
+
+    .campaign-status-paused {
+      background: #f59e0b;
+      color: #ffffff;
+    }
+
+    .metric-subtext {
+      display: block;
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .campaign-history-table {
+        font-size: 12px;
+      }
+      .campaign-history-table th,
+      .campaign-history-table td {
+        padding: 6px 4px;
+      }
+    }
+
+
     /* Profile Header */
     .profile-header {
       background: white;
@@ -380,22 +521,6 @@
 </head>
 <body>
 
-  <!-- Top Navigation
-  <div class="top-bar">
-    <div class="logo-area">
-      <div class="logo-icon">P</div>
-      <span class="logo-text">Influencer Management</span>
-    </div>
-    <div class="user-badge">JD</div>
-  </div>-->
-
-  <!-- Navigation Tabs
-  <div class="nav-tabs">
-    <a href="#" class="nav-tab active">Find Influencers</a>
-    <a href="#" class="nav-tab">Manage Campaigns</a>
-    <a href="#" class="nav-tab">Performance</a>
-    <a href="#" class="nav-tab">Share of Voice</a>
-  </div>-->
 <div id="app-navigation"></div>
   <!-- Main Content -->
   <div class="container">
@@ -721,6 +846,123 @@
               <div class="info-label">Typical Rate</div>
               <div class="info-value">$800 - $1,200 per post</div>
             </div>
+          </div>
+        </div>
+        <!-- Campaigns with Aruba -->
+        <div class="section">
+          <div class="campaign-history">
+            <div class="campaign-history-header">
+              <div>
+                <h2 class="section-title">Campaigns with Aruba</h2>
+                <p class="campaign-history-subtitle">
+                  Snapshot of this creator&apos;s performance on Aruba Tourism campaigns.
+                </p>
+              </div>
+              <a href="campaign-performance.html" class="campaign-history-link">
+                View full performance →
+              </a>
+            </div>
+
+            <!-- High-level summary (from Airtable / n8n aggregation) -->
+            <div class="campaign-history-summary">
+              <div class="summary-item">
+                <span class="summary-label">Total Aruba campaigns</span>
+                <span class="summary-value" id="arubaCampaignCount">3</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Total impressions</span>
+                <span class="summary-value" id="arubaTotalImpressions">1.2M</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Total engagements</span>
+                <span class="summary-value" id="arubaTotalEngagements">84.3K</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Avg. engagement rate</span>
+                <span class="summary-value" id="arubaAvgEngagementRate">3.8%</span>
+              </div>
+            </div>
+
+            <!-- Per-campaign snapshot – one row per Aruba campaign this creator has been in -->
+            <table class="campaign-history-table">
+              <thead>
+                <tr>
+                  <th>Campaign</th>
+                  <th>Status</th>
+                  <th>Period</th>
+                  <th>Content</th>
+                  <th>Impressions</th>
+                  <th>Engagements</th>
+                </tr>
+              </thead>
+              <tbody id="arubaCampaignHistory">
+                <!-- Example static rows; you’ll replace with dynamic data -->
+                <tr>
+                  <td class="campaign-name-cell">
+                    Aruba Summer Escapes 2024
+                    <span class="campaign-meta">Lead creator</span>
+                  </td>
+                  <td>
+                    <span class="campaign-status-badge campaign-status-completed">
+                      Completed
+                    </span>
+                  </td>
+                  <td>
+                    Jun 1 – Aug 31, 2024
+                  </td>
+                  <td>
+                    6 posts / 8 stories
+                    <span class="metric-subtext">Content by this creator only</span>
+                  </td>
+                  <td>
+                    540K
+                    <span class="metric-subtext">From Aruba-linked posts</span>
+                  </td>
+                  <td>
+                    32.4K
+                    <span class="metric-subtext">Likes + comments + saves</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="campaign-name-cell">
+                    Wellness in Aruba 2023
+                    <span class="campaign-meta">Supporting creator</span>
+                  </td>
+                  <td>
+                    <span class="campaign-status-badge campaign-status-completed">
+                      Completed
+                    </span>
+                  </td>
+                  <td>
+                    Sep 10 – Oct 15, 2023
+                  </td>
+                  <td>
+                    3 posts / 4 stories
+                  </td>
+                  <td>410K</td>
+                  <td>21.9K</td>
+                </tr>
+                <tr>
+                  <td class="campaign-name-cell">
+                    Q1 Evergreen Aruba Content
+                    <span class="campaign-meta">Always-on</span>
+                  </td>
+                  <td>
+                    <span class="campaign-status-badge campaign-status-active">
+                      Active
+                    </span>
+                  </td>
+                  <td>
+                    Jan 1 – Present
+                  </td>
+                  <td>
+                    2 posts / 3 stories
+                  </td>
+                  <td>230K</td>
+                  <td>10.0K</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
