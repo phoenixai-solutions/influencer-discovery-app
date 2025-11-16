@@ -27,7 +27,6 @@ subPages: {
     { id: 'create',  label: 'Create',  url: 'create-sov-report.html' }
   ]
 }
-
   },
   
   // Initialize navigation
