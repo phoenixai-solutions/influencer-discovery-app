@@ -15,7 +15,7 @@ const PhoenixNav = {
 subPages: {
   discovery: [
     { id: 'discovery', label: 'Search', url: 'index.html' },
-    { id: 'myinfluencers', label: 'My Influencers', url: 'influencer_list.html' },
+    { id: 'myinfluencers', label: 'My Influencers', url: 'my-influencers.html' },
   ],
   campaigns: [
     { id: 'overview', label: 'Overview', url: 'campaigns.html' },
