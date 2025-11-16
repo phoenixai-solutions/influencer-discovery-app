@@ -9,7 +9,8 @@ const PhoenixNav = {
     mainPages: [
       { id: 'discovery', label: 'Discover Influencers', url: 'index.html' },
       { id: 'campaigns', label: 'Campaigns', url: 'campaigns.html' },
-      { id: 'settings', label: 'Settings', url: '#' },
+      { id: 'social-listening', label: 'Social Listening', url: 'social-listening.html' },
+      { id: 'share-of-voice', label: 'Share of Voice', url: 'share-of-voice.html' }
     ],
     subPages: {
       discovery: [
