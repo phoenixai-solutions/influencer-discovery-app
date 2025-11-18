@@ -359,6 +359,82 @@
         width: 100%;
       }
     }
+
+    /* Update the existing .report-footer styles */
+.report-footer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-updated {
+  font-size: 13px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+/* Make View Report button larger and full-width-ish */
+.btn-view {
+  flex: 1;
+  background: #eff6ff;
+  color: #0066ff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-view:hover {
+  background: #dbeafe;
+}
+
+/* Icon buttons for Edit and Delete */
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-icon:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.btn-icon.btn-edit:hover {
+  background: #eff6ff;
+  border-color: #0066ff;
+  color: #0066ff;
+}
+
+.btn-icon.btn-delete:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
   </style>
 </head>
 <body>
@@ -587,63 +663,69 @@ function formatWindow(type) {
     container.appendChild(grid);
   }
 
-  function createReportCard(report) {
-    const card = document.createElement('div');
-    card.className = 'report-card';
+function createReportCard(report) {
+  const card = document.createElement('div');
+  card.className = 'report-card';
 
-    // Format last collected date
-    const lastUpdated = report.lastCollected_at
-      ? new Date(report.lastCollected_at).toLocaleDateString('en-US', { 
-          month: 'short', 
-          day: 'numeric', 
-          year: 'numeric' 
-        })
-      : 'Not yet collected';
+  // Format last collected date
+  const lastUpdated = report.lastCollected_at
+    ? new Date(report.lastCollected_at).toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+      })
+    : 'Not yet collected';
 
-    // Count destinations
-    const destArray = (report.destinations || '').split(',')
-      .map(d => d.trim())
-      .filter(d => d);
-    const destCount = destArray.length;
+  // Count destinations
+  const destArray = (report.destinations || '').split(',')
+    .map(d => d.trim())
+    .filter(d => d);
+  const destCount = destArray.length;
 
-    // Format topics
-    const topicsDisplay = report.topicKeywords 
-      ? report.topicKeywords.split(',').slice(0, 2).join(', ')
-      : 'All topics';
+  // Format topics
+  const topicsDisplay = report.topicKeywords 
+    ? report.topicKeywords.split(',').slice(0, 2).join(', ')
+    : 'All topics';
 
-    // Format collection frequency
-    const freqLabel = {
-      '6h': 'Every 6 hours',
-      '12h': 'Every 12 hours',
-      '24h': 'Daily'
-    }[report.collectionFrequency] || report.collectionFrequency;
-
-    card.innerHTML = `
-      <div class="card-header">
-        <div class="report-name">${report.name || 'Untitled report'}</div>
-        <div class="report-desc">${report.description || 'No description'}</div>
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="report-name">${report.name || 'Untitled report'}</div>
+      <div class="report-desc">${report.description || 'No description'}</div>
+    </div>
+    <div class="report-meta">
+      <span class="tag primary">${destCount} destination${destCount !== 1 ? 's' : ''}</span>
+      <span class="tag">Lang: ${report.language || 'Spanish'}</span>
+      <span class="tag">Topics: ${topicsDisplay}</span>
+      <span class="tag">Window: ${report.windowLabel || 'Last 30 days'}</span>
+      <span class="tag">📊 ${report.totalArticles || 0} articles</span>
+    </div>
+    <div class="report-footer">
+      <span class="report-updated">
+        <span>📅</span>
+        <span>Last collected: ${lastUpdated}</span>
+      </span>
+      <div class="card-actions">
+        <button class="btn-view" onclick="openReport('${report.report_id || report.id}')">
+          View Report →
+        </button>
+        <button class="btn-icon btn-edit" onclick="editReport('${report.id}')" title="Edit report settings">
+          ⚙️
+        </button>
+        <button class="btn-icon btn-delete" onclick="openDeleteModal('${report.id}', '${escapeHtml(report.name || 'this report')}')" title="Delete report">
+          🗑️
+        </button>
       </div>
-      <div class="report-meta">
-        <span class="tag primary">${destCount} destination${destCount !== 1 ? 's' : ''}</span>
-        <span class="tag">Lang: ${report.language || 'Spanish'}</span>
-        <span class="tag">Topics: ${topicsDisplay}</span>
-        <span class="tag">Window: ${report.windowLabel || 'Last 30 days'}</span>
-        <span class="tag">📊 ${report.totalArticles || 0} articles</span>
-      </div>
-      <div class="report-footer">
-        <span class="report-updated">Last collected: ${lastUpdated}</span>
-        <div class="card-actions">
-          <button class="btn-view" onclick="openReport('${report.report_id || report.id}')">
-            View report →
-          </button>
-          <button class="btn-delete" onclick="openDeleteModal('${report.id}', '${escapeHtml(report.name || 'this report')}')">
-            Delete
-          </button>
-        </div>
-      </div>
-    `;
-    return card;
-  }
+    </div>
+  `;
+  return card;
+}
+
+// Add the editReport function
+function editReport(id) {
+  // TODO: Navigate to edit page or open edit modal
+  alert(`Edit report ${id} - This will be implemented next!`);
+  // When ready: window.location.href = `edit-sov-report.html?id=${id}`;
+}
 
   function escapeHtml(text) {
     return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
