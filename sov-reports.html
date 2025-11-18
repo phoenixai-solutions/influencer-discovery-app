@@ -424,185 +424,245 @@
     </div>
   </div>
 
-  <script src="nav-component.js"></script>
-  <script>
-    // Init nav: section "share-of-voice", sub "overview"
-    PhoenixNav.init({
-      currentPage: 'share-of-voice',
-      currentSubPage: 'overview'
+<script src="nav-component.js"></script>
+<script>
+  // Init nav: section "share-of-voice", sub "overview"
+  PhoenixNav.init({
+    currentPage: 'share-of-voice',
+    currentSubPage: 'overview'
+  });
+
+  // --- API endpoints ---
+  const REPORT_API = {
+    getReports: 'https://phoenixaisolutions.app.n8n.cloud/webhook/get-sov-reports',
+    deleteReport: 'https://phoenixaisolutions.app.n8n.cloud/webhook/delete-sov-report'
+  };
+
+  let allReports = [];
+  let filteredReports = [];
+  let currentScope = 'all';
+  let searchQuery = '';
+  let reportToDelete = null;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadReports();
+    setupFilters();
+  });
+
+  function setupFilters() {
+    document.getElementById('searchBox').addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase();
+      filterAndRenderReports();
     });
 
-    // --- API endpoints (swap to your real n8n URLs) ---
-    const REPORT_API = {
-      getReports: 'https://phoenixaisolutions.app.n8n.cloud/webhook/get-sov-reports',
-      deleteReport: 'https://phoenixaisolutions.app.n8n.cloud/webhook/delete-sov-report'
-    };
-
-    let allReports = [];
-    let filteredReports = [];
-    let currentScope = 'all';
-    let searchQuery = '';
-    let reportToDelete = null;
-
-    document.addEventListener('DOMContentLoaded', () => {
-      loadReports();
-      setupFilters();
-    });
-
-    function setupFilters() {
-      document.getElementById('searchBox').addEventListener('input', (e) => {
-        searchQuery = e.target.value.toLowerCase();
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentScope = tab.dataset.scope;
         filterAndRenderReports();
       });
+    });
 
-      document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          currentScope = tab.dataset.scope;
-          filterAndRenderReports();
-        });
-      });
+    document.getElementById('deleteModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeDeleteModal();
+    });
 
-      document.getElementById('deleteModal').addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) closeDeleteModal();
-      });
+    document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDeleteReport);
+  }
 
-      document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDeleteReport);
-    }
-
-    async function loadReports() {
-      try {
-        const res = await fetch(REPORT_API.getReports);
-        const data = await res.json();
-        // assuming n8n returns [{ json: { id, name, ... } }, ...]
-        allReports = Array.isArray(data) ? data.map(r => r.json || r) : [];
-      } catch (err) {
-        console.error('Error loading SOV reports', err);
-        allReports = [];
+  async function loadReports() {
+    try {
+      const res = await fetch(REPORT_API.getReports);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
-      filterAndRenderReports();
-    }
-
-    function filterAndRenderReports() {
-      filteredReports = allReports;
-
-      if (currentScope === 'aruba-only') {
-        filteredReports = filteredReports.filter(r => (r.primaryDestination || '').toLowerCase() === 'aruba');
-      } else if (currentScope === 'global') {
-        filteredReports = filteredReports.filter(r => r.market === 'global');
-      }
-
-      if (searchQuery) {
-        filteredReports = filteredReports.filter(r =>
-          (r.name || '').toLowerCase().includes(searchQuery) ||
-          (r.description || '').toLowerCase().includes(searchQuery)
-        );
-      }
-
-      renderReports();
-    }
-
-    function renderReports() {
-      const container = document.getElementById('reportsContainer');
-      if (!filteredReports.length) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <h3>No reports found</h3>
-            <p>Create a new report to start tracking media share of voice.</p>
-          </div>
-        `;
-        return;
-      }
-
-      const grid = document.createElement('div');
-      grid.className = 'reports-grid';
-
-      filteredReports.forEach(r => {
-        grid.appendChild(createReportCard(r));
-      });
-
-      container.innerHTML = '';
-      container.appendChild(grid);
-    }
-
-    function createReportCard(report) {
-      const card = document.createElement('div');
-      card.className = 'report-card';
-
-      const lastUpdated = report.lastUpdated
-        ? new Date(report.lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-        : 'Not yet run';
-
-      card.innerHTML = `
-        <div class="card-header">
-          <div class="report-name">${report.name || 'Untitled report'}</div>
-          <div class="report-desc">${report.description || ''}</div>
-        </div>
-        <div class="report-meta">
-          <span class="tag primary">${(report.destinations || ['Aruba', 'Curaçao', 'Cancun', 'DR', 'Jamaica']).length} destinations</span>
-          <span class="tag">Market: ${labelMarket(report.market)}</span>
-          <span class="tag">Lang: ${report.languages || 'ES / PT / EN'}</span>
-          <span class="tag">Topics: ${report.topics || 'All'}</span>
-          <span class="tag">Window: ${report.windowLabel || 'Last 90 days'}</span>
-        </div>
-        <div class="report-footer">
-          <span class="report-updated">Updated: ${lastUpdated}</span>
-          <div class="card-actions">
-            <button class="btn-view" onclick="openReport('${report.id}')">View report →</button>
-            <button class="btn-delete" onclick="openDeleteModal('${report.id}', '${(report.name || '').replace(/'/g, "\\'")}')">Delete</button>
-          </div>
+      const data = await res.json();
+      console.log('Loaded reports:', data);
+      
+      // Handle different response formats from n8n
+      allReports = Array.isArray(data) ? data : [];
+      
+    } catch (err) {
+      console.error('Error loading SOV reports:', err);
+      allReports = [];
+      
+      // Show error message to user
+      document.getElementById('reportsContainer').innerHTML = `
+        <div class="empty-state">
+          <h3>⚠️ Error Loading Reports</h3>
+          <p>${err.message}</p>
+          <p style="color: #6b7280; font-size: 13px; margin-top: 8px;">
+            Check that the n8n workflow is active and the webhook URL is correct.
+          </p>
         </div>
       `;
-      return card;
+      return;
+    }
+    filterAndRenderReports();
+  }
+
+  function filterAndRenderReports() {
+    filteredReports = allReports;
+
+    if (currentScope === 'aruba-only') {
+      filteredReports = filteredReports.filter(r => 
+        (r.primaryDestination || '').toLowerCase().includes('aruba')
+      );
+    } else if (currentScope === 'global') {
+      filteredReports = filteredReports.filter(r => 
+        (r.language || '').toLowerCase() === 'english' ||
+        (r.destinations || '').toLowerCase().includes('all')
+      );
     }
 
-    function labelMarket(m) {
-      if (!m || m === 'all') return 'Global';
-      if (m === 'latam-es') return 'Spanish LatAm';
-      if (m === 'br') return 'Brazil';
-      return m;
+    if (searchQuery) {
+      filteredReports = filteredReports.filter(r =>
+        (r.name || '').toLowerCase().includes(searchQuery) ||
+        (r.description || '').toLowerCase().includes(searchQuery) ||
+        (r.destinations || '').toLowerCase().includes(searchQuery)
+      );
     }
 
-    function openReport(id) {
-      // pass reportId to dashboard; you’ll use it to load config from Airtable later
-      window.location.href = `share-of-voice.html?reportId=${encodeURIComponent(id)}`;
+    renderReports();
+  }
+
+  function renderReports() {
+    const container = document.getElementById('reportsContainer');
+    
+    if (!filteredReports.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <h3>No reports found</h3>
+          <p>Create a new report to start tracking media share of voice.</p>
+          <button class="btn btn-primary" onclick="window.location.href='create-sov-report.html'" style="margin-top: 16px;">
+            + Create Your First Report
+          </button>
+        </div>
+      `;
+      return;
     }
 
-    // --- Delete flow ---
-    function openDeleteModal(id, name) {
-      reportToDelete = id;
-      document.getElementById('deleteReportName').textContent = name || 'this report';
-      document.getElementById('deleteModal').classList.add('show');
-    }
+    const grid = document.createElement('div');
+    grid.className = 'reports-grid';
 
-    function closeDeleteModal() {
-      reportToDelete = null;
-      document.getElementById('deleteModal').classList.remove('show');
-    }
+    filteredReports.forEach(r => {
+      grid.appendChild(createReportCard(r));
+    });
 
-    async function confirmDeleteReport() {
-      if (!reportToDelete) return;
-      const btn = document.getElementById('confirmDeleteBtn');
-      btn.disabled = true;
-      btn.textContent = 'Deleting...';
+    container.innerHTML = '';
+    container.appendChild(grid);
+  }
 
-      try {
-        await fetch(REPORT_API.deleteReport, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: reportToDelete })
-        });
-        allReports = allReports.filter(r => (r.id || (r.json && r.json.id)) !== reportToDelete);
-      } catch (err) {
-        console.error('Error deleting SOV report', err);
+  function createReportCard(report) {
+    const card = document.createElement('div');
+    card.className = 'report-card';
+
+    // Format last collected date
+    const lastUpdated = report.lastCollected_at
+      ? new Date(report.lastCollected_at).toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          year: 'numeric' 
+        })
+      : 'Not yet collected';
+
+    // Count destinations
+    const destArray = (report.destinations || '').split(',')
+      .map(d => d.trim())
+      .filter(d => d);
+    const destCount = destArray.length;
+
+    // Format topics
+    const topicsDisplay = report.topicKeywords 
+      ? report.topicKeywords.split(',').slice(0, 2).join(', ')
+      : 'All topics';
+
+    // Format collection frequency
+    const freqLabel = {
+      '6h': 'Every 6 hours',
+      '12h': 'Every 12 hours',
+      '24h': 'Daily'
+    }[report.collectionFrequency] || report.collectionFrequency;
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="report-name">${report.name || 'Untitled report'}</div>
+        <div class="report-desc">${report.description || 'No description'}</div>
+      </div>
+      <div class="report-meta">
+        <span class="tag primary">${destCount} destination${destCount !== 1 ? 's' : ''}</span>
+        <span class="tag">Lang: ${report.language || 'Spanish'}</span>
+        <span class="tag">Topics: ${topicsDisplay}</span>
+        <span class="tag">Window: ${report.windowLabel || 'Last 30 days'}</span>
+        <span class="tag">📊 ${report.totalArticles || 0} articles</span>
+      </div>
+      <div class="report-footer">
+        <span class="report-updated">Last collected: ${lastUpdated}</span>
+        <div class="card-actions">
+          <button class="btn-view" onclick="openReport('${report.report_id || report.id}')">
+            View report →
+          </button>
+          <button class="btn-delete" onclick="openDeleteModal('${report.id}', '${escapeHtml(report.name || 'this report')}')">
+            Delete
+          </button>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  function escapeHtml(text) {
+    return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  }
+
+  function openReport(reportId) {
+    // Navigate to dashboard with report ID
+    window.location.href = `share-of-voice-dashboard.html?reportId=${encodeURIComponent(reportId)}`;
+  }
+
+  // --- Delete flow ---
+  function openDeleteModal(id, name) {
+    reportToDelete = id;
+    document.getElementById('deleteReportName').textContent = name || 'this report';
+    document.getElementById('deleteModal').classList.add('show');
+  }
+
+  function closeDeleteModal() {
+    reportToDelete = null;
+    document.getElementById('deleteModal').classList.remove('show');
+  }
+
+  async function confirmDeleteReport() {
+    if (!reportToDelete) return;
+    const btn = document.getElementById('confirmDeleteBtn');
+    btn.disabled = true;
+    btn.textContent = 'Deleting...';
+
+    try {
+      const res = await fetch(REPORT_API.deleteReport, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: reportToDelete })
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to delete report');
       }
 
-      btn.disabled = false;
-      btn.textContent = 'Delete Report';
-      closeDeleteModal();
+      // Remove from local array
+      allReports = allReports.filter(r => r.id !== reportToDelete);
       filterAndRenderReports();
+      
+    } catch (err) {
+      console.error('Error deleting SOV report:', err);
+      alert('Failed to delete report. Please try again.');
     }
-  </script>
+
+    btn.disabled = false;
+    btn.textContent = 'Delete Report';
+    closeDeleteModal();
+  }
+</script>
 </body>
 </html>
