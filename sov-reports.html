@@ -483,12 +483,14 @@ async function loadReports() {
     // Handle both array and single object responses
     let rawReports = Array.isArray(data) ? data : [data];
     
-    // Transform Airtable format to our format
+    // Transform - n8n wraps data in {json: {...}} format
     allReports = rawReports.map(item => {
-      const fields = item.fields || item;
+      // Extract the actual data from n8n's wrapper
+      const record = item.json || item;
+      const fields = record.fields || record;
       
       return {
-        id: item.id,
+        id: record.id,
         report_id: fields.report_id,
         name: fields.name,
         description: fields.description,
