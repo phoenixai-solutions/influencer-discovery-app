@@ -19,7 +19,6 @@ subPages: {
   campaigns: [
     { id: 'overview', label: 'Overview', url: 'campaigns.html' },
     { id: 'create', label: 'Create', url: 'create-campaign.html' },
-    { id: 'performance', label: 'Performance', url: 'campaign-performance.html' }
   ],
   'share-of-voice': [
     { id: 'reports', label: 'Reports', url: 'sov-reports.html' },
