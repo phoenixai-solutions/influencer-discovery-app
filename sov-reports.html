@@ -6,8 +6,7 @@
   <title>Share of Voice Reports - Phoenix</title>
   
   <link rel="stylesheet" href="nav-styles.css">
-
-  <style>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -105,112 +104,146 @@
       background: #0052cc;
     }
 
+    /* Report Cards - Matches Campaign Cards Exactly */
     .reports-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
+    
     .report-card {
       background: white;
       border: 1px solid #e5e7eb;
       border-radius: 8px;
-      padding: 20px;
+      padding: 24px;
       transition: box-shadow 0.2s;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
     }
+    
     .report-card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+    
     .card-header {
-      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
     }
+    
     .report-name {
       font-size: 18px;
       font-weight: 700;
       color: #111827;
+      flex: 1;
+      margin-right: 12px;
       margin-bottom: 4px;
     }
+    
     .report-desc {
       font-size: 13px;
       color: #6b7280;
+      line-height: 1.4;
     }
 
     .report-meta {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #6b7280;
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
+    
     .tag {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 8px;
-      border-radius: 999px;
+      padding: 4px 10px;
       background: #f3f4f6;
-      font-size: 11px;
-      color: #4b5563;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 500;
     }
+    
     .tag.primary {
       background: #eff6ff;
-      color: #1d4ed8;
+      color: #0066ff;
     }
 
-    .report-footer {
-      margin-top: auto;
+    .card-meta {
       padding-top: 12px;
       border-top: 1px solid #f3f4f6;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #6b7280;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
-    .report-updated {
-      font-size: 11px;
-      color: #9ca3af;
-    }
+
     .card-actions {
       display: flex;
       gap: 8px;
+      margin-top: 16px;
     }
+    
     .btn-view {
       flex: 1;
       background: #eff6ff;
       color: #0066ff;
-      padding: 8px 12px;
+      padding: 10px;
       border-radius: 8px;
       border: none;
       font-weight: 500;
-      font-size: 13px;
       cursor: pointer;
+      font-size: 14px;
       text-decoration: none;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.2s;
     }
+    
     .btn-view:hover {
       background: #dbeafe;
     }
-    .btn-delete {
+    
+    .btn-icon {
       background: white;
       border: 1px solid #e5e7eb;
-      color: #dc2626;
-      padding: 8px 10px;
+      color: #6b7280;
+      padding: 10px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 500;
-      font-size: 13px;
+      font-size: 14px;
       transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 40px;
+      height: 40px;
     }
-    .btn-delete:hover {
+    
+    .btn-icon:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+    }
+    
+    .btn-icon.btn-edit:hover {
+      background: #eff6ff;
+      border-color: #0066ff;
+      color: #0066ff;
+    }
+    
+    .btn-icon.btn-delete {
+      color: #dc2626;
+    }
+    
+    .btn-icon.btn-delete:hover {
       background: #fef2f2;
       border-color: #dc2626;
+    }
+    
+    .btn-icon svg {
+      width: 16px;
+      height: 16px;
     }
 
     /* Loading / empty */
@@ -238,7 +271,7 @@
       margin-bottom: 8px;
     }
 
-    /* Delete modal (reuse style from campaigns) */
+    /* Delete modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -272,6 +305,8 @@
       align-items: center;
       justify-content: center;
       color: #dc2626;
+      font-size: 20px;
+      font-weight: 700;
     }
     .modal-title {
       font-size: 18px;
@@ -282,6 +317,7 @@
       font-size: 14px;
       color: #6b7280;
       margin-bottom: 20px;
+      line-height: 1.5;
     }
     .modal-report-name {
       font-weight: 600;
@@ -318,34 +354,40 @@
       background: #9ca3af;
       cursor: not-allowed;
     }
+    
     .nav-tabs {
-  background: white;
-  padding: 0 24px;
-  display: flex;
-  gap: 32px;
-  border-bottom: 1px solid #e5e7eb;
-}
-.nav-tab {
-  padding: 12px 0;
-  color: #6b7280;
-  text-decoration: none;
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
-.nav-tab.active {
-  color: #0066ff;
-  border-bottom-color: #0066ff;
-}
-.nav-tab:hover {
-  color: #111827;
-}
+      background: white;
+      padding: 0 24px;
+      display: flex;
+      gap: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-tab {
+      padding: 12px 0;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-tab.active {
+      color: #0066ff;
+      border-bottom-color: #0066ff;
+    }
+    .nav-tab:hover {
+      color: #111827;
+    }
 
     @media (max-width: 1024px) {
-      .reports-grid { grid-template-columns: repeat(2, 1fr); }
+      .reports-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+      }
     }
+    
     @media (max-width: 768px) {
-      .reports-grid { grid-template-columns: 1fr; }
+      .reports-grid { 
+        grid-template-columns: 1fr; 
+      }
       .filter-bar {
         flex-direction: column;
         align-items: stretch;
@@ -359,82 +401,6 @@
         width: 100%;
       }
     }
-
-    /* Update the existing .report-footer styles */
-.report-footer {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #f3f4f6;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.report-updated {
-  font-size: 13px;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.card-actions {
-  display: flex;
-  gap: 8px;
-  align-items: stretch;
-}
-
-/* Make View Report button larger and full-width-ish */
-.btn-view {
-  flex: 1;
-  background: #eff6ff;
-  color: #0066ff;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.btn-view:hover {
-  background: #dbeafe;
-}
-
-/* Icon buttons for Edit and Delete */
-.btn-icon {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e5e7eb;
-  background: white;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.btn-icon:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
-}
-
-.btn-icon.btn-edit:hover {
-  background: #eff6ff;
-  border-color: #0066ff;
-  color: #0066ff;
-}
-
-.btn-icon.btn-delete:hover {
-  background: #fef2f2;
-  border-color: #ef4444;
-  color: #ef4444;
-}
-
   </style>
 </head>
 <body>
@@ -682,44 +648,54 @@ function createReportCard(report) {
     .filter(d => d);
   const destCount = destArray.length;
 
-  // Format topics
+  // Format topics - show first 2 keywords
   const topicsDisplay = report.topicKeywords 
-    ? report.topicKeywords.split(',').slice(0, 2).join(', ')
+    ? report.topicKeywords.split(',').map(k => k.trim()).slice(0, 2).join(', ')
     : 'All topics';
 
   card.innerHTML = `
     <div class="card-header">
-      <div class="report-name">${report.name || 'Untitled report'}</div>
-      <div class="report-desc">${report.description || 'No description'}</div>
+      <div>
+        <div class="report-name">${report.name || 'Untitled report'}</div>
+        <div class="report-desc">${report.description || 'No description'}</div>
+      </div>
     </div>
+    
     <div class="report-meta">
       <span class="tag primary">${destCount} destination${destCount !== 1 ? 's' : ''}</span>
       <span class="tag">Lang: ${report.language || 'Spanish'}</span>
       <span class="tag">Topics: ${topicsDisplay}</span>
+    </div>
+    
+    <div class="report-meta" style="margin-top: 4px; margin-bottom: 0;">
       <span class="tag">Window: ${report.windowLabel || 'Last 30 days'}</span>
       <span class="tag">📊 ${report.totalArticles || 0} articles</span>
     </div>
-    <div class="report-footer">
-      <span class="report-updated">
-        <span>📅</span>
-        <span>Last collected: ${lastUpdated}</span>
-      </span>
-      <div class="card-actions">
-        <button class="btn-view" onclick="openReport('${report.report_id || report.id}')">
-          View Report →
-        </button>
-        <button class="btn-icon btn-edit" onclick="editReport('${report.id}')" title="Edit report settings">
-          ⚙️
-        </button>
-        <button class="btn-icon btn-delete" onclick="openDeleteModal('${report.id}', '${escapeHtml(report.name || 'this report')}')" title="Delete report">
-          🗑️
-        </button>
-      </div>
+    
+    <div class="card-meta">
+      <span>📅</span>
+      <span>Last collected: ${lastUpdated}</span>
+    </div>
+    
+    <div class="card-actions">
+      <button class="btn-view" onclick="openReport('${report.report_id || report.id}')">
+        View Report →
+      </button>
+      <button class="btn-icon btn-edit" onclick="editReport('${report.id}')" title="Edit report">
+        <svg fill="currentColor" viewBox="0 0 16 16">
+          <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+        </svg>
+      </button>
+      <button class="btn-icon btn-delete" onclick="openDeleteModal('${report.id}', '${escapeHtml(report.name || 'this report')}')" title="Delete report">
+        <svg fill="currentColor" viewBox="0 0 16 16">
+          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+          <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+        </svg>
+      </button>
     </div>
   `;
   return card;
 }
-
 // Add the editReport function
 function editReport(id) {
   // TODO: Navigate to edit page or open edit modal
