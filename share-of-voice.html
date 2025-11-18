@@ -452,6 +452,16 @@
       color: #4b5563;
     }
 
+    .badge-sentiment {
+      display: inline-flex;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      font-size: 11px;
+      font-weight: 500;
+      color: #4b5563;
+    }
+
     .link-view {
       font-size: 11px;
       color: #2563eb;
@@ -629,6 +639,15 @@
           </div>
         </div>
       </div>
+
+      <!-- New Sentiment KPI card -->
+      <div class="kpi-card">
+        <div class="kpi-label">Overall sentiment (Aruba)</div>
+        <div class="kpi-value">Coming Soon</div>
+        <div class="kpi-subtext">
+          Sentiment analysis will appear here once enabled on the news data feed.
+        </div>
+      </div>
     </section>
 
     <!-- Comparison + Trend -->
@@ -740,6 +759,7 @@
               <th>Source</th>
               <th>Headline</th>
               <th>Lang</th>
+              <th>Sentiment</th>
               <th></th>
             </tr>
           </thead>
@@ -752,6 +772,7 @@
               <td>El Caribe Hoy</td>
               <td>Aruba se posiciona como nuevo destino gastronómico del Caribe</td>
               <td>ES</td>
+              <td><span class="badge-sentiment">Coming Soon</span></td>
               <td><a href="#" class="link-view">View</a></td>
             </tr>
             <tr>
@@ -761,6 +782,7 @@
               <td>Viajes Latam</td>
               <td>El boom del turismo caribeño en 2025</td>
               <td>ES</td>
+              <td><span class="badge-sentiment">Coming Soon</span></td>
               <td><a href="#" class="link-view">View</a></td>
             </tr>
           </tbody>
@@ -779,3 +801,4 @@
   </script>
 </body>
 </html>
+
