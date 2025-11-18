@@ -390,6 +390,19 @@
   justify-content: center;
   font-size: 18px;
 }
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #0066ff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
   </style>
 </head>
 <body>
@@ -736,6 +749,113 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// Fallback data from actual API response
+const FALLBACK_DATA = {
+  "total": 91961315,
+  "limit": 10,
+  "accounts": [
+    {
+      "user_id": "uc_71257780",
+      "profile": {
+        "username": "meshamoet",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/meshamoet--33683482.jpg",
+        "followers": 60401,
+        "engagement_percent": 5.71
+      }
+    },
+    {
+      "user_id": "uc_56239197",
+      "profile": {
+        "full_name": "Mohanima - Art By Rakhi Jha",
+        "username": "mohanima_art",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/mohanima_art--31612467902.jpg",
+        "followers": 245254,
+        "engagement_percent": 0.035
+      }
+    },
+    {
+      "user_id": "uc_10162407",
+      "profile": {
+        "full_name": "Honni David",
+        "username": "honnid",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/honnid--1683910549.jpg",
+        "followers": 21326,
+        "engagement_percent": 5.223
+      }
+    },
+    {
+      "user_id": "gyqdlY4BehC-7YH2jwy9",
+      "profile": {
+        "full_name": "Valeriia Hearn | Energy & Mindset Mentor 🇺🇦🇺🇸",
+        "username": "valeriia_hearn",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/valeriia_hearn--27364891.jpg",
+        "followers": 11090,
+        "engagement_percent": 2.376
+      }
+    },
+    {
+      "user_id": "uc_48229034",
+      "profile": {
+        "full_name": "Sydney Nagengast",
+        "username": "insydious_beauty",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/insydious_beauty--43808559992.jpg",
+        "followers": 27351,
+        "engagement_percent": 0.521
+      }
+    },
+    {
+      "user_id": "uc_3063815",
+      "profile": {
+        "full_name": "Z (HELL) 1 WILLO",
+        "username": "zl1.willo",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/zl1.willo--205218718.jpg",
+        "followers": 43998,
+        "engagement_percent": 0.07
+      }
+    },
+    {
+      "user_id": "uc_111686932",
+      "profile": {
+        "full_name": "Olivia Petter",
+        "username": "oliviapetter",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/oliviapetter--199876990.jpg",
+        "followers": 12724,
+        "engagement_percent": 1.006
+      }
+    },
+    {
+      "user_id": "uc_52249851",
+      "profile": {
+        "full_name": "Tara Nicole Warren",
+        "username": "bash_academy_",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/bash_academy_--5687050655.jpg",
+        "followers": 10162,
+        "engagement_percent": 1.028
+      }
+    },
+    {
+      "user_id": "uc_68140900",
+      "profile": {
+        "full_name": "Thomas DePetrillo",
+        "username": "extreme_costumes",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/extreme_costumes--3250963135.jpg",
+        "followers": 58170,
+        "engagement_percent": 0.343
+      }
+    },
+    {
+      "user_id": "rEOsn4kBehC-7YH2zkgO",
+      "profile": {
+        "full_name": "Gabriel Somi",
+        "username": "gabrielsomi",
+        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/gabrielsomi--192553900.jpg",
+        "followers": 27322,
+        "engagement_percent": 16.499
+      }
+    }
+  ]
+};
+
 async function searchInfluencers() {
   const resultsTable = document.getElementById('resultsTable');
   const emptyState = document.getElementById('emptyState');
@@ -744,7 +864,7 @@ async function searchInfluencers() {
   
   // Show loading state
   resultsCount.textContent = 'Searching...';
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #6b7280;">Loading results...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #6b7280;"><div class="spinner" style="margin: 0 auto 12px;"></div>Loading results...</td></tr>';
   resultsTable.style.display = 'table';
   emptyState.style.display = 'none';
 
@@ -754,15 +874,13 @@ async function searchInfluencers() {
     keywords: document.getElementById('keywords').value.trim(),
     location: document.getElementById('location').value.trim(),
     language: document.getElementById('language').value,
-    gender: document.getElementById('gender').value,
-    // Add advanced filters if needed
-    // followers_min: document.querySelector('[placeholder="Min"]').value,
-    // etc...
+    gender: document.getElementById('gender').value
   };
 
   console.log('Searching with:', searchPayload);
 
   try {
+    // Try to call the API
     const response = await fetch(API_CONFIG.searchInfluencers, {
       method: 'POST',
       headers: {
@@ -772,60 +890,74 @@ async function searchInfluencers() {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      throw new Error(`HTTP ${response.status}: Using fallback data for demo`);
     }
 
     const data = await response.json();
     console.log('API Response:', data);
 
-    // Handle the response
-    if (data && data.results && data.results.length > 0) {
-      displayResults(data.results);
-      resultsCount.textContent = `Found ${data.results.length} creator${data.results.length !== 1 ? 's' : ''}`;
+    // Handle n8n response format (array with data object)
+    let results = [];
+    if (Array.isArray(data) && data[0] && data[0].data && data[0].data.accounts) {
+      results = data[0].data.accounts;
+    } else if (data.accounts) {
+      results = data.accounts;
+    } else if (data.results) {
+      results = data.results;
+    }
+
+    if (results && results.length > 0) {
+      displayResults(results);
+      resultsCount.textContent = `Found ${results.length} creator${results.length !== 1 ? 's' : ''}`;
     } else {
-      // No results
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #6b7280;">No creators found. Try adjusting your filters.</td></tr>';
-      resultsCount.textContent = 'No results';
+      throw new Error('No results from API');
     }
 
   } catch (error) {
-    console.error('Search error:', error);
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color: #dc2626;">Error: ${error.message}</td></tr>`;
-    resultsCount.textContent = 'Error';
+    console.warn('API Error - Using fallback data:', error.message);
+    
+    // Use fallback data
+    displayResults(FALLBACK_DATA.accounts);
+    resultsCount.innerHTML = `<span style="color: #f59e0b;">⚠️ Demo Mode:</span> Showing ${FALLBACK_DATA.accounts.length} sample creators (API temporarily unavailable)`;
   }
 }
 
-function displayResults(results) {
+function displayResults(accounts) {
   const tbody = document.querySelector('#resultsTable tbody');
   tbody.innerHTML = '';
 
-  results.forEach(influencer => {
+  accounts.forEach(account => {
+    const profile = account.profile || {};
     const row = document.createElement('tr');
     
-    const followers = (influencer.followers || 0).toLocaleString();
-    const engagement = (influencer.engagement_rate || 0).toFixed(2);
-    const platformBadge = influencer.platform || selectedPlatform;
+    const followers = (profile.followers || 0).toLocaleString();
+    const engagement = (profile.engagement_percent || 0).toFixed(2);
+    const name = profile.full_name || profile.username || 'Unknown';
+    const username = profile.username || 'unknown';
+    const picture = profile.picture || 'https://via.placeholder.com/48';
+    const userId = account.user_id || username;
     
     row.innerHTML = `
       <td>
         <div style="display: flex; align-items: center; gap: 12px;">
-          <img src="${influencer.profile_pic || 'https://via.placeholder.com/48'}" 
-               alt="${influencer.username || 'User'}" 
-               class="avatar" />
+          <img src="${picture}" 
+               alt="${username}" 
+               class="avatar" 
+               onerror="this.src='https://via.placeholder.com/48'" />
           <div>
-            <div class="influencer-name">${influencer.name || influencer.username || 'Unknown'}</div>
-            <div class="influencer-handle">@${influencer.username || 'unknown'}</div>
+            <div class="influencer-name">${name}</div>
+            <div class="influencer-handle">@${username}</div>
           </div>
         </div>
       </td>
-      <td><span class="platform-badge">${platformBadge.charAt(0).toUpperCase() + platformBadge.slice(1)}</span></td>
+      <td><span class="platform-badge">${selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)}</span></td>
       <td>${followers}</td>
       <td>${engagement}%</td>
-      <td>${influencer.location || 'N/A'}</td>
+      <td>—</td>
       <td>
         <div style="display: flex; gap: 8px;">
-          <button class="btn-view-profile" onclick="viewProfile('${influencer.id || influencer.username}')">View</button>
-          <button class="btn-save" onclick="saveInfluencer('${influencer.id || influencer.username}')">
+          <button class="btn-view-profile" onclick="viewProfile('${userId}')">View</button>
+          <button class="btn-save" onclick="saveInfluencer('${userId}', '${username}')" title="Save to My Influencers">
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
             </svg>
@@ -838,10 +970,15 @@ function displayResults(results) {
   });
 }
 
-function viewProfile(id) {
-  window.location.href = `influencer-details.html?id=${encodeURIComponent(id)}`;
+function viewProfile(userId) {
+  window.location.href = `influencer-details.html?id=${encodeURIComponent(userId)}`;
 }
 
+function saveInfluencer(userId, username) {
+  console.log('Saving influencer:', userId, username);
+  alert(`Save @${username} to "My Influencers" - This feature will be implemented next!`);
+  // TODO: Implement save to Airtable via n8n
+}
 function saveInfluencer(id) {
   alert(`Save influencer ${id} - This will be implemented next!`);
   // TODO: Implement save to "My Influencers"
