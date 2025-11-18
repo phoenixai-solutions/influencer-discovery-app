@@ -337,6 +337,59 @@
         grid-template-columns: 1fr 1fr;
       }
     }
+    /* Platform Selection */
+.platform-selection {
+  margin-bottom: 24px;
+}
+
+.platform-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+.platform-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.platform-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.platform-btn:hover {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+
+.platform-btn.active {
+  border-color: #0066ff;
+  background: #eff6ff;
+  color: #0066ff;
+}
+
+.platform-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
   </style>
 </head>
 <body>
@@ -353,8 +406,41 @@
       <p class="page-subtitle">Discover the perfect influencers for your campaign</p>
     </div>
 
-    <!-- Filter Section -->
-    <div class="filter-section">
+<!-- Filter Section -->
+<div class="filter-section">
+  
+  <!-- Platform Selection -->
+  <div class="platform-selection">
+    <label class="platform-label">Select Platform</label>
+    <div class="platform-buttons">
+      <button type="button" class="platform-btn active" data-platform="instagram" id="btn-instagram">
+        <span class="platform-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+          </svg>
+        </span>
+        <span>Instagram</span>
+      </button>
+      
+      <button type="button" class="platform-btn" data-platform="tiktok" id="btn-tiktok">
+        <span class="platform-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/>
+          </svg>
+        </span>
+        <span>TikTok</span>
+      </button>
+      
+      <button type="button" class="platform-btn" data-platform="youtube" id="btn-youtube">
+        <span class="platform-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/>
+          </svg>
+        </span>
+        <span>YouTube</span>
+      </button>
+    </div>
+  </div>
       
       <!-- Basic Filters -->
       <div class="filter-row">
@@ -626,20 +712,139 @@
       }
     }
 
-    function searchInfluencers() {
-      // Show results table
-      document.getElementById('resultsTable').style.display = 'table';
-      document.getElementById('emptyState').style.display = 'none';
-      document.getElementById('resultsCount').textContent = 'Found 3 creators';
+// API Configuration
+const API_CONFIG = {
+  searchInfluencers: 'https://hook.eu2.make.com/sjswwb2atmu5ja8cvxmj0r38uw9bod5v'
+};
 
-      // In real implementation, this would call your n8n webhook
-      console.log('Searching with filters:', {
-        keywords: document.getElementById('keywords').value,
-        location: document.getElementById('location').value,
-        language: document.getElementById('language').value,
-        gender: document.getElementById('gender').value
-      });
+let selectedPlatform = 'instagram'; // Default
+
+// Platform selection handlers
+document.addEventListener('DOMContentLoaded', () => {
+  const platformBtns = document.querySelectorAll('.platform-btn');
+  platformBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active from all
+      platformBtns.forEach(b => b.classList.remove('active'));
+      // Add active to clicked
+      btn.classList.add('active');
+      // Update selected platform
+      selectedPlatform = btn.dataset.platform;
+      console.log('Selected platform:', selectedPlatform);
+    });
+  });
+});
+
+async function searchInfluencers() {
+  const resultsTable = document.getElementById('resultsTable');
+  const emptyState = document.getElementById('emptyState');
+  const resultsCount = document.getElementById('resultsCount');
+  const tbody = resultsTable.querySelector('tbody');
+  
+  // Show loading state
+  resultsCount.textContent = 'Searching...';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #6b7280;">Loading results...</td></tr>';
+  resultsTable.style.display = 'table';
+  emptyState.style.display = 'none';
+
+  // Gather form data
+  const searchPayload = {
+    platform: selectedPlatform,
+    keywords: document.getElementById('keywords').value.trim(),
+    location: document.getElementById('location').value.trim(),
+    language: document.getElementById('language').value,
+    gender: document.getElementById('gender').value,
+    // Add advanced filters if needed
+    // followers_min: document.querySelector('[placeholder="Min"]').value,
+    // etc...
+  };
+
+  console.log('Searching with:', searchPayload);
+
+  try {
+    const response = await fetch(API_CONFIG.searchInfluencers, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(searchPayload)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
+
+    const data = await response.json();
+    console.log('API Response:', data);
+
+    // Handle the response
+    if (data && data.results && data.results.length > 0) {
+      displayResults(data.results);
+      resultsCount.textContent = `Found ${data.results.length} creator${data.results.length !== 1 ? 's' : ''}`;
+    } else {
+      // No results
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #6b7280;">No creators found. Try adjusting your filters.</td></tr>';
+      resultsCount.textContent = 'No results';
+    }
+
+  } catch (error) {
+    console.error('Search error:', error);
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color: #dc2626;">Error: ${error.message}</td></tr>`;
+    resultsCount.textContent = 'Error';
+  }
+}
+
+function displayResults(results) {
+  const tbody = document.querySelector('#resultsTable tbody');
+  tbody.innerHTML = '';
+
+  results.forEach(influencer => {
+    const row = document.createElement('tr');
+    
+    const followers = (influencer.followers || 0).toLocaleString();
+    const engagement = (influencer.engagement_rate || 0).toFixed(2);
+    const platformBadge = influencer.platform || selectedPlatform;
+    
+    row.innerHTML = `
+      <td>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="${influencer.profile_pic || 'https://via.placeholder.com/48'}" 
+               alt="${influencer.username || 'User'}" 
+               class="avatar" />
+          <div>
+            <div class="influencer-name">${influencer.name || influencer.username || 'Unknown'}</div>
+            <div class="influencer-handle">@${influencer.username || 'unknown'}</div>
+          </div>
+        </div>
+      </td>
+      <td><span class="platform-badge">${platformBadge.charAt(0).toUpperCase() + platformBadge.slice(1)}</span></td>
+      <td>${followers}</td>
+      <td>${engagement}%</td>
+      <td>${influencer.location || 'N/A'}</td>
+      <td>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-view-profile" onclick="viewProfile('${influencer.id || influencer.username}')">View</button>
+          <button class="btn-save" onclick="saveInfluencer('${influencer.id || influencer.username}')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+            </svg>
+          </button>
+        </div>
+      </td>
+    `;
+    
+    tbody.appendChild(row);
+  });
+}
+
+function viewProfile(id) {
+  window.location.href = `influencer-details.html?id=${encodeURIComponent(id)}`;
+}
+
+function saveInfluencer(id) {
+  alert(`Save influencer ${id} - This will be implemented next!`);
+  // TODO: Implement save to "My Influencers"
+}
   </script>
   <!-- Load Navigation Script -->
   <script src="nav-component.js"></script>
