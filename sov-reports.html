@@ -434,7 +434,7 @@
 
   // --- API endpoints ---
   const REPORT_API = {
-    getReports: 'https://phoenixaisolutions.app.n8n.cloud/webhook-test/get-sov-reports',
+    getReports: 'https://phoenixaisolutions.app.n8n.cloud/webhook/get-sov-reports',
     deleteReport: 'https://phoenixaisolutions.app.n8n.cloud/webhook/delete-sov-report'
   };
 
@@ -471,36 +471,67 @@
     document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDeleteReport);
   }
 
-  async function loadReports() {
-    try {
-      const res = await fetch(REPORT_API.getReports);
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-      }
-      const data = await res.json();
-      console.log('Loaded reports:', data);
-      
-      // Handle different response formats from n8n
-      allReports = Array.isArray(data) ? data : [];
-      
-    } catch (err) {
-      console.error('Error loading SOV reports:', err);
-      allReports = [];
-      
-      // Show error message to user
-      document.getElementById('reportsContainer').innerHTML = `
-        <div class="empty-state">
-          <h3>⚠️ Error Loading Reports</h3>
-          <p>${err.message}</p>
-          <p style="color: #6b7280; font-size: 13px; margin-top: 8px;">
-            Check that the n8n workflow is active and the webhook URL is correct.
-          </p>
-        </div>
-      `;
-      return;
+async function loadReports() {
+  try {
+    const res = await fetch(REPORT_API.getReports);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
     }
-    filterAndRenderReports();
+    const data = await res.json();
+    console.log('Raw data from API:', data);
+    
+    // Handle both array and single object responses
+    let rawReports = Array.isArray(data) ? data : [data];
+    
+    // Transform Airtable format to our format
+    allReports = rawReports.map(item => {
+      const fields = item.fields || item;
+      
+      return {
+        id: item.id,
+        report_id: fields.report_id,
+        name: fields.name,
+        description: fields.description,
+        destinations: fields.destinations,
+        primaryDestination: fields.primaryDestination,
+        language: fields.language,
+        topicKeywords: fields.topicKeywords,
+        reportType: fields.reportType,
+        collectionFrequency: fields.collectionFrequency,
+        excludeIrrelevant: fields.excludeIrrelevant,
+        status: fields.status,
+        created_at: fields.created_at,
+        lastCollected_at: fields.lastCollected_at,
+        totalArticles: fields.totalArticles || 0,
+        windowLabel: formatWindow(fields.reportType),
+      };
+    }).filter(r => r.name && r.name.trim()); // Filter out records without names
+    
+    console.log('Transformed reports:', allReports);
+    
+  } catch (err) {
+    console.error('Error loading SOV reports:', err);
+    allReports = [];
+    
+    document.getElementById('reportsContainer').innerHTML = `
+      <div class="empty-state">
+        <h3>⚠️ Error Loading Reports</h3>
+        <p>${err.message}</p>
+      </div>
+    `;
+    return;
   }
+  filterAndRenderReports();
+}
+
+function formatWindow(type) {
+  const map = {
+    'rolling_7': 'Last 7 days',
+    'rolling_30': 'Last 30 days',
+    'rolling_90': 'Last 90 days'
+  };
+  return map[type] || 'Last 30 days';
+}
 
   function filterAndRenderReports() {
     filteredReports = allReports;
