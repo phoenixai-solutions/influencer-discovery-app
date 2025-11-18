@@ -42,6 +42,25 @@
       font-size: 15px;
     }
 
+    .info-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .info-banner-title {
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .info-banner-text {
+      font-size: 13px;
+      color: #1e40af;
+      line-height: 1.5;
+    }
+
     .form-container {
       background: white;
       border: 1px solid #e5e7eb;
@@ -102,6 +121,14 @@
       font-size: 13px;
       color: #6b7280;
       margin-top: 6px;
+    }
+    .form-warning {
+      font-size: 13px;
+      color: #d97706;
+      margin-top: 6px;
+      display: flex;
+      align-items: start;
+      gap: 6px;
     }
     .form-grid {
       display: grid;
@@ -220,7 +247,15 @@
 
     <div class="page-header">
       <h1>Create Share of Voice Report</h1>
-      <p>Define the destinations, markets, languages and topics for this media visibility report.</p>
+      <p>Track media visibility for Caribbean destinations across news outlets and blogs.</p>
+    </div>
+
+    <!-- Info banner about data collection -->
+    <div class="info-banner">
+      <div class="info-banner-title">📊 How Share of Voice Works</div>
+      <div class="info-banner-text">
+        Reports track mentions across news sites and blogs. Data is collected automatically every 12 hours and stored for historical analysis. Reports show rolling averages based on accumulated data since the report was created.
+      </div>
     </div>
 
     <div id="alertContainer"></div>
@@ -239,7 +274,7 @@
             id="name"
             name="name"
             class="form-input"
-            placeholder="e.g., Aruba vs competitors – Culinary – Spanish LatAm"
+            placeholder="e.g., Aruba vs competitors — Spanish Media"
             required
           />
         </div>
@@ -250,7 +285,7 @@
             id="description"
             name="description"
             class="form-textarea"
-            placeholder="Short summary of what this report is for and who it’s for."
+            placeholder="Short summary of what this report is for and who it's for."
           ></textarea>
           <div class="form-help">This appears on the report card so your team knows when to use it.</div>
         </div>
@@ -258,12 +293,12 @@
 
       <!-- Scope -->
       <div class="form-section">
-        <h2 class="section-title">Scope & Markets</h2>
+        <h2 class="section-title">Destinations & Language</h2>
 
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">
-              Destinations <span class="required">*</span>
+              Destinations to Track <span class="required">*</span>
             </label>
             <input
               type="text"
@@ -273,7 +308,7 @@
               placeholder="e.g., Aruba, Curaçao, Cancun, Dominican Republic, Jamaica"
               required
             />
-            <div class="form-help">Comma-separated list of destinations to compare in this report.</div>
+            <div class="form-help">Comma-separated list. These destinations will be compared in this report.</div>
           </div>
 
           <div class="form-group">
@@ -288,82 +323,83 @@
               placeholder="e.g., Aruba"
               required
             />
-            <div class="form-help">The destination you care about most in this report (used in KPIs).</div>
+            <div class="form-help">The destination you care about most (used for KPIs and comparisons).</div>
           </div>
         </div>
 
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">
-              Market / Region <span class="required">*</span>
+              Language <span class="required">*</span>
             </label>
-            <select id="market" name="market" class="form-select" required>
-              <option value="latam-es">Spanish LatAm</option>
-              <option value="br">Brazil (Portuguese)</option>
-              <option value="all">Global</option>
-              <option value="na">North America</option>
-              <option value="eu">Europe</option>
+            <select id="language" name="language" class="form-select" required>
+              <option value="es">Spanish</option>
+              <option value="pt">Portuguese</option>
+              <option value="en">English</option>
+              <option value="es,en">Spanish + English</option>
+              <option value="all">All Languages</option>
             </select>
             <div class="form-help">
-              This controls which source countries you include in the report (e.g. Brazil only vs all markets).
+              Language of news sources to monitor (pulls from all countries speaking this language).
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Languages</label>
+            <label class="form-label">Topic Keywords (Optional)</label>
             <input
               type="text"
-              id="languages"
-              name="languages"
+              id="topicKeywords"
+              name="topicKeywords"
               class="form-input"
-              placeholder="e.g., es, pt, en"
+              placeholder="e.g., tourism, culinary, travel, beach"
             />
             <div class="form-help">
-              Comma-separated language codes. Leave blank to use the default set for the chosen market.
+              Comma-separated keywords to narrow results. Leave blank to track all mentions.
             </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Topics</label>
-          <input
-            type="text"
-            id="topics"
-            name="topics"
-            class="form-input"
-            placeholder="e.g., culinary, general_tourism"
-          />
-          <div class="form-help">
-            Comma-separated topic slugs. Leave blank for all topics. Common values: <span class="badge-option">culinary</span><span class="badge-option">general_tourism</span>
           </div>
         </div>
       </div>
 
-      <!-- Time window -->
+      <!-- Data Collection Settings -->
       <div class="form-section">
-        <h2 class="section-title">Time Window</h2>
+        <h2 class="section-title">Report Settings</h2>
 
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              Window Type <span class="required">*</span>
-            </label>
-            <select id="windowType" name="windowType" class="form-select" required>
-              <option value="rolling_30">Rolling 30 days</option>
-              <option value="rolling_90" selected>Rolling 90 days</option>
-              <option value="last_month">Last calendar month</option>
-              <option value="custom">Custom fixed dates</option>
-            </select>
-            <div class="form-help">Rolling windows update automatically; custom dates are fixed.</div>
+        <div class="form-group">
+          <label class="form-label">
+            Report Type <span class="required">*</span>
+          </label>
+          <select id="reportType" name="reportType" class="form-select" required>
+            <option value="rolling_7">Rolling 7 days (last week)</option>
+            <option value="rolling_30" selected>Rolling 30 days (last month)</option>
+            <option value="rolling_90">Rolling 90 days (last quarter)</option>
+          </select>
+          <div class="form-help">
+            Rolling windows show recent activity. Data accumulates over time as articles are collected.
           </div>
+          <div class="form-warning">
+            ⚠️ Note: Historical data builds from report creation date forward. Older data is not available.
+          </div>
+        </div>
 
-          <div class="form-group" id="customDatesGroup" style="display:none;">
-            <label class="form-label">Custom Start / End</label>
-            <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
-              <input type="date" id="startDate" name="startDate" class="form-input" />
-              <input type="date" id="endDate" name="endDate" class="form-input" />
-            </div>
-            <div class="form-help">Only required if you chose “Custom fixed dates”.</div>
+        <div class="form-group">
+          <label class="form-label">Collection Frequency</label>
+          <select id="collectionFrequency" name="collectionFrequency" class="form-select">
+            <option value="12h" selected>Every 12 hours (recommended)</option>
+            <option value="6h">Every 6 hours (more frequent)</option>
+            <option value="24h">Daily</option>
+          </select>
+          <div class="form-help">
+            How often to check for new articles. More frequent = more complete coverage.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <input type="checkbox" id="excludeIrrelevant" name="excludeIrrelevant" checked style="width: auto; margin-right: 8px;">
+            Exclude likely irrelevant results
+          </label>
+          <div class="form-help">
+            Filters out common false positives (e.g., "agua de jamaica" drink, "Aruba" networking equipment).
           </div>
         </div>
       </div>
@@ -394,12 +430,6 @@
     const submitBtn = document.getElementById('submitBtn');
     const submitText = document.getElementById('submitText');
     const cancelBtn = document.getElementById('cancelBtn');
-    const windowTypeSelect = document.getElementById('windowType');
-    const customDatesGroup = document.getElementById('customDatesGroup');
-
-    windowTypeSelect.addEventListener('change', () => {
-      customDatesGroup.style.display = windowTypeSelect.value === 'custom' ? 'block' : 'none';
-    });
 
     cancelBtn.addEventListener('click', () => {
       if (confirm('Cancel creating this report? Unsaved changes will be lost.')) {
@@ -417,26 +447,16 @@
         description: formData.get('description').trim(),
         destinations: formData.get('destinations').trim(),
         primaryDestination: formData.get('primaryDestination').trim(),
-        market: formData.get('market'),
-        languages: formData.get('languages').trim(),
-        topics: formData.get('topics').trim(),
-        windowType: formData.get('windowType'),
-        startDate: formData.get('startDate'),
-        endDate: formData.get('endDate')
+        language: formData.get('language'),
+        topicKeywords: formData.get('topicKeywords').trim(),
+        reportType: formData.get('reportType'),
+        collectionFrequency: formData.get('collectionFrequency'),
+        excludeIrrelevant: formData.get('excludeIrrelevant') === 'on'
       };
 
       if (!payload.name) return showAlert('Report name is required');
       if (!payload.destinations) return showAlert('Please specify at least one destination');
       if (!payload.primaryDestination) return showAlert('Primary destination is required');
-
-      if (payload.windowType === 'custom') {
-        if (!payload.startDate || !payload.endDate) {
-          return showAlert('Please provide both start and end dates for a custom window');
-        }
-        if (new Date(payload.endDate) < new Date(payload.startDate)) {
-          return showAlert('End date must be after start date');
-        }
-      }
 
       setLoading(true);
 
@@ -456,10 +476,10 @@
         }
 
         if (res.ok) {
-          showAlert('Report created successfully. Redirecting…', 'success');
+          showAlert('Report created successfully. Data collection will begin immediately. Redirecting…', 'success');
           setTimeout(() => {
             window.location.href = 'sov-reports.html';
-          }, 1200);
+          }, 2000);
         } else {
           showAlert(result.error || result.message || 'Failed to create report');
         }
