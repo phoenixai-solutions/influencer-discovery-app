@@ -913,70 +913,57 @@ const FALLBACK_DATA = {
 };
 
 async function searchInfluencers() {
-  const resultsTable = document.getElementById('resultsTable');
-  const emptyState = document.getElementById('emptyState');
-  const resultsCount = document.getElementById('resultsCount');
-  const tbody = resultsTable.querySelector('tbody');
-  
-  // Show loading state
-  resultsCount.textContent = 'Searching...';
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #6b7280;"><div class="spinner" style="margin: 0 auto 12px;"></div>Loading results...</td></tr>';
-  resultsTable.style.display = 'table';
-  emptyState.style.display = 'none';
-
-  // Gather form data
-  const searchPayload = {
-    platform: selectedPlatform,
-    keywords: document.getElementById('keywords').value.trim(),
-    location: document.getElementById('location').value.trim(),
-    language: document.getElementById('language').value,
-    gender: document.getElementById('gender').value
+  // 1. Gather filters
+  const filters = {
+    platform: document.getElementById("platform")?.value || "",
+    keywords: document.getElementById("keywords")?.value || "",
+    location: document.getElementById("location")?.value || "",
+    language: document.getElementById("language")?.value || "",
+    gender: document.getElementById("gender")?.value || "",
   };
 
-  console.log('Searching with:', searchPayload);
+  console.log("Searching with:", filters);
+
+  let rows = [];
 
   try {
-    // Try to call the API
-    const response = await fetch(API_CONFIG.searchInfluencers, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(searchPayload)
+    const res = await fetch("YOUR_N8N_WEBHOOK_URL_HERE", {
+      method: "POST",                    // or GET, depending on how you've wired n8n
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(filters),
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: Using fallback data for demo`);
+    const json = await res.json();
+    console.log("API Response:", json);
+
+    // Basic status check
+    if (!res.ok) {
+      console.error("API HTTP error:", res.status, res.statusText);
     }
 
-    const data = await response.json();
-    console.log('API Response:', data);
-
-    // Handle n8n response format (array with data object)
-    let results = [];
-    if (Array.isArray(data) && data[0] && data[0].data && data[0].data.accounts) {
-      results = data[0].data.accounts;
-    } else if (data.accounts) {
-      results = data.accounts;
-    } else if (data.results) {
-      results = data.results;
+    // 🔑 THIS is the important bit
+    if (Array.isArray(json.data)) {
+      rows = json.data;
+    } else if (Array.isArray(json)) {
+      // fallback in case we ever return plain array
+      rows = json;
     }
 
-    if (results && results.length > 0) {
-      displayResults(results);
-      resultsCount.textContent = `Found ${results.length} creator${results.length !== 1 ? 's' : ''}`;
-    } else {
-      throw new Error('No results from API');
-    }
-
-  } catch (error) {
-    console.warn('API Error - Using fallback data:', error.message);
-    
-    // Use fallback data
-    displayResults(FALLBACK_DATA.accounts);
-    // resultsCount.innerHTML = `<span style="color: #f59e0b;">⚠️ Demo Mode:</span> Showing ${FALLBACK_DATA.accounts.length} sample creators (API temporarily unavailable)`;
+  } catch (err) {
+    console.error("API Error - Using fallback data: fetch/JSON error", err);
   }
+
+  // 2. Decide whether to fallback
+  if (!rows || !rows.length) {
+    console.error("API Error - Using fallback data: No results from API");
+    rows = MOCK_INFLUENCERS;  // whatever your fallback const is
+  }
+  console.log("Normalised rows length:", data.length, data);
+
+  // 3. Render results
+  renderInfluencerResults(rows);
 }
+
 
 function displayResults(accounts) {
   const tbody = document.querySelector('#resultsTable tbody');
