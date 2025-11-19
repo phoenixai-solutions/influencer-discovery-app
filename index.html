@@ -785,6 +785,9 @@ const API_CONFIG = {
   // searchInfluencers: 'https://phoenixaisolutions.app.n8n.cloud/webhook/influencer-search'
 };
 
+const text = await res.text();
+console.log("Raw discovery response:", text);
+
 let selectedPlatform = 'instagram'; // Default
 
 // Platform selection handlers
