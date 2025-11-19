@@ -15,69 +15,6 @@
       background: #fafafc;
       color: #1a1a1a;
     }
-    .top-bar {
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: #ef4444;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-    }
-    .logo-text {
-      font-size: 18px;
-      font-weight: 600;
-    }
-    .user-badge {
-      width: 40px;
-      height: 40px;
-      background: #0066ff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 14px;
-    }
-    .nav-tabs {
-      background: white;
-      padding: 0 24px;
-      display: flex;
-      gap: 32px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    .nav-tab {
-      padding: 12px 0;
-      color: #6b7280;
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 2px solid transparent;
-    }
-    .nav-tab.active {
-      color: #0066ff;
-      border-bottom-color: #0066ff;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 32px 24px;
-    }
     .page-header {
       margin-bottom: 24px;
     }
@@ -87,171 +24,290 @@
       margin-bottom: 6px;
     }
     .page-subtitle {
+      font-size: 14px;
       color: #6b7280;
-      font-size: 15px;
     }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 32px;
+    }
+
+    /* Filters */
     .filter-section {
       background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 24px;
+      border-radius: 16px;
+      padding: 20px 20px 16px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+      margin-bottom: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
     }
     .filter-row {
       display: grid;
-      grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
+      grid-template-columns: 2fr 2fr 1.5fr 1.5fr;
       gap: 16px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+    }
+    .filter-row-compact {
+      display: grid;
+      grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .filter-group {
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px dashed #e5e7eb;
+    }
+    .filter-group-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .filter-group-title span.icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 11px;
+    }
+    .filter-group-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .filter-group-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
     }
     .form-group {
-      display: flex;
-      flex-direction: column;
+      margin-bottom: 8px;
     }
     .form-label {
+      display: block;
       font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 6px;
       font-weight: 500;
+      margin-bottom: 4px;
+      color: #374151;
     }
-    .form-input, .form-select {
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 8px 10px;
       border-radius: 8px;
-      font-size: 14px;
-      font-family: inherit;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      transition: all 0.15s ease;
+      background: #f9fafb;
     }
-    .form-input:focus, .form-select:focus {
+    .form-input:focus,
+    .form-select:focus {
       outline: none;
-      border-color: #0066ff;
-      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+      background: white;
     }
-    .advanced-toggle {
-      padding: 8px 0;
-      color: #0066ff;
-      background: none;
-      border: none;
-      font-weight: 500;
-      font-size: 14px;
+    .filter-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 12px;
+      color: #4b5563;
       cursor: pointer;
+    }
+    .filter-chip span.icon {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .filter-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+    .filter-meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .advanced-toggle {
+      margin-top: 6px;
+      margin-bottom: 4px;
+      background: transparent;
+      border: none;
+      color: #2563eb;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+    .advanced-toggle span#toggleIcon {
+      font-size: 10px;
+    }
+
+    .advanced-filters {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: all 0.2s ease;
+    }
+
+    .advanced-filters.show {
+      max-height: 400px;
+      opacity: 1;
+      transform: translateY(0);
+      margin-top: 8px;
+    }
+
+    .search-actions {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 9px 16px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
-    .advanced-toggle:hover {
-      color: #0052cc;
-    }
-    .advanced-filters {
-      display: none;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid #e5e7eb;
-    }
-    .advanced-filters.show {
-      display: block;
-    }
-    .filter-group {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    .filter-group-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 600;
-      color: #6b7280;
-      margin-bottom: 12px;
-    }
-    .filter-group-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-    .btn {
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 14px;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-    }
     .btn-primary {
-      background: #0066ff;
+      background: #111827;
       color: white;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.3);
     }
     .btn-primary:hover {
-      background: #0052cc;
+      background: #020617;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 24px rgba(15, 23, 42, 0.35);
     }
-    .btn-secondary {
-      background: white;
-      border: 1px solid #d1d5db;
-      color: #374151;
-    }
-    .btn-secondary:hover {
-      background: #f9fafb;
-    }
-    .search-actions {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
+
+    /* Results Table */
     .results-section {
       background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      overflow: hidden;
+      border-radius: 16px;
+      padding: 16px 20px 18px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.2);
     }
     .results-header {
-      padding: 16px 24px;
-      border-bottom: 1px solid #e5e7eb;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 10px;
     }
     .results-count {
       font-size: 14px;
+      font-weight: 500;
+    }
+    .results-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
       color: #6b7280;
     }
-    table {
+    .results-meta-pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .results-table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 6px;
     }
-    thead {
+    .results-table th,
+    .results-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+    .results-table th {
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      font-weight: 600;
       background: #f9fafb;
     }
-    th {
-      text-align: left;
-      padding: 12px 16px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #6b7280;
-      text-transform: uppercase;
-    }
-    td {
-      padding: 16px;
-      border-top: 1px solid #e5e7eb;
-      font-size: 14px;
-    }
+
     .creator-cell {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
     .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+      display: inline-block;
+    }
+    .avatar img {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      object-fit: cover;
+      display: block;
+    }
+    .creator-info {
+      display: flex;
+      flex-direction: column;
     }
     .creator-info .name {
+      font-size: 13px;
       font-weight: 600;
-      color: #111827;
     }
     .creator-info .handle {
-      font-size: 13px;
+      font-size: 12px;
       color: #6b7280;
     }
     .platform-badge {
@@ -270,12 +326,14 @@
       border-radius: 12px;
       font-size: 11px;
       color: #6b7280;
-      margin-right: 4px;
-      margin-bottom: 4px;
     }
+
     .btn-link {
-      color: #0066ff;
-      text-decoration: none;
+      border: none;
+      background: transparent;
+      color: #2563eb;
+      font-size: 13px;
+      cursor: pointer;
       font-weight: 500;
     }
     .btn-link:hover {
@@ -291,172 +349,59 @@
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
     }
     .btn-save:hover {
       background: #dbeafe;
+      transform: translateY(-0.5px);
     }
+    .btn-save svg {
+      width: 16px;
+      height: 16px;
+    }
+
     .empty-state {
-      padding: 64px 24px;
       text-align: center;
+      padding: 36px 0 24px;
       color: #6b7280;
+      font-size: 14px;
     }
     .empty-state svg {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 16px;
-      color: #d1d5db;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+      color: #9ca3af;
     }
-    .nav-tabs {
-  background: white;
-  padding: 0 24px;
-  display: flex;
-  gap: 32px;
-  border-bottom: 1px solid #e5e7eb;
-}
-.nav-tab {
-  padding: 12px 0;
-  color: #6b7280;
-  text-decoration: none;
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
-.nav-tab.active {
-  color: #0066ff;
-  border-bottom-color: #0066ff;
-}
-.nav-tab:hover {
-  color: #111827;
-}
 
-    @media (max-width: 1024px) {
-      .filter-row {
+    @media (max-width: 900px) {
+      .filter-row,
+      .filter-row-compact {
+        grid-template-columns: 1fr;
+      }
+      .filter-group-grid,
+      .filter-group-grid-3 {
         grid-template-columns: 1fr 1fr;
       }
-      .filter-group-grid {
-        grid-template-columns: 1fr 1fr;
+      .results-section {
+        padding: 12px 12px 14px;
+      }
+      .results-table th,
+      .results-table td {
+        padding: 6px 6px;
+        font-size: 12px;
+      }
+      .avatar {
+        width: 28px;
+        height: 28px;
+      }
+      .avatar img {
+        width: 28px;
+        height: 28px;
       }
     }
-    /* Platform Selection */
-.platform-selection {
-  margin-bottom: 24px;
-}
-
-.platform-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 12px;
-}
-
-.platform-buttons {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.platform-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  color: #6b7280;
-  transition: all 0.2s;
-}
-
-.platform-btn:hover {
-  border-color: #d1d5db;
-  background: #f9fafb;
-}
-
-.platform-btn.active {
-  border-color: #0066ff;
-  background: #eff6ff;
-  color: #0066ff;
-}
-
-.platform-icon {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e5e7eb;
-  border-top-color: #0066ff;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 16px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Results Table Buttons */
-.btn-view-profile {
-  padding: 6px 12px;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  color: #374151;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-view-profile:hover {
-  background: #e5e7eb;
-  border-color: #9ca3af;
-}
-
-.btn-save {
-  padding: 6px;
-  background: white;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  color: #6b7280;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-}
-
-.btn-save:hover {
-  background: #eff6ff;
-  border-color: #0066ff;
-  color: #0066ff;
-}
-
-.btn-save svg {
-  width: 16px;
-  height: 16px;
-}
-
-.btn-save.saved {
-  background: #eff6ff;
-  border-color: #0066ff;
-  color: #0066ff;
-}
-
-.btn-save.saved svg {
-  fill: #0066ff;
-}
   </style>
 </head>
 <body>
@@ -473,41 +418,8 @@
       <p class="page-subtitle">Discover the perfect influencers for your campaign</p>
     </div>
 
-<!-- Filter Section -->
-<div class="filter-section">
-  
-  <!-- Platform Selection -->
-  <div class="platform-selection">
-    <label class="platform-label">Select Platform</label>
-    <div class="platform-buttons">
-      <button type="button" class="platform-btn active" data-platform="instagram" id="btn-instagram">
-        <span class="platform-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
-          </svg>
-        </span>
-        <span>Instagram</span>
-      </button>
-      
-      <button type="button" class="platform-btn" data-platform="tiktok" id="btn-tiktok">
-        <span class="platform-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/>
-          </svg>
-        </span>
-        <span>TikTok</span>
-      </button>
-      
-      <button type="button" class="platform-btn" data-platform="youtube" id="btn-youtube">
-        <span class="platform-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/>
-          </svg>
-        </span>
-        <span>YouTube</span>
-      </button>
-    </div>
-  </div>
+    <!-- Filter Section -->
+    <div class="filter-section">
       
       <!-- Basic Filters -->
       <div class="filter-row">
@@ -564,7 +476,10 @@
         
         <!-- Audience Metrics -->
         <div class="filter-group">
-          <div class="filter-group-title">Audience Metrics</div>
+          <div class="filter-group-title">
+            <span class="icon">A</span>
+            Audience metrics
+          </div>
           <div class="filter-group-grid">
             <div class="form-group">
               <label class="form-label">Followers (min)</label>
@@ -579,57 +494,75 @@
               <input type="number" class="form-input" placeholder="Min" step="0.1" />
             </div>
             <div class="form-group">
-              <label class="form-label">Engagement % (max)</label>
-              <input type="number" class="form-input" placeholder="Max" step="0.1" />
+              <label class="form-label">Avg. views (min)</label>
+              <input type="number" class="form-input" placeholder="Min" />
             </div>
+          </div>
+          <div class="filter-meta">
+            <span>These filters will be applied based on recent content performance.</span>
           </div>
         </div>
 
-        <!-- Activity & Recency -->
+        <!-- Brand Fit -->
         <div class="filter-group">
-          <div class="filter-group-title">Activity & Recency</div>
-          <div class="filter-group-grid">
+          <div class="filter-group-title">
+            <span class="icon">B</span>
+            Brand fit
+          </div>
+          <div class="filter-row-compact">
             <div class="form-group">
-              <label class="form-label">Last Post</label>
+              <label class="form-label">Content Style</label>
+              <input type="text" class="form-input" placeholder="e.g., family-friendly, luxury, street" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Content Format</label>
+              <input type="text" class="form-input" placeholder="e.g., reels, carousels, stories" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Past brand alignments</label>
+              <input type="text" class="form-input" placeholder="e.g., Marriott, Hyatt" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Content frequency</label>
+              <input type="text" class="form-input" placeholder="e.g., 3+ posts/week" />
+            </div>
+          </div>
+          <div class="filter-meta">
+            <span>Use these to quickly capture brand fit signals. We’ll expand this over time.</span>
+          </div>
+        </div>
+
+        <!-- Data Quality -->
+        <div class="filter-group">
+          <div class="filter-group-title">
+            <span class="icon">Q</span>
+            Data quality
+          </div>
+          <div class="filter-row-compact">
+            <div class="form-group">
+              <label class="form-label">Minimum recent posts</label>
               <select class="form-select">
-                <option value="7d">Last 7 days</option>
-                <option value="14d">Last 14 days</option>
-                <option value="30d" selected>Last 30 days</option>
-                <option value="60d">Last 60 days</option>
-                <option value="90d">Last 90 days</option>
+                <option value="">Any</option>
+                <option value="10">Last 10 posts</option>
+                <option value="25">Last 25 posts</option>
+                <option value="50">Last 50 posts</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Posting Frequency</label>
-              <input type="number" class="form-input" placeholder="posts/mo" />
+              <label class="form-label">Post recency</label>
+              <select class="form-select">
+                <option value="">Any</option>
+                <option value="30">Last 30 days</option>
+                <option value="90">Last 90 days</option>
+              </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Growth %</label>
-              <input type="number" class="form-input" placeholder="%" />
+              <label class="form-label">Has contact details</label>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #374151;">
+                <input type="checkbox" style="width: 16px; height: 16px;" />
+                Has Email
+              </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Months</label>
-              <input type="number" class="form-input" placeholder="3" />
-            </div>
-          </div>
-        </div>
-
-        <!-- Creator Quality -->
-        <div class="filter-group">
-          <div class="filter-group-title">Creator Quality</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 4px 0;">
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #374151;">
-              <input type="checkbox" style="width: 16px; height: 16px;" />
-              Verified
-            </label>
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #374151;">
-              <input type="checkbox" checked style="width: 16px; height: 16px;" />
-              Exclude Private
-            </label>
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #374151;">
-              <input type="checkbox" style="width: 16px; height: 16px;" />
-              Has Email
-            </label>
           </div>
         </div>
 
@@ -647,11 +580,15 @@
     <!-- Results Section -->
     <div class="results-section">
       <div class="results-header">
-        <div class="results-count" id="resultsCount">Ready to search</div>
+        <div class="results-count" 
+             id="resultsCount">No search run yet</div>
+        <div class="results-meta">
+          <span>Results will appear here after you run a search</span>
+        </div>
       </div>
 
       <!-- Results Table -->
-      <table id="resultsTable" style="display: none;">
+      <table class="results-table" id="resultsTable" style="display: none;">
         <thead>
           <tr>
             <th>Creator</th>
@@ -663,7 +600,7 @@
           </tr>
         </thead>
         <tbody id="resultsBody">
-          <!-- Sample Data -->
+          <!-- Sample Data (will be replaced after search) -->
           <tr>
             <td>
               <div class="creator-cell">
@@ -688,62 +625,57 @@
             </td>
             <td style="text-align: right;">
               <button class="btn-save">Save</button>
-              <a href="#" class="btn-link" style="margin-left: 12px;">View Details</a>
             </td>
           </tr>
-
           <tr>
             <td>
               <div class="creator-cell">
-                <div class="avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                <div class="avatar"></div>
                 <div class="creator-info">
-                  <div class="name">Kai Thompson</div>
-                  <div class="handle">@kaieats</div>
+                  <div class="name">Marco Silva</div>
+                  <div class="handle">@marco.cooks</div>
                 </div>
               </div>
             </td>
             <td>
               <span class="platform-badge">TikTok</span>
             </td>
-            <td style="text-align: center;">120.3K</td>
-            <td style="text-align: center;">2.4%</td>
+            <td style="text-align: center;">120K</td>
+            <td style="text-align: center;">4.1%</td>
             <td>
               <div style="max-width: 200px;">
                 <span class="topic-tag">Food</span>
-                <span class="topic-tag">Cooking</span>
+                <span class="topic-tag">Street Food</span>
+                <span class="topic-tag">Latin America</span>
               </div>
             </td>
             <td style="text-align: right;">
               <button class="btn-save">Save</button>
-              <a href="#" class="btn-link" style="margin-left: 12px;">View Details</a>
             </td>
           </tr>
-
           <tr>
             <td>
               <div class="creator-cell">
-                <div class="avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                <div class="avatar"></div>
                 <div class="creator-info">
-                  <div class="name">Maya Singh</div>
-                  <div class="handle">@maya.explore</div>
+                  <div class="name">Lucia Fernandez</div>
+                  <div class="handle">@lucia.eats</div>
                 </div>
               </div>
             </td>
             <td>
-              <span class="platform-badge">YouTube</span>
+              <span class="platform-badge">Instagram</span>
             </td>
-            <td style="text-align: center;">56.3K</td>
-            <td style="text-align: center;">4.1%</td>
+            <td style="text-align: center;">56.7K</td>
+            <td style="text-align: center;">2.8%</td>
             <td>
               <div style="max-width: 200px;">
-                <span class="topic-tag">Travel</span>
-                <span class="topic-tag">Adventure</span>
-                <span class="topic-tag">Vlog</span>
+                <span class="topic-tag">Gastronomy</span>
+                <span class="topic-tag">Restaurants</span>
               </div>
             </td>
             <td style="text-align: right;">
               <button class="btn-save">Save</button>
-              <a href="#" class="btn-link" style="margin-left: 12px;">View Details</a>
             </td>
           </tr>
         </tbody>
@@ -762,306 +694,198 @@
 
   </div>
 
-  <script>
-    function toggleAdvanced() {
-      const filters = document.getElementById('advancedFilters');
-      const icon = document.getElementById('toggleIcon');
-      const text = document.getElementById('toggleText');
-      
-      if (filters.classList.contains('show')) {
-        filters.classList.remove('show');
-        icon.textContent = '▼';
-        text.textContent = 'Advanced filters';
-      } else {
-        filters.classList.add('show');
-        icon.textContent = '▲';
-        text.textContent = 'Hide advanced filters';
-      }
+<script>
+  // --- Advanced filters toggle ---
+  function toggleAdvanced() {
+    const filters = document.getElementById('advancedFilters');
+    const icon = document.getElementById('toggleIcon');
+    const text = document.getElementById('toggleText');
+    
+    if (filters.classList.contains('show')) {
+      filters.classList.remove('show');
+      icon.textContent = '▼';
+      text.textContent = 'Advanced filters';
+    } else {
+      filters.classList.add('show');
+      icon.textContent = '▲';
+      text.textContent = 'Hide advanced filters';
     }
+  }
 
-// API Configuration
-const API_CONFIG = {
-      searchInfluencers: 'https://n8n.srv1138099.hstgr.cloud/webhook/influencer-search'
-      // searchInfluencers: 'https://phoenixaisolutions.app.n8n.cloud/webhook/influencer-search'
-};
-const text = await res.text();
-console.log("Raw discovery response:", text);
-
-let selectedPlatform = 'instagram'; // Default
-
-// Platform selection handlers
-document.addEventListener('DOMContentLoaded', () => {
-  const platformBtns = document.querySelectorAll('.platform-btn');
-  platformBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Remove active from all
-      platformBtns.forEach(b => b.classList.remove('active'));
-      // Add active to clicked
-      btn.classList.add('active');
-      // Update selected platform
-      selectedPlatform = btn.dataset.platform;
-      console.log('Selected platform:', selectedPlatform);
-    });
-  });
-});
-
-// Fallback data from actual API response
-const FALLBACK_DATA = {
-  "total": 91961315,
-  "limit": 10,
-  "accounts": [
-    {
-      "user_id": "uc_71257780",
-      "profile": {
-        "username": "meshamoet",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/meshamoet--33683482.jpg",
-        "followers": 60401,
-        "engagement_percent": 5.71
-      }
-    },
-    {
-      "user_id": "uc_56239197",
-      "profile": {
-        "full_name": "Mohanima - Art By Rakhi Jha",
-        "username": "mohanima_art",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/mohanima_art--31612467902.jpg",
-        "followers": 245254,
-        "engagement_percent": 0.035
-      }
-    },
-    {
-      "user_id": "uc_10162407",
-      "profile": {
-        "full_name": "Honni David",
-        "username": "honnid",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/honnid--1683910549.jpg",
-        "followers": 21326,
-        "engagement_percent": 5.223
-      }
-    },
-    {
-      "user_id": "gyqdlY4BehC-7YH2jwy9",
-      "profile": {
-        "full_name": "Valeriia Hearn | Energy & Mindset Mentor 🇺🇦🇺🇸",
-        "username": "valeriia_hearn",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/valeriia_hearn--27364891.jpg",
-        "followers": 11090,
-        "engagement_percent": 2.376
-      }
-    },
-    {
-      "user_id": "uc_48229034",
-      "profile": {
-        "full_name": "Sydney Nagengast",
-        "username": "insydious_beauty",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/insydious_beauty--43808559992.jpg",
-        "followers": 27351,
-        "engagement_percent": 0.521
-      }
-    },
-    {
-      "user_id": "uc_3063815",
-      "profile": {
-        "full_name": "Z (HELL) 1 WILLO",
-        "username": "zl1.willo",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/zl1.willo--205218718.jpg",
-        "followers": 43998,
-        "engagement_percent": 0.07
-      }
-    },
-    {
-      "user_id": "uc_111686932",
-      "profile": {
-        "full_name": "Olivia Petter",
-        "username": "oliviapetter",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/oliviapetter--199876990.jpg",
-        "followers": 12724,
-        "engagement_percent": 1.006
-      }
-    },
-    {
-      "user_id": "uc_52249851",
-      "profile": {
-        "full_name": "Tara Nicole Warren",
-        "username": "bash_academy_",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/bash_academy_--5687050655.jpg",
-        "followers": 10162,
-        "engagement_percent": 1.028
-      }
-    },
-    {
-      "user_id": "uc_68140900",
-      "profile": {
-        "full_name": "Thomas DePetrillo",
-        "username": "extreme_costumes",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/extreme_costumes--3250963135.jpg",
-        "followers": 58170,
-        "engagement_percent": 0.343
-      }
-    },
-    {
-      "user_id": "rEOsn4kBehC-7YH2zkgO",
-      "profile": {
-        "full_name": "Gabriel Somi",
-        "username": "gabrielsomi",
-        "picture": "https://d1epkj5tg6hyw4.cloudfront.net/profile-pics/gabrielsomi--192553900.jpg",
-        "followers": 27322,
-        "engagement_percent": 16.499
-      }
-    }
-  ]
-};
-
-async function searchInfluencers() {
-  // 1. Gather filters
-  const filters = {
-    platform: document.getElementById("platform")?.value || "",
-    keywords: document.getElementById("keywords")?.value || "",
-    location: document.getElementById("location")?.value || "",
-    language: document.getElementById("language")?.value || "",
-    gender: document.getElementById("gender")?.value || "",
+  // --- API config (n8n endpoint) ---
+  const API_CONFIG = {
+    searchInfluencers: 'https://n8n.srv1138099.hstgr.cloud/webhook/influencer-search'
   };
 
-  console.log("Searching with:", filters);
+  // Optional: fallback rows if API completely fails
+  const FALLBACK_ROWS = [];
 
-  let rows = [];
+  // --- Render results for Phyllo/n8n rows ---
+  function renderInfluencerResults(rows) {
+    const resultsTable = document.getElementById('resultsTable');
+    const resultsBody  = document.getElementById('resultsBody');
+    const emptyState   = document.getElementById('emptyState');
+    const resultsCount = document.getElementById('resultsCount');
 
-  try {
-    const res = await fetch("YOUR_N8N_WEBHOOK_URL_HERE", {
-      method: "POST",                    // or GET, depending on how you've wired n8n
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(filters),
-    });
+    rows = Array.isArray(rows) ? rows : [];
 
-    const json = await res.json();
-    console.log("API Response:", json);
-
-    // Basic status check
-    if (!res.ok) {
-      console.error("API HTTP error:", res.status, res.statusText);
+    if (!rows.length) {
+      resultsTable.style.display = 'none';
+      emptyState.style.display = 'block';
+      resultsCount.textContent = 'No results found';
+      // Clear any existing rows
+      if (resultsBody) resultsBody.innerHTML = '';
+      return;
     }
 
-    // 🔑 THIS is the important bit
-    if (Array.isArray(json.data)) {
-      rows = json.data;
-    } else if (Array.isArray(json)) {
-      // fallback in case we ever return plain array
-      rows = json;
-    }
+    resultsTable.style.display = 'table';
+    emptyState.style.display = 'none';
+    resultsCount.textContent = `${rows.length} creator${rows.length === 1 ? '' : 's'} found`;
 
-  } catch (err) {
-    console.error("API Error - Using fallback data: fetch/JSON error", err);
-  }
+    resultsBody.innerHTML = '';
 
-  // 2. Decide whether to fallback
-  if (!rows || !rows.length) {
-    console.error("API Error - Using fallback data: No results from API");
-    rows = MOCK_INFLUENCERS;  // whatever your fallback const is
+    rows.forEach(row => {
+      const name      = row.name || row.handle || 'Unknown';
+      const username  = row.handle || 'unknown';
+      const picture   = row.avatarUrl || 'https://via.placeholder.com/48';
+      const followers = (row.followers || row.subscribers || 0).toLocaleString();
+      const engagement = '—'; // Not available yet from Phyllo
+      const platformLabel = row.platform || 'Unknown';
+      const profileUrl = row.profileUrl || '#';
+      const idForSave  = row.phylloProfileId || username;
 
-  // 3. Render results
-  renderInfluencerResults(rows);
-}
-}
-
-function displayResults(accounts) {
-  const tbody = document.querySelector('#resultsTable tbody');
-  tbody.innerHTML = '';
-
-  accounts.forEach(account => {
-    const profile = account.profile || {};
-    const row = document.createElement('tr');
-    
-    const followers = (profile.followers || 0).toLocaleString();
-    const engagement = (profile.engagement_percent || 0).toFixed(2);
-    const name = profile.full_name || profile.username || 'Unknown';
-    const username = profile.username || 'unknown';
-    const picture = profile.picture || 'https://via.placeholder.com/48';
-    const userId = account.user_id || username;
-    
-    row.innerHTML = `
-      <td>
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <img src="${picture}" 
-               alt="${username}" 
-               class="avatar" 
-               onerror="this.src='https://via.placeholder.com/48'" />
-          <div>
-            <div class="influencer-name">${name}</div>
-            <div class="influencer-handle">@${username}</div>
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div class="creator-cell">
+            <img src="${picture}"
+                 alt="${username}"
+                 class="avatar"
+                 onerror="this.src='https://via.placeholder.com/48'" />
+            <div class="creator-info">
+              <div class="name">${name}</div>
+              <div class="handle">@${username}</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <span class="platform-badge" style="color: #0066ff; font-weight: 500;">
-          ${selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)}
-        </span>
-      </td>
-      <td style="font-weight: 500; color: #111827;">${followers}</td>
-      <td style="font-weight: 500; color: #111827;">${engagement}%</td>
-      <td style="color: #6b7280;">—</td>
-      <td>
-        <div style="display: flex; gap: 8px; justify-content: flex-end;">
-          <button class="btn-view-profile" onclick="viewProfile('${userId}')">
-            View
-          </button>
-          <button class="btn-save" onclick="saveInfluencer('${userId}', '${username}', this)" title="Save to My Influencers">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-            </svg>
-          </button>
-        </div>
-      </td>
-    `;
-    
-    tbody.appendChild(row);
-  });
-}
+        </td>
+        <td>
+          <span class="platform-badge">
+            ${platformLabel}
+          </span>
+        </td>
+        <td style="text-align: center;">${followers}</td>
+        <td style="text-align: center;">${engagement}</td>
+        <td>
+          <div style="max-width: 200px;">
+            <!-- topic tags could go here when available -->
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <div style="display: flex; gap: 8px; justify-content: flex-end;">
+            <button class="btn-view-profile" onclick="viewProfile('${profileUrl}')">
+              View
+            </button>
+            <button class="btn-save" onclick="saveInfluencer('${idForSave}', '${username}', this)" title="Save to My Influencers">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+              </svg>
+            </button>
+          </div>
+        </td>
+      `;
 
-function viewProfile(userId) {
-  window.location.href = `influencer-details.html?id=${encodeURIComponent(userId)}`;
-}
-
-function saveInfluencer(userId, username, buttonElement) {
-  console.log('Saving influencer:', userId, username);
-  
-  // Add visual feedback
-  if (buttonElement) {
-    buttonElement.classList.add('saved');
-    
-    // Fill the bookmark icon
-    const svg = buttonElement.querySelector('svg');
-    if (svg) {
-      svg.setAttribute('fill', 'currentColor');
-      svg.setAttribute('stroke', 'none');
-    }
-    
-    // Show tooltip
-    const originalTitle = buttonElement.title;
-    buttonElement.title = 'Saved!';
-    
-    // Revert after 2 seconds
-    setTimeout(() => {
-      buttonElement.classList.remove('saved');
-      buttonElement.title = originalTitle;
-      if (svg) {
-        svg.setAttribute('fill', 'none');
-        svg.setAttribute('stroke', 'currentColor');
-      }
-    }, 2000);
+      resultsBody.appendChild(tr);
+    });
   }
-  
-  // TODO: Implement actual save to Airtable via n8n
-  console.log('Would save to Airtable:', {
-    user_id: userId,
-    username: username,
-    saved_at: new Date().toISOString()
-  });
-}
-function saveInfluencer(id) {
-  alert(`Save influencer ${id} - This will be implemented next!`);
-  // TODO: Implement save to "My Influencers"
-}
-  </script>
+
+  // --- Global search function used by onclick="searchInfluencers()" ---
+  window.searchInfluencers = async function searchInfluencers() {
+    const filters = {
+      // Platform is hardcoded for now; wire to UI later if needed
+      platform: 'instagram',
+      keywords: document.getElementById('keywords')?.value || '',
+      location: document.getElementById('location')?.value || '',
+      language: document.getElementById('language')?.value || '',
+      gender: document.getElementById('gender')?.value || '',
+    };
+
+    console.log('Searching with:', filters);
+
+    const resultsCount = document.getElementById('resultsCount');
+    const emptyState   = document.getElementById('emptyState');
+    const resultsTable = document.getElementById('resultsTable');
+
+    // Show "searching" state
+    if (resultsCount) resultsCount.textContent = 'Searching creators...';
+    if (emptyState) emptyState.style.display = 'none';
+    if (resultsTable) resultsTable.style.display = 'none';
+
+    let rows = [];
+
+    try {
+      const res = await fetch(API_CONFIG.searchInfluencers, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(filters),
+      });
+
+      const json = await res.json();
+      console.log('API Response:', json);
+
+      if (Array.isArray(json.data)) {
+        rows = json.data;
+      } else if (Array.isArray(json)) {
+        rows = json;
+      }
+    } catch (err) {
+      console.error('API Error - Using fallback data: fetch/JSON error', err);
+    }
+
+    if (!rows || !rows.length) {
+      console.error('API Error - Using fallback data: No results from API');
+      rows = FALLBACK_ROWS;
+    }
+
+    renderInfluencerResults(rows);
+  };
+
+  // --- View + Save handlers (basic stubs for now) ---
+  function viewProfile(url) {
+    if (url && url !== '#') {
+      window.open(url, '_blank');
+    } else {
+      alert('Profile URL not available.');
+    }
+  }
+
+  function saveInfluencer(id, username, buttonElement) {
+    console.log('Saving influencer:', id, username);
+
+    if (buttonElement) {
+      buttonElement.classList.add('saved');
+      const svg = buttonElement.querySelector('svg');
+      if (svg) {
+        svg.setAttribute('fill', 'currentColor');
+        svg.setAttribute('stroke', 'none');
+      }
+      const originalTitle = buttonElement.title;
+      buttonElement.title = 'Saved!';
+
+      setTimeout(() => {
+        buttonElement.classList.remove('saved');
+        buttonElement.title = originalTitle;
+        if (svg) {
+          svg.setAttribute('fill', 'none');
+          svg.setAttribute('stroke', 'currentColor');
+        }
+      }, 2000);
+    }
+
+    // Later: hook this into your n8n "save influencer" workflow
+  }
+</script>
+
   <!-- Load Navigation Script -->
   <script src="nav-component.js"></script>
   <script>
