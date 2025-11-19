@@ -957,13 +957,11 @@ async function searchInfluencers() {
   if (!rows || !rows.length) {
     console.error("API Error - Using fallback data: No results from API");
     rows = MOCK_INFLUENCERS;  // whatever your fallback const is
-  }
-  console.log("Normalised rows length:", data.length, data);
 
   // 3. Render results
   renderInfluencerResults(rows);
 }
-
+}
 
 function displayResults(accounts) {
   const tbody = document.querySelector('#resultsTable tbody');
