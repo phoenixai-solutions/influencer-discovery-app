@@ -529,37 +529,144 @@
           </div>
         </div>
 
-        <!-- Performance Tab -->
-        <div id="performance" class="tab-panel">
-          <h3 style="margin-bottom: 24px;">Campaign Performance</h3>
-          
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Total Reach</div>
-              <div style="font-size: 32px; font-weight: 700;">6.2K</div>
-              <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 12% vs target</div>
-            </div>
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Impressions</div>
-              <div style="font-size: 32px; font-weight: 700;">15K</div>
-              <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 8% vs target</div>
-            </div>
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Engagement</div>
-              <div style="font-size: 32px; font-weight: 700;">2.6K</div>
-              <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 15% vs target</div>
-            </div>
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-              <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">ROI</div>
-              <div style="font-size: 32px; font-weight: 700;">24%</div>
-              <div style="font-size: 12px; color: #10b981; margin-top: 4px;">Above target</div>
-            </div>
-          </div>
+<!-- Performance Tab -->
+<div id="performance" class="tab-panel">
+  <h3 style="margin-bottom: 24px;">Campaign Performance</h3>
+  
+  <!-- Top-level KPIs -->
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+      <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Total Reach</div>
+      <div style="font-size: 32px; font-weight: 700;">6.2K</div>
+      <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 12% vs target</div>
+    </div>
+    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+      <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Impressions</div>
+      <div style="font-size: 32px; font-weight: 700;">15K</div>
+      <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 8% vs target</div>
+    </div>
+    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+      <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">Engagement</div>
+      <div style="font-size: 32px; font-weight: 700;">2.6K</div>
+      <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↑ 15% vs target</div>
+    </div>
+    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+      <div style="font-size: 13px; color: #6b7280; margin-bottom: 6px;">ROI</div>
+      <div style="font-size: 32px; font-weight: 700;">24%</div>
+      <div style="font-size: 12px; color: #10b981; margin-top: 4px;">Above target</div>
+    </div>
+  </div>
 
-          <div style="margin-top: 32px; padding: 48px; background: #f9fafb; border-radius: 8px; text-align: center; color: #6b7280;">
-            📊 Performance charts and detailed analytics will appear here
+  <!-- Stories section for reporting -->
+  <div style="margin-top: 32px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px;">
+      <div>
+        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #111827;">
+          Instagram Stories
+        </h3>
+        <p style="font-size: 13px; color: #6b7280;">
+          Stories that tagged <strong>@arubatourism</strong> or used your campaign hashtags are captured and saved here for this campaign.
+        </p>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <label style="font-size: 12px; color: #374151; font-weight: 500;">Filter by influencer:</label>
+        <select style="padding: 6px 10px; font-size: 12px; border-radius: 6px; border: 1px solid #d1d5db; background: white;">
+          <option>All influencers</option>
+          <option>@jorge_explore</option>
+          <option>@maria_travel_diaries</option>
+          <option>@beachlife_carla</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Stories summary band -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;">
+      <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 14px;">
+        <div style="font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">Total stories</div>
+        <div style="font-size: 24px; font-weight: 700; color: #111827;">42</div>
+        <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">Across all influencers</div>
+      </div>
+      <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 14px;">
+        <div style="font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">Influencers</div>
+        <div style="font-size: 24px; font-weight: 700; color: #111827;">8</div>
+        <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">Posted at least one Story</div>
+      </div>
+      <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 14px;">
+        <div style="font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">Tagged @arubatourism</div>
+        <div style="font-size: 24px; font-weight: 700; color: #111827;">34</div>
+        <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">Using direct brand mentions</div>
+      </div>
+      <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 14px;">
+        <div style="font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">Hashtag stories</div>
+        <div style="font-size: 24px; font-weight: 700; color: #111827;">19</div>
+        <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">Using campaign hashtags</div>
+      </div>
+    </div>
+
+    <!-- Stories grid -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+      <!-- Story card 1 -->
+      <div style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 220px; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280;">
+          Story preview
+        </div>
+        <div style="padding: 12px 14px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="width: 26px; height: 26px; border-radius: 999px; background: #e0e7ff;"></div>
+            <div style="font-size: 13px; font-weight: 600; color: #111827;">@jorge_explore</div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+            <span style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #f3f4ff; border: 1px solid #e5e7ff; color: #4f46e5;">@arubatourism</span>
+            <span style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #f3f4ff; border: 1px solid #e5e7ff; color: #4f46e5;">#BeachTennisAruba</span>
+          </div>
+          <div style="display: flex; gap: 12px; font-size: 11px; color: #6b7280;">
+            <div><strong style="color:#111827;">1,284</strong> views</div>
+            <div><strong style="color:#111827;">32</strong> taps forward</div>
           </div>
         </div>
+      </div>
+
+      <!-- Story card 2 -->
+      <div style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 220px; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280;">
+          Story preview
+        </div>
+        <div style="padding: 12px 14px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="width: 26px; height: 26px; border-radius: 999px; background: #e0e7ff;"></div>
+            <div style="font-size: 13px; font-weight: 600; color: #111827;">@maria_travel_diaries</div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+            <span style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #f3f4ff; border: 1px solid #e5e7ff; color: #4f46e5;">@arubatourism</span>
+          </div>
+          <div style="display: flex; gap: 12px; font-size: 11px; color: #6b7280;">
+            <div><strong style="color:#111827;">962</strong> views</div>
+            <div><strong style="color:#111827;">14</strong> replies</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story card 3 -->
+      <div style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 220px; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280;">
+          Story preview
+        </div>
+        <div style="padding: 12px 14px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="width: 26px; height: 26px; border-radius: 999px; background: #e0e7ff;"></div>
+            <div style="font-size: 13px; font-weight: 600; color: #111827;">@beachlife_carla</div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+            <span style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #f3f4ff; border: 1px solid #e5e7ff; color: #4f46e5;">#OneHappyIsland</span>
+          </div>
+          <div style="display: flex; gap: 12px; font-size: 11px; color: #6b7280;">
+            <div><strong style="color:#111827;">1,103</strong> views</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         <!-- Budget Tab -->
         <div id="budget" class="tab-panel">
