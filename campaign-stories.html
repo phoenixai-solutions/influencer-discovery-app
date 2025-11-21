@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campaign Stories – Phoenix Influence</title>
+
+  <!-- Navigation styles -->
+  <link rel="stylesheet" href="nav-styles.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafc;
+      color: #111827;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 96px auto 40px;
+      padding: 0 24px;
+    }
+
+    /* Headers */
+    .page-kicker {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6b7280;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      max-width: 580px;
+    }
+
+    /* Summary Section */
+    .summary-cards {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .summary-card {
+      background: white;
+      padding: 16px 20px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .summary-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #6b7280;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    .summary-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .summary-note {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Filters */
+    .filter-bar {
+      margin-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .filter-bar label {
+      font-size: 13px;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .filter-select {
+      padding: 8px 10px;
+      font-size: 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: white;
+    }
+
+    /* Stories Grid */
+    .stories-grid {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .story-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .story-media {
+      width: 100%;
+      height: 260px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .story-body {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .story-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .story-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #e0e7ff;
+    }
+
+    .story-username {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .story-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag-pill {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #f3f4ff;
+      color: #4f46e5;
+      border: 1px solid #e5e7ff;
+    }
+
+    .story-metrics {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .metric {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .metric strong {
+      color: #111827;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .container { margin-top: 88px; }
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="app-navigation"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div>
+      <div class="page-kicker">Campaign Analytics</div>
+      <h1 class="page-title">Stories for: Beach Tennis Aruba</h1>
+      <p class="page-subtitle">
+        All Stories tagged with <strong>@arubatourism</strong> or your campaign hashtags are automatically captured and saved here — even after 24 hours.
+      </p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="summary-title">Total Stories</div>
+        <div class="summary-value">42</div>
+        <div class="summary-note">Captured over active campaign days</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Influencers</div>
+        <div class="summary-value">8</div>
+        <div class="summary-note">Creators who posted Stories</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Tagged @arubatourism</div>
+        <div class="summary-value">34</div>
+        <div class="summary-note">Direct brand mentions</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-title">Hashtag Stories</div>
+        <div class="summary-value">19</div>
+        <div class="summary-note">Using campaign hashtags</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <div>
+        <label>Filter by influencer: </label>
+        <select class="filter-select">
+          <option>All influencers</option>
+          <option>@jorge_explore</option>
+          <option>@maria_travel_diaries</option>
+          <option>@beachlife_carla</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Sort: </label>
+        <select class="filter-select">
+          <option>Most recent</option>
+          <option>Oldest</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Story Grid -->
+    <div class="stories-grid">
+
+      <!-- Story 1 -->
+      <div class="story-card">
+        <div class="story-media">Story Preview</div>
+        <div class="story-body">
+          <div class="story-user">
+            <div class="story-avatar"></div>
+            <div class="story-username">@jorge_explore</div>
+          </div>
+          <div class="story-tags">
+            <span class="tag-pill">@arubatourism</span>
+            <span class="tag-pill">#BeachTennisAruba</span>
+          </div>
+          <div class="story-metrics">
+            <div class="metric"><strong>1,284</strong> views</div>
+            <div class="metric"><strong>32</strong> taps forward</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story 2 -->
+      <div class="story-card">
+        <div class="story-media">Story Preview</div>
+        <div class="story-body">
+          <div class="story-user">
+            <div class="story-avatar"></div>
+            <div class="story-username">@maria_travel_diaries</div>
+          </div>
+          <div class="story-tags">
+            <span class="tag-pill">@arubatourism</span>
+          </div>
+          <div class="story-metrics">
+            <div class="metric"><strong>962</strong> views</div>
+            <div class="metric"><strong>14</strong> replies</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story 3 -->
+      <div class="story-card">
+        <div class="story-media">Story Preview</div>
+        <div class="story-body">
+          <div class="story-user">
+            <div class="story-avatar"></div>
+            <div class="story-username">@beachlife_carla</div>
+          </div>
+          <div class="story-tags">
+            <span class="tag-pill">#OneHappyIsland</span>
+          </div>
+          <div class="story-metrics">
+            <div class="metric"><strong>1,103</strong> views</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story 4 -->
+      <div class="story-card">
+        <div class="story-media">Story Preview</div>
+        <div class="story-body">
+          <div class="story-user">
+            <div class="story-avatar"></div>
+            <div class="story-username">@travelwithsasha</div>
+          </div>
+          <div class="story-tags">
+            <span class="tag-pill">@arubatourism</span>
+            <span class="tag-pill">#BeachTennisAruba</span>
+          </div>
+          <div class="story-metrics">
+            <div class="metric"><strong>1,842</strong> views</div>
+            <div class="metric"><strong>21</strong> taps back</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story 5 -->
+      <div class="story-card">
+        <div class="story-media">Story Preview</div>
+        <div class="story-body">
+          <div class="story-user">
+            <div class="story-avatar"></div>
+            <div class="story-username">@jorge_explore</div>
+          </div>
+          <div class="story-tags">
+            <span class="tag-pill">@arubatourism</span>
+          </div>
+          <div class="story-metrics">
+            <div class="metric"><strong>1,536</strong> views</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="nav-component.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      PhoenixNav.render("campaigns", "campaign-details");
+    });
+  </script>
+
+</body>
+</html>
