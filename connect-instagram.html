@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connect Instagram – Phoenix Influence</title>
 
-  <!-- Navigation styles -->
+  <!-- Shared nav styles -->
   <link rel="stylesheet" href="nav-styles.css">
 
   <style>
@@ -17,496 +17,443 @@
     }
 
     .container {
-      max-width: 1120px;
+      max-width: 1150px;
       margin: 96px auto 40px;
-      padding: 0 24px 40px;
+      padding: 0 24px;
     }
 
-    .page-header {
-      margin-bottom: 24px;
-    }
     .page-kicker {
       font-size: 12px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #6b7280;
-      margin-bottom: 4px;
       font-weight: 600;
+      margin-bottom: 4px;
     }
+
     .page-title {
       font-size: 28px;
       font-weight: 700;
-      color: #111827;
       margin-bottom: 6px;
     }
+
     .page-subtitle {
       font-size: 14px;
       color: #6b7280;
-      max-width: 640px;
+      max-width: 620px;
     }
 
-    .intro-banner {
-      background: white;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      padding: 16px 20px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .intro-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: #eff6ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-    }
-    .intro-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .intro-text {
-      font-size: 13px;
-      color: #4b5563;
-    }
-
-    .layout {
+    /* Progress bar */
+    .progress {
       display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      gap: 24px;
-      align-items: flex-start;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+      margin-bottom: 20px;
     }
 
-    /* Steps column */
-    .steps-section-header {
+    .progress-step {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
-    }
-    .steps-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #111827;
-    }
-    .steps-subtitle {
+      gap: 10px;
       font-size: 12px;
       color: #6b7280;
     }
 
-    .step-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    .progress-step.active {
+      color: #111827;
+      font-weight: 600;
     }
-    .step-card {
-      background: white;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-      padding: 14px 16px 12px;
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      column-gap: 12px;
-      row-gap: 4px;
-      position: relative;
-    }
-    .step-card.highlight {
-      border-color: #2563eb;
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08);
-    }
-    .step-number {
-      width: 26px;
-      height: 26px;
+
+    .progress-circle {
+      width: 22px;
+      height: 22px;
       border-radius: 999px;
+      border: 2px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      background: #fff;
+    }
+
+    .progress-step.active .progress-circle {
+      border-color: #2563eb;
       background: #eff6ff;
       color: #1d4ed8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 600;
+    }
+
+    .progress-label-main {
+      font-size: 12px;
+    }
+
+    .progress-label-sub {
+      display: block;
+      font-size: 11px;
+      color: #9ca3af;
       margin-top: 2px;
     }
-    .step-body {
-      min-width: 0;
-    }
-    .step-heading-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 2px;
-    }
-    .step-heading {
-      font-size: 14px;
-      font-weight: 600;
-      color: #111827;
-    }
-    .step-pill {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #f3f4ff;
-      color: #4f46e5;
-      border: 1px solid #e5e7ff;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 600;
-    }
-    .step-text {
-      font-size: 12px;
-      color: #4b5563;
-      margin-bottom: 4px;
-    }
-    .step-bullets {
-      font-size: 11px;
-      color: #6b7280;
-      list-style: disc;
-      padding-left: 16px;
-      margin-top: 4px;
-    }
 
-    .step-footer-note {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 6px;
-    }
-
-    /* Right-hand column (visuals / behind the scenes) */
-    .side-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .panel-block {
-      background: white;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-      padding: 14px 16px;
-    }
-    .panel-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #111827;
-      margin-bottom: 6px;
-    }
-    .panel-text {
-      font-size: 12px;
-      color: #4b5563;
-      margin-bottom: 8px;
-    }
-
-    .mini-list {
-      font-size: 11px;
-      color: #6b7280;
-      list-style: disc;
-      padding-left: 16px;
-      margin-top: 4px;
-    }
-
-    .mock-screen {
+    /* Visual journey */
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
       margin-top: 8px;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      padding: 10px 12px;
-      font-size: 11px;
-      color: #374151;
-    }
-    .mock-screen-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .mock-title {
-      font-size: 11px;
-      font-weight: 600;
-    }
-    .mock-tag {
-      font-size: 10px;
-      padding: 1px 8px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      color: #4b5563;
-    }
-    .mock-line {
-      height: 8px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      margin-bottom: 4px;
-    }
-    .mock-line.short { width: 60%; }
-    .mock-line.full { width: 100%; }
-    .mock-line.mid { width: 80%; }
-
-    .key-callout {
-      background: #eff6ff;
-      border-radius: 8px;
-      border: 1px solid #bfdbfe;
-      padding: 10px 12px;
-      font-size: 11px;
-      color: #1e3a8a;
-      margin-top: 6px;
     }
 
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-    }
-    .tag-pill {
-      font-size: 11px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: #f3f4ff;
-      color: #4f46e5;
-      border: 1px solid #e5e7ff;
-    }
-
-    @media (max-width: 900px) {
-      .layout {
+    @media (max-width: 960px) {
+      .journey-grid {
         grid-template-columns: minmax(0, 1fr);
       }
       .container {
         margin-top: 88px;
       }
     }
+
+    .panel {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .panel-step-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .panel-tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f3f4ff;
+      color: #4f46e5;
+      border: 1px solid #e5e7ff;
+      white-space: nowrap;
+    }
+
+    .panel-caption {
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    /* Mock screens */
+    .mock {
+      margin-top: 4px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 10px 12px;
+      font-size: 11px;
+    }
+
+    .mock-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .mock-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .mock-status-pill {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .mock-status-pill.connected {
+      background: #dcfce7;
+      border-color: #bbf7d0;
+      color: #166534;
+    }
+
+    .mock-line {
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      margin-bottom: 4px;
+    }
+    .mock-line.short { width: 55%; }
+    .mock-line.mid { width: 80%; }
+    .mock-line.full { width: 100%; }
+
+    .mock-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: white;
+      font-size: 11px;
+      margin-top: 8px;
+      cursor: default;
+    }
+
+    .mock-button.primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+      font-weight: 500;
+    }
+
+    .mock-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .mock-badge {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      color: #4b5563;
+    }
+
+    .mock-facebook-frame {
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      padding: 10px 10px 8px;
+    }
+
+    .mock-facebook-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .mock-fb-title {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .mock-fb-logo {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #2563eb;
+    }
+
+    .mock-fb-line {
+      height: 7px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    .mock-fb-button-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .mock-fb-btn {
+      font-size: 10px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+    }
+
+    .mock-fb-btn.primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+      font-weight: 500;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #6b7280;
+    }
   </style>
 </head>
 <body>
-  <!-- Navigation injected here -->
+  <!-- Reusable nav -->
   <div id="app-navigation"></div>
 
   <div class="container">
-    <!-- Page header -->
-    <div class="page-header">
+    <!-- Header -->
+    <div>
       <div class="page-kicker">Instagram Setup</div>
-      <h1 class="page-title">Connect the Aruba Tourism Instagram account</h1>
+      <h1 class="page-title">Use Aruba’s account as the anchor for Stories</h1>
       <p class="page-subtitle">
-        This is a one-time setup that lets Phoenix Influence track posts and Stories where influencers tag @arubatourism or use your campaign hashtags.
+        In one short flow, we connect your Facebook Page and Instagram Business account. After that, any Story that tags <strong>@arubatourism</strong> can be captured and attached to your campaigns.
       </p>
     </div>
 
-    <!-- Intro banner -->
-    <div class="intro-banner">
-      <div class="intro-icon">🔐</div>
-      <div>
-        <div class="intro-title">What we’re doing</div>
-        <div class="intro-text">
-          We connect your official Facebook Page and Instagram Business account to Phoenix Influence using Meta’s secure login. 
-          You stay in control. Phoenix only reads content and insights needed for campaign reporting – it never posts on your behalf.
+    <!-- Progress -->
+    <div class="progress">
+      <div class="progress-step active">
+        <div class="progress-circle">1</div>
+        <div>
+          <span class="progress-label-main">Start in Phoenix</span>
+          <span class="progress-label-sub">Open Social connections</span>
+        </div>
+      </div>
+      <div class="progress-step active">
+        <div class="progress-circle">2</div>
+        <div>
+          <span class="progress-label-main">Approve in Meta</span>
+          <span class="progress-label-sub">Grant access to your Page</span>
+        </div>
+      </div>
+      <div class="progress-step active">
+        <div class="progress-circle">3</div>
+        <div>
+          <span class="progress-label-main">Stories start flowing</span>
+          <span class="progress-label-sub">Phoenix saves them for reporting</span>
         </div>
       </div>
     </div>
 
-    <div class="layout">
-      <!-- Steps column -->
-      <div>
-        <div class="steps-section-header">
+    <!-- Visual journey: three big mock screens -->
+    <div class="journey-grid">
+      <!-- Panel 1: Phoenix – before connection -->
+      <div class="panel">
+        <div class="panel-header">
           <div>
-            <div class="steps-title">Step-by-step process</div>
-            <div class="steps-subtitle">What you’ll do in the setup call</div>
+            <div class="panel-step-label">Step 1</div>
+            <div class="panel-title">Open “Social connections” in Phoenix</div>
           </div>
+          <div class="panel-tag">Inside Phoenix Influence</div>
         </div>
-
-        <div class="step-list">
-          <!-- Step 1 -->
-          <div class="step-card">
-            <div class="step-number">1</div>
-            <div class="step-body">
-              <div class="step-heading-row">
-                <div class="step-heading">Confirm access & pre-requisites</div>
-                <div class="step-pill">Before the call</div>
-              </div>
-              <p class="step-text">
-                Make sure you have admin access to the correct Facebook Page and that your Instagram account is set up as a Business account and linked to that Page.
-              </p>
-              <ul class="step-bullets">
-                <li>Facebook Page: e.g. <strong>Aruba Tourism Authority</strong></li>
-                <li>Instagram: Business / Creator account connected to that Page</li>
-                <li>You know the Facebook login you’ll use during the call</li>
-              </ul>
-            </div>
+        <p class="panel-caption">
+          We start in your Aruba workspace. Under brand settings you’ll see a simple Social connections screen for Facebook & Instagram.
+        </p>
+        <div class="mock">
+          <div class="mock-header">
+            <div class="mock-title">Social connections – Aruba Tourism</div>
+            <span class="mock-status-pill">Instagram not connected</span>
           </div>
-
-          <!-- Step 2 -->
-          <div class="step-card">
-            <div class="step-number">2</div>
-            <div class="step-body">
-              <div class="step-heading-row">
-                <div class="step-heading">Open Phoenix Influence → Social connections</div>
-                <div class="step-pill">In Phoenix</div>
-              </div>
-              <p class="step-text">
-                On the call, we’ll open your Phoenix Influence workspace and go to the brand settings → <strong>Social connections</strong> for Aruba Tourism.
-              </p>
-              <ul class="step-bullets">
-                <li>You’ll see a simple status: “Instagram not yet connected”</li>
-                <li>Click the <strong>Connect Facebook / Instagram</strong> button to begin</li>
-              </ul>
-            </div>
+          <div class="mock-line full"></div>
+          <div class="mock-line mid"></div>
+          <div class="mock-line.short"></div>
+          <div class="mock-badge-row" style="margin-top: 10px;">
+            <span class="mock-badge">Facebook Page: Not connected</span>
+            <span class="mock-badge">Instagram: Not connected</span>
           </div>
-
-          <!-- Step 3 -->
-          <div class="step-card highlight">
-            <div class="step-number">3</div>
-            <div class="step-body">
-              <div class="step-heading-row">
-                <div class="step-heading">Login via Meta’s secure screen</div>
-                <div class="step-pill">Meta login</div>
-              </div>
-              <p class="step-text">
-                You’ll be redirected to Facebook’s own login and permission screen. Phoenix never sees your password – Meta simply tells us which Page and Instagram account you’ve approved.
-              </p>
-              <ul class="step-bullets">
-                <li>Log in with your Facebook account that manages the Aruba Page</li>
-                <li>Confirm that Phoenix can access the Page and its Instagram Business account</li>
-                <li>Leave the requested permissions turned on – they’re only used for reporting</li>
-              </ul>
-              <div class="step-footer-note">
-                This is the same type of connection you’d use with tools like Sprout, Hootsuite, or Clear – just scoped to your own accounts.
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="step-card">
-            <div class="step-number">4</div>
-            <div class="step-body">
-              <div class="step-heading-row">
-                <div class="step-heading">Choose the correct Page & Instagram account</div>
-                <div class="step-pill">Select brand</div>
-              </div>
-              <p class="step-text">
-                After Meta sends you back to Phoenix, you’ll see a list of Facebook Pages you manage. You simply pick the official Aruba Tourism Page.
-              </p>
-              <ul class="step-bullets">
-                <li>Select <strong>Aruba Tourism Authority</strong> from the list</li>
-                <li>Phoenix automatically finds the connected Instagram Business account</li>
-                <li>We securely store the Page ID and Instagram Business ID for reporting</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Step 5 -->
-          <div class="step-card">
-            <div class="step-number">5</div>
-            <div class="step-body">
-              <div class="step-heading-row">
-                <div class="step-heading">Connection confirmed in Phoenix</div>
-                <div class="step-pill">One-time setup</div>
-              </div>
-              <p class="step-text">
-                Once connected, Phoenix shows a clear status: your Facebook Page and Instagram account are now linked. From this point on, we can track campaign content that involves @arubatourism.
-              </p>
-              <ul class="step-bullets">
-                <li>Status changes to <strong>Connected</strong></li>
-                <li>You’ll see the connected Page name and Instagram handle</li>
-                <li>You can disconnect at any time from the same screen</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Step 6 -->
-          <div class="step-card">
-            <div class="step-number">6</div>
-            <div class="step-body">
-              <div class="step-heading-row">
-                <div class="step-heading">Campaign Stories & posts start appearing</div>
-                <div class="step-pill">Ongoing</div>
-              </div>
-              <p class="step-text">
-                For future campaigns, whenever an influencer tags <strong>@arubatourism</strong> or uses your campaign hashtags, Phoenix captures those Stories and posts and attaches them to the relevant campaign.
-              </p>
-              <ul class="step-bullets">
-                <li>Stories are saved before the 24-hour window expires</li>
-                <li>Content is grouped by campaign and influencer</li>
-                <li>Numbers roll up into your campaign dashboards and reports</li>
-              </ul>
-            </div>
-          </div>
+          <button class="mock-button primary" style="margin-top: 12px;">
+            Connect Facebook / Instagram
+          </button>
+        </div>
+        <div class="note">
+          In the call, we click this button together to launch the Meta login.
         </div>
       </div>
 
-      <!-- Side visuals / behind the scenes -->
-      <div class="side-panel">
-        <div class="panel-block">
-          <div class="panel-title">What the client sees</div>
-          <div class="panel-text">
-            The experience is deliberately simple: a single “Connect Facebook / Instagram” button, a familiar Meta login, and a clear “Connected” status.
+      <!-- Panel 2: Meta consent screen -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-step-label">Step 2</div>
+            <div class="panel-title">Approve access on Meta’s screen</div>
           </div>
-          <div class="mock-screen">
-            <div class="mock-screen-header">
-              <div class="mock-title">Social connections – Aruba Tourism</div>
-              <div class="mock-tag">Phoenix Influence</div>
-            </div>
-            <div class="mock-line full"></div>
-            <div class="mock-line mid"></div>
-            <div class="mock-line short"></div>
-            <div style="margin-top: 8px;">
-              <span class="tag-pill">Status: Not connected</span>
-            </div>
-            <div style="margin-top: 10px;">
-              <span class="tag-pill">Connect Facebook / Instagram</span>
-            </div>
+          <div class="panel-tag">Meta / Facebook login</div>
+        </div>
+        <p class="panel-caption">
+          You log in with your own Facebook account, pick the official Aruba Page, and confirm that Phoenix can read content and insights.
+        </p>
+        <div class="mock mock-facebook-frame">
+          <div class="mock-facebook-header">
+            <div class="mock-fb-title">Continue as Aruba Tourism Admin</div>
+            <div class="mock-fb-logo"></div>
           </div>
-          <div class="key-callout">
-            In Monday’s demo, you can walk through these screens visually – even before the “live” connection is wired to the backend.
+          <div class="mock-fb-line" style="width: 70%;"></div>
+          <div class="mock-fb-line" style="width: 55%;"></div>
+          <div class="mock-fb-line" style="width: 80%;"></div>
+          <div style="margin-top: 8px; font-size: 10px; color: #6b7280;">
+            Choose the Page and Instagram account Phoenix Influence can access. Permissions are used only for analytics and reporting.
+          </div>
+          <div class="mock-fb-button-row">
+            <button class="mock-fb-btn">Cancel</button>
+            <button class="mock-fb-btn primary">Continue</button>
           </div>
         </div>
-
-        <div class="panel-block">
-          <div class="panel-title">What Phoenix does behind the scenes</div>
-          <div class="panel-text">
-            On connection, Phoenix Influence securely stores:
-          </div>
-          <ul class="mini-list">
-            <li>The selected Facebook Page ID</li>
-            <li>The connected Instagram Business account ID</li>
-            <li>A long-lived access token from Meta</li>
-          </ul>
-          <div class="panel-text" style="margin-top: 6px;">
-            This allows Phoenix to:
-          </div>
-          <ul class="mini-list">
-            <li>Detect Stories and posts that tag @arubatourism</li>
-            <li>Attach content to the right campaign and influencer</li>
-            <li>Feed metrics into your dashboards and Share of Voice reports</li>
-          </ul>
+        <div class="note">
+          This is Facebook’s own secure screen. Phoenix never sees your password – Meta simply returns a token confirming you’ve approved access.
         </div>
+      </div>
 
-        <div class="panel-block">
-          <div class="panel-title">How this supports campaign tracking</div>
-          <div class="panel-text">
-            Once connected, Phoenix uses the Aruba Tourism account as the “anchor” for campaign activity.
+      <!-- Panel 3: Phoenix – connected & stories flowing -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-step-label">Step 3</div>
+            <div class="panel-title">Connection confirmed & Stories tracked</div>
           </div>
-          <ul class="mini-list">
-            <li>Influencers tag <strong>@arubatourism</strong> in Stories and posts</li>
-            <li>Campaign hashtags (e.g. #OneHappyIsland) help classification</li>
-            <li>All captured content appears under the relevant campaign</li>
-          </ul>
-          <div class="tag-row">
-            <span class="tag-pill">@arubatourism</span>
-            <span class="tag-pill">#OneHappyIsland</span>
-            <span class="tag-pill">#BeachTennisAruba</span>
+          <div class="panel-tag">Back in Phoenix</div>
+        </div>
+        <p class="panel-caption">
+          Once approved, Phoenix shows a connected status. From this point on, any Story that tags <strong>@arubatourism</strong> can be captured and tied to your campaigns.
+        </p>
+        <div class="mock">
+          <div class="mock-header">
+            <div class="mock-title">Social connections – Aruba Tourism</div>
+            <span class="mock-status-pill connected">Instagram connected</span>
           </div>
+          <div class="mock-line full"></div>
+          <div class="mock-line mid"></div>
+          <div class="mock-badge-row" style="margin-top: 10px;">
+            <span class="mock-badge">Facebook Page: Aruba Tourism Authority</span>
+            <span class="mock-badge">Instagram: @arubatourism</span>
+          </div>
+          <button class="mock-button" style="margin-top: 10px;">
+            Disconnect Instagram
+          </button>
+          <div class="mock-badge-row" style="margin-top: 10px;">
+            <span class="mock-badge">@arubatourism</span>
+            <span class="mock-badge">#OneHappyIsland</span>
+            <span class="mock-badge">#BeachTennisAruba</span>
+          </div>
+        </div>
+        <div class="note">
+          These connections feed your campaign Story view – every tagged Story is saved, counted, and available for end-of-campaign reports.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Navigation script -->
+  <!-- Shared nav script -->
   <script src="nav-component.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Use any main page id you like for highlighting; 'campaigns' is a reasonable default.
+      // Highlight whatever makes most sense; using "campaigns" here
       PhoenixNav.render('campaigns', 'overview');
     });
   </script>
