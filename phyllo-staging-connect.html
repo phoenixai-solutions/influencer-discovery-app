@@ -1,58 +1,161 @@
-<script>
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWQzZTU0ZWItOTc5Ny00OThhLTk4YTEtMDY0MDUyMGQzMzk2IiwidGVuYW50X2lkIjoiZGQzOTEwMGEtNjBkNC00NzQzLWExNTktMzNmMTJlZTdkMjU3IiwidGVuYW50X2FwcF9pZCI6IjU4OThmNTRjLTRiNmUtNDJmMi1iMTc1LTA0YTQ5Yjc2NGViNCIsInByb2R1Y3RzIjpbIkVOR0FHRU1FTlQiLCJFTkdBR0VNRU5UX0FVRElFTkNFIiwiSURFTlRJVFkiXSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cGh5bGxvLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXBpLmdldHBoeWxsby5jb20vdjEvaW50ZXJuYWwiLCJpYXQiOjE3NjM4MzgwMzAuMzQ2MjgyLCJleHAiOjE3NjQ0NDI4MzAuMzQ2Mjc3fQ.CuBvG5e6RKlxjxVT1-snPzAgjILqxcm9R1S51Y7eB0s";
-  const userId = "5d3e54eb-9797-498a-98a1-0640520d3396";
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Phyllo Connect – Staging</title>
 
-  const debugEl = document.getElementById("debug");
-  function log(msg, obj, isError) {
-    const time = new Date().toISOString();
-    const icon = isError ? "❌" : "ℹ️";
-    debugEl.textContent += `[${time}] ${icon} ${msg}\n`;
-    if (obj) debugEl.textContent += JSON.stringify(obj, null, 2) + "\n";
-  }
+    <!-- Phyllo Connect Web SDK (v2) -->
+    <script src="https://cdn.getphyllo.com/connect/v2/phyllo-connect.js"></script>
 
-  log("Page JS loaded.");
-  setTimeout(() => {
-    log("typeof window.PhylloConnect:", typeof window.PhylloConnect);
-  }, 500);
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f5f7fb;
+        padding: 40px;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 0.5rem;
+      }
+      p {
+        margin-bottom: 1.5rem;
+      }
+      button {
+        font-size: 16px;
+        padding: 12px 24px;
+        border-radius: 999px;
+        background: #111827;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #000;
+      }
+      pre {
+        margin-top: 2rem;
+        text-align: left;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 12px 16px;
+        border: 1px solid #e5e7eb;
+        font-size: 12px;
+        white-space: pre-wrap;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
 
-  document.getElementById("connectBtn").onclick = () => {
-    log("Connect button clicked.");
+  <body>
+    <h2>Phyllo Connect – Staging</h2>
+    <p>Click below to connect your real social account via Phyllo Staging.</p>
 
-    if (!window.PhylloConnect) {
-      log("PhylloConnect SDK not found on window.", null, true);
-      alert("PhylloConnect SDK failed to load.");
-      return;
-    }
+    <button id="connectBtn">Connect Account</button>
 
-    const config = {
-      token,
-      userId, // ✅ new line – this fixes "Please provide user id in config"
-      environment: "sandbox", // Phyllo test env; token itself is for staging
-      clientDisplayName: "Phoenix / Damien Staging Test",
-    };
+    <!-- debug output area -->
+    <pre id="debug"></pre>
 
-    log("Initialising PhylloConnect with config:", config);
+    <script>
+      // 👉 1) Paste your SDK token from PowerShell here
+      const token =
+        "PASTE_YOUR_SDK_TOKEN_HERE";
 
-    try {
-      const phylloConnect = window.PhylloConnect.initialize(config);
+      // 👉 2) Your staging user id (Damien Test User)
+      const userId = "5d3e54eb-9797-498a-98a1-0640520d3396";
 
-      phylloConnect.on(
-        "accountConnected",
-        (accountId, workPlatformId, connectedUserId) => {
-          log("accountConnected:", { accountId, workPlatformId, connectedUserId });
+      // Safe logger – falls back to console if #debug isn't found
+      const debugEl = document.getElementById("debug");
+      function log(msg, obj, isError) {
+        const time = new Date().toISOString();
+        const icon = isError ? "❌" : "ℹ️";
+        const line = `[${time}] ${icon} ${msg}\n`;
+
+        if (debugEl) {
+          debugEl.textContent += line;
+          if (obj) {
+            debugEl.textContent += JSON.stringify(obj, null, 2) + "\n";
+          }
+        } else {
+          if (obj) {
+            console.log(line, obj);
+          } else {
+            console.log(line);
+          }
         }
-      );
+      }
 
-      phylloConnect.on("exit", (reason, connectedUserId) => {
-        log("exit:", { reason, connectedUserId });
+      // Wait for DOM to be ready before wiring events
+      window.addEventListener("load", () => {
+        log("Page JS loaded.");
+
+        // Small delay to allow SDK script to attach
+        setTimeout(() => {
+          log("typeof window.PhylloConnect:", typeof window.PhylloConnect);
+        }, 300);
+
+        const btn = document.getElementById("connectBtn");
+        if (!btn) {
+          log("Connect button not found in DOM.", null, true);
+          return;
+        }
+
+        btn.onclick = () => {
+          log("Connect button clicked.");
+
+          if (!window.PhylloConnect) {
+            log(
+              "PhylloConnect SDK not found on window. Check Network tab for phyllo-connect.js (should be 200).",
+              null,
+              true
+            );
+            alert("PhylloConnect SDK failed to load.");
+            return;
+          }
+
+          const config = {
+            token,
+            userId, // ← REQUIRED to fix "Please provide user id in config"
+            environment: "sandbox", // test env for Web SDK
+            clientDisplayName: "Phoenix / Damien Staging Test",
+          };
+
+          log("Initialising PhylloConnect with config:", config);
+
+          try {
+            const phylloConnect = window.PhylloConnect.initialize(config);
+
+            // Optional event hooks
+            phylloConnect.on(
+              "accountConnected",
+              (accountId, workPlatformId, connectedUserId) => {
+                log("accountConnected:", {
+                  accountId,
+                  workPlatformId,
+                  connectedUserId,
+                });
+              }
+            );
+
+            phylloConnect.on("exit", (reason, connectedUserId) => {
+              log("exit:", { reason, connectedUserId });
+            });
+
+            log("Opening Phyllo Connect UI...");
+            phylloConnect.open();
+          } catch (e) {
+            log(
+              "Error during PhylloConnect.initialize/open:",
+              { error: e.message },
+              true
+            );
+            alert("Error initialising Phyllo Connect: " + e.message);
+          }
+        };
       });
-
-      log("Opening Phyllo Connect UI...");
-      phylloConnect.open();
-    } catch (e) {
-      log("Error during PhylloConnect.initialize/open:", { error: e.message }, true);
-      alert("Error initialising Phyllo Connect: " + e.message);
-    }
-  };
-</script>
+    </script>
+  </body>
+</html>
