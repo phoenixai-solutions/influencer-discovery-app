@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Phyllo Connect – Staging Test</title>
 
-    <!-- Load Phyllo Connect SDK (v1 - correct one) -->
+    <!-- Phyllo Connect Web SDK -->
     <script src="https://cdn.getphyllo.com/connect/v1/phyllo-connect.js"></script>
 
     <style>
@@ -13,6 +13,12 @@
         background: #f5f7fb;
         padding: 40px;
         text-align: center;
+      }
+      h2 {
+        margin-bottom: 0.5rem;
+      }
+      p {
+        margin-bottom: 1.5rem;
       }
       button {
         font-size: 16px;
@@ -24,35 +30,74 @@
         cursor: pointer;
       }
       button:hover {
-        background: #000;
+        background: #000000;
+      }
+      pre {
+        margin-top: 2rem;
+        text-align: left;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px;
+        border: 1px solid #e5e7eb;
+        font-size: 12px;
+        white-space: pre-wrap;
       }
     </style>
   </head>
 
   <body>
-    <h2>Phoenix Connect – Staging</h2>
-    <p>Click below to connect your real social account via Phoenix Staging.</p>
+    <h2>Phyllo Connect – Staging</h2>
+    <p>Click below to connect your real social account via Phyllo Staging.</p>
 
     <button id="connectBtn">Connect Account</button>
 
+    <pre id="debug"></pre>
+
     <script>
-      // Paste your SDK token here
-      const sdkToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWQzZTU0ZWItOTc5Ny00OThhLTk4YTEtMDY0MDUyMGQzMzk2IiwidGVuYW50X2lkIjoiZGQzOTEwMGEtNjBkNC00NzQzLWExNTktMzNmMTJlZTdkMjU3IiwidGVuYW50X2FwcF9pZCI6IjU4OThmNTRjLTRiNmUtNDJmMi1iMTc1LTA0YTQ5Yjc2NGViNCIsInByb2R1Y3RzIjpbIkVOR0FHRU1FTlQiLCJFTkdBR0VNRU5UX0FVRElFTkNFIiwiSURFTlRJVFkiXSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cGh5bGxvLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXBpLmdldHBoeWxsby5jb20vdjEvaW50ZXJuYWwiLCJpYXQiOjE3NjM4MzgwMzAuMzQ2MjgyLCJleHAiOjE3NjQ0NDI4MzAuMzQ2Mjc3fQ.CuBvG5e6RKlxjxVT1-snPzAgjILqxcm9R1S51Y7eB0s";
+      // 👉 Paste your SDK token from PowerShell here:
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWQzZTU0ZWItOTc5Ny00OThhLTk4YTEtMDY0MDUyMGQzMzk2IiwidGVuYW50X2lkIjoiZGQzOTEwMGEtNjBkNC00NzQzLWExNTktMzNmMTJlZTdkMjU3IiwidGVuYW50X2FwcF9pZCI6IjU4OThmNTRjLTRiNmUtNDJmMi1iMTc1LTA0YTQ5Yjc2NGViNCIsInByb2R1Y3RzIjpbIkVOR0FHRU1FTlQiLCJFTkdBR0VNRU5UX0FVRElFTkNFIiwiSURFTlRJVFkiXSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cGh5bGxvLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXBpLmdldHBoeWxsby5jb20vdjEvaW50ZXJuYWwiLCJpYXQiOjE3NjM4MzgwMzAuMzQ2MjgyLCJleHAiOjE3NjQ0NDI4MzAuMzQ2Mjc3fQ.CuBvG5e6RKlxjxVT1-snPzAgjILqxcm9R1S51Y7eB0s";
+
+      const debugEl = document.getElementById("debug");
+      function log(msg, obj) {
+        const time = new Date().toISOString();
+        debugEl.textContent += `[${time}] ${msg}\n`;
+        if (obj) {
+          debugEl.textContent += JSON.stringify(obj, null, 2) + "\n";
+        }
+      }
+
+      // Run once when JS loads
+      log("Page JS loaded.");
+      log("window.PhylloConnect at load:", typeof window.PhylloConnect);
 
       document.getElementById("connectBtn").onclick = () => {
-        console.log("Button clicked — starting Phyllo Connect...");
+        log("Connect button clicked.");
 
         if (!window.PhylloConnect) {
-          alert("PhylloConnect SDK failed to load!");
+          log("❌ PhylloConnect SDK not found on window.");
+          alert("PhylloConnect SDK failed to load – check Network tab for phyllo-connect.js.");
           return;
         }
 
-        const phyllo = window.PhylloConnect.initialize({
-          sdkToken: sdkToken,
-          environment: "staging",
-        });
+        const config = {
+          token: token,          // SDK token you generated via /v1/sdk-tokens
+          environment: "sandbox" // Phyllo uses 'sandbox'/'production' in docs
+          // You can also add clientDisplayName, workPlatformId etc later
+        };
 
-        phyllo.open();
+        log("Initialising PhylloConnect with config:", config);
+
+        try {
+          const phylloConnect = window.PhylloConnect.initialize(config);
+          log("✅ PhylloConnect initialized, opening UI...");
+          phylloConnect.open();
+        } catch (e) {
+          log("❌ Error during PhylloConnect.initialize/open:", { error: e.message });
+          alert("Error initialising PhylloConnect: " + e.message);
+        }
       };
     </script>
   </body>
