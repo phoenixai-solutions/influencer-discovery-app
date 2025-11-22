@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Phyllo Connect – Staging Test</title>
+
+    <!-- Include Phyllo Connect library -->
+    <script src="https://cdn.getphyllo.com/connect/v1/phyllo-connect.js"></script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f7fb;
+        padding: 40px;
+        text-align: center;
+      }
+      button {
+        font-size: 16px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: #111827;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #000000;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Phyllo Connect – Staging</h2>
+    <p>Click below to connect your real social account via Phyllo Staging.</p>
+
+    <button id="connectBtn">Connect Account</button>
+
+    <script>
+      // 👉 Paste your SDK token from PowerShell output here:
+      const sdkToken = "PASTE_YOUR_SDK_TOKEN_HERE";
+
+      document.getElementById("connectBtn").onclick = () => {
+        const phyllo = PhylloConnect.initialize({
+          sdkToken: sdkToken,
+          environment: "staging", // important
+        });
+
+        phyllo.open();
+      };
+    </script>
+  </body>
+</html>
