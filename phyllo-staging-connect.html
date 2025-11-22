@@ -118,7 +118,7 @@
 
           const config = {
             token,
-            userId, // ← REQUIRED to fix "Please provide user id in config"
+            userId, // required by SDK
             environment: "sandbox", // test env for Web SDK
             clientDisplayName: "Phoenix / Damien Staging Test",
           };
@@ -128,11 +128,22 @@
           try {
             const phylloConnect = window.PhylloConnect.initialize(config);
 
-            // Optional event hooks
+            // REQUIRED CALLBACKS
             phylloConnect.on(
               "accountConnected",
               (accountId, workPlatformId, connectedUserId) => {
                 log("accountConnected:", {
+                  accountId,
+                  workPlatformId,
+                  connectedUserId,
+                });
+              }
+            );
+
+            phylloConnect.on(
+              "accountDisconnected",
+              (accountId, workPlatformId, connectedUserId) => {
+                log("accountDisconnected:", {
                   accountId,
                   workPlatformId,
                   connectedUserId,
