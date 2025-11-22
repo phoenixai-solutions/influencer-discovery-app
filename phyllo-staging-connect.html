@@ -59,14 +59,11 @@
     <pre id="debug"></pre>
 
     <script>
-      /* ============================
-         1) PASTE YOUR SDK TOKEN HERE
-         ============================ */
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWQzZTU0ZWItOTc5Ny00OThhLTk4YTEtMDY0MDUyMGQzMzk2IiwidGVuYW50X2lkIjoiZGQzOTEwMGEtNjBkNC00NzQzLWExNTktMzNmMTJlZTdkMjU3IiwidGVuYW50X2FwcF9pZCI6IjU4OThmNTRjLTRiNmUtNDJmMi1iMTc1LTA0YTQ5Yjc2NGViNCIsInByb2R1Y3RzIjpbIkVOR0FHRU1FTlQiLCJFTkdBR0VNRU5UX0FVRElFTkNFIiwiSURFTlRJVFkiXSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cGh5bGxvLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXBpLmdldHBoeWxsby5jb20vdjEvaW50ZXJuYWwiLCJpYXQiOjE3NjM4MzgwMzAuMzQ2MjgyLCJleHAiOjE3NjQ0NDI4MzAuMzQ2Mjc3fQ.CuBvG5e6RKlxjxVT1-snPzAgjILqxcm9R1S51Y7eB0s";
+      // 1) Your SDK token from PowerShell
+      const token =
+        "YOUR_SDK_TOKEN_HERE";
 
-      /* ============================
-         2) YOUR USER ID
-         ============================ */
+      // 2) Your staging user id (Damien Test User)
       const userId = "5d3e54eb-9797-498a-98a1-0640520d3396";
 
       const debugEl = document.getElementById("debug");
@@ -107,27 +104,46 @@
             const phylloConnect = window.PhylloConnect.initialize(config);
 
             // REQUIRED CALLBACKS
-            phylloConnect.on("accountConnected", (accountId, workPlatformId, connectedUserId) => {
-              log("accountConnected:", { accountId, workPlatformId, connectedUserId });
-            });
+            phylloConnect.on(
+              "accountConnected",
+              (accountId, workPlatformId, connectedUserId) => {
+                log("accountConnected:", {
+                  accountId,
+                  workPlatformId,
+                  connectedUserId
+                });
+              }
+            );
 
-            phylloConnect.on("accountDisconnected", (accountId, workPlatformId, connectedUserId) => {
-              log("accountDisconnected:", { accountId, workPlatformId, connectedUserId });
-            });
+            phylloConnect.on(
+              "accountDisconnected",
+              (accountId, workPlatformId, connectedUserId) => {
+                log("accountDisconnected:", {
+                  accountId,
+                  workPlatformId,
+                  connectedUserId
+                });
+              }
+            );
 
             phylloConnect.on("exit", (reason, connectedUserId) => {
               log("exit:", { reason, connectedUserId });
             });
 
-            phylloConnect.on("tokenExpires", () => {
-              log("tokenExpires event fired.");
-              alert("Your token has expired — regenerate a new one.");
+            // 🔑 Correct event name: tokenExpired
+            phylloConnect.on("tokenExpired", () => {
+              log("tokenExpired event fired.");
+              alert("Your Phyllo token has expired — generate a new one.");
             });
 
             log("Opening Phyllo Connect UI...");
             phylloConnect.open();
           } catch (e) {
-            log("Error during PhylloConnect.initialize/open:", { error: e.message }, true);
+            log(
+              "Error during PhylloConnect.initialize/open:",
+              { error: e.message },
+              true
+            );
             alert("Error initialising Phyllo: " + e.message);
           }
         };
