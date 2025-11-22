@@ -1,153 +1,142 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Phyllo Connect – Staging</title>
+<head>
+  <meta charset="UTF-8">
+  <title>Phyllo Connect – Staging</title>
 
-    <!-- Phyllo Connect Web SDK (v2) -->
-    <script src="https://cdn.getphyllo.com/connect/v2/phyllo-connect.js"></script>
+  <script src="https://cdn.getphyllo.com/connect/v2/phyllo-connect.js"></script>
 
-    <style>
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        background: #f5f7fb;
-        padding: 40px;
-        text-align: center;
-      }
-      h2 {
-        margin-bottom: 0.5rem;
-      }
-      p {
-        margin-bottom: 1.5rem;
-      }
-      button {
-        font-size: 16px;
-        padding: 12px 24px;
-        border-radius: 999px;
-        background: #111827;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-      }
-      button:hover {
-        background: #000;
-      }
-      pre {
-        margin-top: 2rem;
-        text-align: left;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-        background: #ffffff;
-        border-radius: 12px;
-        padding: 12px 16px;
-        border: 1px solid #e5e7eb;
-        font-size: 12px;
-        white-space: pre-wrap;
-        overflow-x: auto;
-      }
-    </style>
-  </head>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f5f7fb;
+      padding: 40px;
+      text-align: center;
+    }
+    button {
+      font-size: 16px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      background: #111827;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #000;
+    }
+    pre {
+      margin-top: 2rem;
+      text-align: left;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px 16px;
+      border: 1px solid #e5e7eb;
+      font-size: 12px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+  </style>
+</head>
 
-  <body>
-    <h2>Phyllo Connect – Staging</h2>
-    <p>Click below to connect your real social account via Phyllo Staging.</p>
+<body>
+  <h2>Phyllo Connect – Staging</h2>
+  <p>Click below to connect your real social account via Phyllo Staging.</p>
 
-    <button id="connectBtn">Connect Account</button>
+  <button id="connectBtn">Connect Account</button>
 
-    <pre id="debug"></pre>
+  <pre id="debug"></pre>
 
-    <script>
-      // 1) Your SDK token from PowerShell
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWQzZTU0ZWItOTc5Ny00OThhLTk4YTEtMDY0MDUyMGQzMzk2IiwidGVuYW50X2lkIjoiZGQzOTEwMGEtNjBkNC00NzQzLWExNTktMzNmMTJlZTdkMjU3IiwidGVuYW50X2FwcF9pZCI6IjU4OThmNTRjLTRiNmUtNDJmMi1iMTc1LTA0YTQ5Yjc2NGViNCIsInByb2R1Y3RzIjpbIkVOR0FHRU1FTlQiLCJFTkdBR0VNRU5UX0FVRElFTkNFIiwiSURFTlRJVFkiXSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cGh5bGxvLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXBpLmdldHBoeWxsby5jb20vdjEvaW50ZXJuYWwiLCJpYXQiOjE3NjM4MzgwMzAuMzQ2MjgyLCJleHAiOjE3NjQ0NDI4MzAuMzQ2Mjc3fQ.CuBvG5e6RKlxjxVT1-snPzAgjILqxcm9R1S51Y7eB0s";
+  <script>
+    /* =============================
+       1) YOUR SDK TOKEN GOES HERE
+       ============================= */
+    const token = "YOUR_SDK_TOKEN_HERE";
 
-      // 2) Your staging user id (Damien Test User)
-      const userId = "5d3e54eb-9797-498a-98a1-0640520d3396";
+    /* =============================
+       2) YOUR STAGING USER ID
+       ============================= */
+    const userId = "5d3e54eb-9797-498a-98a1-0640520d3396";
 
-      const debugEl = document.getElementById("debug");
-      function log(msg, obj, isError) {
-        const time = new Date().toISOString();
-        const icon = isError ? "❌" : "ℹ️";
-        let line = `[${time}] ${icon} ${msg}\n`;
-        debugEl.textContent += line;
-        if (obj) debugEl.textContent += JSON.stringify(obj, null, 2) + "\n";
-      }
+    const debugEl = document.getElementById("debug");
+    function log(msg, obj, isError) {
+      const time = new Date().toISOString();
+      const icon = isError ? "❌" : "ℹ️";
+      debugEl.textContent += `[${time}] ${icon} ${msg}\n`;
+      if (obj) debugEl.textContent += JSON.stringify(obj, null, 2) + "\n";
+    }
 
-      window.addEventListener("load", () => {
-        log("Page JS loaded.");
+    window.addEventListener("load", () => {
+      log("Page JS loaded.");
 
-        setTimeout(() => {
-          log("typeof window.PhylloConnect:", typeof window.PhylloConnect);
-        }, 300);
+      setTimeout(() => {
+        log("typeof window.PhylloConnect:", typeof window.PhylloConnect);
+      }, 300);
 
-        document.getElementById("connectBtn").onclick = () => {
-          log("Connect button clicked.");
+      document.getElementById("connectBtn").onclick = () => {
+        log("Connect button clicked.");
 
-          if (!window.PhylloConnect) {
-            log("PhylloConnect SDK not found on window.", null, true);
-            alert("SDK failed to load.");
-            return;
-          }
+        if (!window.PhylloConnect) {
+          log("PhylloConnect SDK not found.", null, true);
+          alert("SDK failed to load.");
+          return;
+        }
 
-          const config = {
-            token,
-            userId,
-            environment: "sandbox",
-            clientDisplayName: "Phoenix / Damien Staging Test"
-          };
-
-          log("Initialising PhylloConnect with config:", config);
-
-          try {
-            const phylloConnect = window.PhylloConnect.initialize(config);
-
-            // REQUIRED CALLBACKS
-            phylloConnect.on(
-              "accountConnected",
-              (accountId, workPlatformId, connectedUserId) => {
-                log("accountConnected:", {
-                  accountId,
-                  workPlatformId,
-                  connectedUserId
-                });
-              }
-            );
-
-            phylloConnect.on(
-              "accountDisconnected",
-              (accountId, workPlatformId, connectedUserId) => {
-                log("accountDisconnected:", {
-                  accountId,
-                  workPlatformId,
-                  connectedUserId
-                });
-              }
-            );
-
-            phylloConnect.on("exit", (reason, connectedUserId) => {
-              log("exit:", { reason, connectedUserId });
-            });
-
-            // 🔑 Correct event name: tokenExpired
-            phylloConnect.on("tokenExpired", () => {
-              log("tokenExpired event fired.");
-              alert("Your Phyllo token has expired — generate a new one.");
-            });
-
-            log("Opening Phyllo Connect UI...");
-            phylloConnect.open();
-          } catch (e) {
-            log(
-              "Error during PhylloConnect.initialize/open:",
-              { error: e.message },
-              true
-            );
-            alert("Error initialising Phyllo: " + e.message);
-          }
+        const config = {
+          token,
+          userId,
+          environment: "sandbox",
+          clientDisplayName: "Phoenix / Damien Staging Test"
         };
-      });
-    </script>
-  </body>
+
+        log("Initialising PhylloConnect with config:", config);
+
+        try {
+          const phylloConnect = window.PhylloConnect.initialize(config);
+
+          // REQUIRED CALLBACKS
+          phylloConnect.on("accountConnected",
+            (accountId, workPlatformId, connectedUserId) => {
+              log("accountConnected:", { accountId, workPlatformId, connectedUserId });
+            }
+          );
+
+          phylloConnect.on("accountDisconnected",
+            (accountId, workPlatformId, connectedUserId) => {
+              log("accountDisconnected:", { accountId, workPlatformId, connectedUserId });
+            }
+          );
+
+          phylloConnect.on("exit",
+            (reason, connectedUserId) => {
+              log("exit:", { reason, connectedUserId });
+            }
+          );
+
+          /* =============================
+             ✔ CORRECTED TOKEN EXPIRED EVENT
+             ============================= */
+          phylloConnect.on("tokenExpired",
+            (expiredUserId) => {
+              log("tokenExpired event fired:", { expiredUserId });
+              alert("Your Phyllo token expired — generate a new one.");
+            }
+          );
+
+          log("Opening Phyllo Connect UI…");
+          phylloConnect.open();
+
+        } catch (e) {
+          log("Error during PhylloConnect.initialize/open:", { error: e.message }, true);
+          alert("Error initialising Phyllo: " + e.message);
+        }
+      };
+    });
+  </script>
+
+</body>
 </html>
