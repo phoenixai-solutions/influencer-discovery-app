@@ -56,71 +56,49 @@
 
     <button id="connectBtn">Connect Account</button>
 
-    <!-- debug output area -->
     <pre id="debug"></pre>
 
     <script>
-      // 👉 1) Paste your SDK token from PowerShell here
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWQzZTU0ZWItOTc5Ny00OThhLTk4YTEtMDY0MDUyMGQzMzk2IiwidGVuYW50X2lkIjoiZGQzOTEwMGEtNjBkNC00NzQzLWExNTktMzNmMTJlZTdkMjU3IiwidGVuYW50X2FwcF9pZCI6IjU4OThmNTRjLTRiNmUtNDJmMi1iMTc1LTA0YTQ5Yjc2NGViNCIsInByb2R1Y3RzIjpbIkVOR0FHRU1FTlQiLCJFTkdBR0VNRU5UX0FVRElFTkNFIiwiSURFTlRJVFkiXSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cGh5bGxvLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXBpLmdldHBoeWxsby5jb20vdjEvaW50ZXJuYWwiLCJpYXQiOjE3NjM4MzgwMzAuMzQ2MjgyLCJleHAiOjE3NjQ0NDI4MzAuMzQ2Mjc3fQ.CuBvG5e6RKlxjxVT1-snPzAgjILqxcm9R1S51Y7eB0s";
+      /* ============================
+         1) PASTE YOUR SDK TOKEN HERE
+         ============================ */
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWQzZTU0ZWItOTc5Ny00OThhLTk4YTEtMDY0MDUyMGQzMzk2IiwidGVuYW50X2lkIjoiZGQzOTEwMGEtNjBkNC00NzQzLWExNTktMzNmMTJlZTdkMjU3IiwidGVuYW50X2FwcF9pZCI6IjU4OThmNTRjLTRiNmUtNDJmMi1iMTc1LTA0YTQ5Yjc2NGViNCIsInByb2R1Y3RzIjpbIkVOR0FHRU1FTlQiLCJFTkdBR0VNRU5UX0FVRElFTkNFIiwiSURFTlRJVFkiXSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cGh5bGxvLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXBpLmdldHBoeWxsby5jb20vdjEvaW50ZXJuYWwiLCJpYXQiOjE3NjM4MzgwMzAuMzQ2MjgyLCJleHAiOjE3NjQ0NDI4MzAuMzQ2Mjc3fQ.CuBvG5e6RKlxjxVT1-snPzAgjILqxcm9R1S51Y7eB0s";
 
-      // 👉 2) Your staging user id (Damien Test User)
+      /* ============================
+         2) YOUR USER ID
+         ============================ */
       const userId = "5d3e54eb-9797-498a-98a1-0640520d3396";
 
-      // Safe logger – falls back to console if #debug isn't found
       const debugEl = document.getElementById("debug");
       function log(msg, obj, isError) {
         const time = new Date().toISOString();
         const icon = isError ? "❌" : "ℹ️";
-        const line = `[${time}] ${icon} ${msg}\n`;
-
-        if (debugEl) {
-          debugEl.textContent += line;
-          if (obj) {
-            debugEl.textContent += JSON.stringify(obj, null, 2) + "\n";
-          }
-        } else {
-          if (obj) {
-            console.log(line, obj);
-          } else {
-            console.log(line);
-          }
-        }
+        let line = `[${time}] ${icon} ${msg}\n`;
+        debugEl.textContent += line;
+        if (obj) debugEl.textContent += JSON.stringify(obj, null, 2) + "\n";
       }
 
-      // Wait for DOM to be ready before wiring events
       window.addEventListener("load", () => {
         log("Page JS loaded.");
 
-        // Small delay to allow SDK script to attach
         setTimeout(() => {
           log("typeof window.PhylloConnect:", typeof window.PhylloConnect);
         }, 300);
 
-        const btn = document.getElementById("connectBtn");
-        if (!btn) {
-          log("Connect button not found in DOM.", null, true);
-          return;
-        }
-
-        btn.onclick = () => {
+        document.getElementById("connectBtn").onclick = () => {
           log("Connect button clicked.");
 
           if (!window.PhylloConnect) {
-            log(
-              "PhylloConnect SDK not found on window. Check Network tab for phyllo-connect.js (should be 200).",
-              null,
-              true
-            );
-            alert("PhylloConnect SDK failed to load.");
+            log("PhylloConnect SDK not found on window.", null, true);
+            alert("SDK failed to load.");
             return;
           }
 
           const config = {
             token,
-            userId, // required by SDK
-            environment: "sandbox", // test env for Web SDK
-            clientDisplayName: "Phoenix / Damien Staging Test",
+            userId,
+            environment: "sandbox",
+            clientDisplayName: "Phoenix / Damien Staging Test"
           };
 
           log("Initialising PhylloConnect with config:", config);
@@ -129,41 +107,28 @@
             const phylloConnect = window.PhylloConnect.initialize(config);
 
             // REQUIRED CALLBACKS
-            phylloConnect.on(
-              "accountConnected",
-              (accountId, workPlatformId, connectedUserId) => {
-                log("accountConnected:", {
-                  accountId,
-                  workPlatformId,
-                  connectedUserId,
-                });
-              }
-            );
+            phylloConnect.on("accountConnected", (accountId, workPlatformId, connectedUserId) => {
+              log("accountConnected:", { accountId, workPlatformId, connectedUserId });
+            });
 
-            phylloConnect.on(
-              "accountDisconnected",
-              (accountId, workPlatformId, connectedUserId) => {
-                log("accountDisconnected:", {
-                  accountId,
-                  workPlatformId,
-                  connectedUserId,
-                });
-              }
-            );
+            phylloConnect.on("accountDisconnected", (accountId, workPlatformId, connectedUserId) => {
+              log("accountDisconnected:", { accountId, workPlatformId, connectedUserId });
+            });
 
             phylloConnect.on("exit", (reason, connectedUserId) => {
               log("exit:", { reason, connectedUserId });
             });
 
+            phylloConnect.on("tokenExpires", () => {
+              log("tokenExpires event fired.");
+              alert("Your token has expired — regenerate a new one.");
+            });
+
             log("Opening Phyllo Connect UI...");
             phylloConnect.open();
           } catch (e) {
-            log(
-              "Error during PhylloConnect.initialize/open:",
-              { error: e.message },
-              true
-            );
-            alert("Error initialising Phyllo Connect: " + e.message);
+            log("Error during PhylloConnect.initialize/open:", { error: e.message }, true);
+            alert("Error initialising Phyllo: " + e.message);
           }
         };
       });
