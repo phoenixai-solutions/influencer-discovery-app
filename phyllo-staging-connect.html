@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Phyllo Connect – Staging Test</title>
 
-    <!-- Include Phyllo Connect library -->
+    <!-- Load Phyllo Connect SDK (v1 - correct one) -->
     <script src="https://cdn.getphyllo.com/connect/v1/phyllo-connect.js"></script>
 
     <style>
@@ -24,25 +24,32 @@
         cursor: pointer;
       }
       button:hover {
-        background: #000000;
+        background: #000;
       }
     </style>
   </head>
 
   <body>
-    <h2>Phyllo Connect – Staging</h2>
-    <p>Click below to connect your real social account via Phyllo Staging.</p>
+    <h2>Phoenix Connect – Staging</h2>
+    <p>Click below to connect your real social account via Phoenix Staging.</p>
 
     <button id="connectBtn">Connect Account</button>
 
     <script>
-      // 👉 Paste your SDK token from PowerShell output here:
+      // Paste your SDK token here
       const sdkToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWQzZTU0ZWItOTc5Ny00OThhLTk4YTEtMDY0MDUyMGQzMzk2IiwidGVuYW50X2lkIjoiZGQzOTEwMGEtNjBkNC00NzQzLWExNTktMzNmMTJlZTdkMjU3IiwidGVuYW50X2FwcF9pZCI6IjU4OThmNTRjLTRiNmUtNDJmMi1iMTc1LTA0YTQ5Yjc2NGViNCIsInByb2R1Y3RzIjpbIkVOR0FHRU1FTlQiLCJFTkdBR0VNRU5UX0FVRElFTkNFIiwiSURFTlRJVFkiXSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cGh5bGxvLmNvbSIsImF1ZCI6Imh0dHBzOi8vYXBpLmdldHBoeWxsby5jb20vdjEvaW50ZXJuYWwiLCJpYXQiOjE3NjM4MzgwMzAuMzQ2MjgyLCJleHAiOjE3NjQ0NDI4MzAuMzQ2Mjc3fQ.CuBvG5e6RKlxjxVT1-snPzAgjILqxcm9R1S51Y7eB0s";
 
       document.getElementById("connectBtn").onclick = () => {
-        const phyllo = PhylloConnect.initialize({
+        console.log("Button clicked — starting Phyllo Connect...");
+
+        if (!window.PhylloConnect) {
+          alert("PhylloConnect SDK failed to load!");
+          return;
+        }
+
+        const phyllo = window.PhylloConnect.initialize({
           sdkToken: sdkToken,
-          environment: "staging", // important
+          environment: "staging",
         });
 
         phyllo.open();
